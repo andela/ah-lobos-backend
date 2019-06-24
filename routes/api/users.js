@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const router = require("express").Router();
-const passport = require("passport");
+const passport = require("../../config/passport");
 const User = mongoose.model("User");
 
 router.get("/user", function(req, res, next) {
@@ -46,13 +46,14 @@ router.put("/user", function(req, res, next) {
 });
 
 router.post("/users/login", function(req, res, next) {
-    if (!req.body.user.email) {
+    if (!req.body.email) {
         return res.status(422).json({ errors: { email: "can't be blank" } });
     }
 
-    if (!req.body.user.password) {
+    if (!req.body.password) {
         return res.status(422).json({ errors: { password: "can't be blank" } });
     }
+   
     passport.authenticate("local", { session: false }, function(
         err,
         user,
@@ -73,9 +74,9 @@ router.post("/users/login", function(req, res, next) {
 router.post("/users", function(req, res, next) {
     const user = new User();
 
-    user.username = req.body.user.username;
-    user.email = req.body.user.email;
-    user.setPassword(req.body.user.password);
+    user.username = req.body.username;
+    user.email = req.body.email;
+    user.setPassword(req.body.password);
 
     user.save()
         .then(function() {

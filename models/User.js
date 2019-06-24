@@ -50,7 +50,7 @@ UserSchema.methods.setPassword = function(password) {
 UserSchema.methods.toAuthJSON = function() {
     return {
         username: this.username,
-        email: this.email
+        email: this.email,
     };
 };
 

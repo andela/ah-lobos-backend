@@ -1,13 +1,13 @@
-const passport = require("passport");
+import passport from "passport";
 const LocalStrategy = require("passport-local").Strategy;
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const User = mongoose.model("User");
 
-passport.use(
+module.exports = passport.use(
     new LocalStrategy(
         {
-            usernameField: "user[email]",
-            passwordField: "user[password]"
+            usernameField: "email",
+            passwordField: "password"
         },
         function(email, password, done) {
             User.findOne({ email: email })
@@ -17,7 +17,6 @@ passport.use(
                             errors: { "email or password": "is invalid" }
                         });
                     }
-
                     return done(null, user);
                 })
                 .catch(done);

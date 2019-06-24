@@ -11,6 +11,7 @@ const fs = require("fs"),
     mongoose = require("mongoose");
 
 const isProduction = process.env.NODE_ENV === "production";
+const isTest = process.env.NODE_ENV === "test";
 
 // Create global app object
 const app = express();
@@ -40,7 +41,10 @@ if (!isProduction) {
 
 if (isProduction) {
     mongoose.connect(process.env.MONGODB_URI);
-} else {
+} else if (isTest) {
+    mongoose.connect("mongodb://localhost/conduitTest");
+}
+else {
     mongoose.connect("mongodb://localhost/conduit");
     mongoose.set("debug", true);
 }
@@ -50,7 +54,7 @@ require("./models/User");
 app.use(require("./routes"));
 
 /// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     const err = new Error("Not Found");
     err.status = 404;
     next(err);
@@ -61,7 +65,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (!isProduction) {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         console.log(err.stack);
 
         res.status(err.status || 500);
@@ -77,7 +81,7 @@ if (!isProduction) {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.json({
         errors: {
@@ -88,6 +92,8 @@ app.use(function(err, req, res, next) {
 });
 
 // finally, let's start our server...
-const server = app.listen(process.env.PORT || 3000, function() {
+const server = app.listen(process.env.PORT || 3000, function () {
     console.log("Listening on port " + server.address().port);
 });
+
+export default server;
