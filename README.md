@@ -13,6 +13,32 @@ by leveraging the modern web.
 ## API Spec
 The preferred JSON object to be returned by the API should be structured as follows:
 
+### Database Setup (Postgres - Sequelize )
+> install dependencies and development dependencies
+```
+> npm install
+```
+
+> create database to postgresql
+```
+> createdb authorsHavenDb
+```
+remember to change the password in config.json file for development
+
+> create your config file
+```
+> create a .env file in your root directory and follow the 'example.env' 
+file in setting up yours
+```
+
+> add table to database
+
+```
+> sequelize db:migrate
+```
+The above command will migrate all table to your database
+
+
 ### Users (for authentication)
 
 ```source-json

@@ -39,3 +39,6 @@ package-lock.json
 
 #ignore package lock file
 package-lock.json
+
+#dotenv
+.env
