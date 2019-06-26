@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/andela/ah-lobos-backend.svg?branch=develop)](https://travis-ci.org/andela/ah-lobos-backend)
+
 Authors Haven - A Social platform for the creative at heart.
 =======
 
