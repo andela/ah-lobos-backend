@@ -1,19 +1,16 @@
-[![Build Status](https://travis-ci.org/andela/ah-lobos-backend.svg?branch=develop)](https://travis-ci.org/andela/ah-lobos-backend)
-[![Coverage Status](https://coveralls.io/repos/github/andela/ah-lobos-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/ah-lobos-backend?branch=develop)
-[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+## Authors Haven [![Build Status](https://travis-ci.org/andela/ah-lobos-backend.svg?branch=develop)](https://travis-ci.org/andela/ah-lobos-backend) [![Coverage Status](https://coveralls.io/repos/github/andela/ah-lobos-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/ah-lobos-backend?branch=develop) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
-Authors Haven - A Social platform for the creative at heart.
-=======
+ A Social platform for the creative at heart.
 
-## Vision
+## Description
 Create a community of like minded authors to foster inspiration and innovation
 by leveraging the modern web.
 
----
+## Documentation
+This project is in the early stages of development. 
+However, for the purpose of testing and configurations, one endpoint has been created to provide users with the resource to `create a user account`.
 
-## API Spec
-The preferred JSON object to be returned by the API should be structured as follows:
-
+## Setup
 ### Database Setup (Postgres - Sequelize )
 > install dependencies and development dependencies
 ```
@@ -28,7 +25,7 @@ remember to change the password in config.json file for development
 
 > create your config file
 ```
-> create a .env file in your root directory and follow the 'example.env' 
+> create a .env file in your root directory and follow the `example.env` 
 file in setting up yours
 ```
 
@@ -39,6 +36,64 @@ file in setting up yours
 ```
 The above command will migrate all table to your database
 
+> remove all tables from the database
+
+```
+> sequelize db:migrate:undo
+```
+The above command will revert any migration.
+
+
+### Dependencies
+> node.js
+> express
+> sequelize
+> pg
+> pg-hstore
+
+### Getting Started
+> Clone the repository by running 
+
+```
+git clone https://github.com/andela/ah-lobos-backend.git
+```
+> Install the dependencies by running 
+```
+npm install
+```
+> Follow the format in `example.env` file to set up your `.env` file
+
+
+### Run The Service
+
+> Start the application by running 
+```
+npm run start
+```
+
+### Microservices
+
+N/A
+
+## Testing
+
+> Test the application by running 
+```
+npm run test
+```
+
+## Contribute
+
+> Follow the `Getting started` section of this file and create a branch off `develop`.
+
+> Use the [engineering playbook](https://github.com/andela/engineering-playbook/tree/c74e0b42578fcf45d76b91e43b85d5159821b7ea/5.%20Developing/Conventions#repo-readme) as a guide while you develop your feature.
+
+## Deployment
+
+> All contributions have to pass all build tests and must follow the standards described in the Andela [engineering playbook](https://github.com/andela/engineering-playbook/tree/c74e0b42578fcf45d76b91e43b85d5159821b7ea/5.%20Developing/Conventions#repo-readme) as a guide while you develop your feature.
+
+## API Spec
+The preferred JSON object to be returned by the API should be structured as follows:
 
 ### Users (for authentication)
 
