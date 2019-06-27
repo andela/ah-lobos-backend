@@ -43,3 +43,9 @@ package-lock.json
 
 #dotenv
 .env
+
+#test repo
+.nyc_output/
+
+#editorconfig
+.editorconfig
