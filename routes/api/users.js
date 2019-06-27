@@ -1,9 +1,9 @@
-import { model } from 'mongoose';
 import { authenticate } from 'passport';
+import model from '../../models';
 
 const router = require('express').Router();
 
-const User = model('User');
+const { User } = model;
 
 router.get('/user', (req, res, next) => {
   User.findById(req.payload.id)

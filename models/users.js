@@ -5,33 +5,33 @@ export default (sequelize, DataTypes) => {
       allowNull: {
         args: false,
         message: 'Please enter your username'
-      }},
+      }
+    },
     email: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: {
         args: false,
         message: 'Please enter your email'
-      }},
+      }
+    },
     bio: DataTypes.STRING,
     image: DataTypes.STRING,
     favorites: [{
-        type: DataTypes.STRING,
-        allowNull: {
-          args: true
-        }
+      type: DataTypes.STRING,
+      allowNull: {
+        args: true
+      }
     }],
     following: [{
-        type: DataTypes.STRING,
-        allowNull: {
-          args: true
-        }
+      type: DataTypes.STRING,
+      allowNull: {
+        args: true
+      }
     }],
     hash: DataTypes.STRING
   }, {});
-  Users.associate = function(models) {
-    // associations can be defined here
-   
+  Users.associate = () => {
   };
   return Users;
 };
