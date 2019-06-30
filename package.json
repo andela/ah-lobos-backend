@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint",
-    "test": "npm run create_tables && NODE_ENV=test nyc --reporter=text mocha --require babel-register --require babel-polyfill ./tests/ --exit && npm run drop_tables",
+    "test": "NODE_ENV=test npm run create_tables && NODE_ENV=test nyc --reporter=text mocha --require babel-register --require babel-polyfill ./tests/ --exit && NODE_ENV=test npm run drop_tables",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
-    "drop_tables": "NODE_ENV=test sequelize db:migrate:undo:all",
-    "create_tables": "NODE_ENV=test sequelize db:migrate",
-    "start": "node --exec babel-node ./src/index.js",
+    "drop_tables": "sequelize db:migrate:undo:all",
+    "create_tables": "sequelize db:migrate",
+    "start": "babel-node ./src/index.js",
     "dev": "nodemon --exec babel-node ./src/index.js"
   },
   "engines": {
@@ -33,15 +33,17 @@
     "sequelize": "^5.8.12",
     "sequelize-cli": "^5.5.0",
     "body-parser": "^1.19.0",
-    "underscore": "^1.9.1"
-  },
-  "devDependencies": {
-    "mocha": "^6.1.4",
+    "underscore": "^1.9.1",
+    "swagger-jsdoc": "^1.3.0",
+    "swagger-ui-express": "^4.0.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "babel-preset-env": "^1.7.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.4",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "coveralls": "^3.0.4",

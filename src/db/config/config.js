@@ -7,7 +7,7 @@ const config = {
     database: 'authorshavendb',
     host: '127.0.0.1',
     dialect: 'postgres',
-    operatorsAliases: false
+    operatorsAliases: false,
   },
   test: {
     username: envConfig.db_username_test,
@@ -20,10 +20,16 @@ const config = {
   production: {
     username: envConfig.db_username_pro,
     password: envConfig.db_password_pro,
-    database: 'd11qneg9gqln1',
+    database: envConfig.db_database_pro,
     host: envConfig.db_host_pro,
     dialect: 'postgres',
-    operatorsAliases: false
+    operatorsAliases: false,
+    ssl: true,
+    dialectOptions: {
+        ssl: {
+          "require":true
+        }
+    }
   }
 };
 

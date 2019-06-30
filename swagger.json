@@ -1,0 +1,70 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Authors Haven Documentation API",
+        "version": "1.0.0",
+        "description": "Authors Haven Documentation with Swagger"
+      },
+      "host": "ah-lobos-backend-swagger.herokuapp.com",
+      "basePath": "/",
+    "tags": [
+      {
+        "name": "users",
+        "description": "Create new User"
+      }
+    ],
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "definitions": {
+        "signup": {
+            "required": [
+              "username",
+              "email",
+              "password"
+            ],
+            "properties": {
+              "username": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+        }
+    },
+    "paths": {
+        "/api/users": {
+            "post": {
+              "tags": ["users"],
+              "description": "Create new User",
+              "parameters": [
+                {
+                  "name": "body",
+                  "in": "body",
+                  "description": "User create a new account",
+                  "require": true,
+                  "schema": {
+                    "$ref": "#/definitions/signup"
+                  }
+                }
+              ],
+              "produces": ["application/json"],
+              "responses": {
+                "201": {
+                  "description": "User Account created successfully",
+                  "schema": {
+                    "$ref": "#/definitions/signup"
+                  }
+                },
+                "409": {
+                    "description": "User Account was not created"
+                }
+              }
+            }
+        }
+    }
+}
