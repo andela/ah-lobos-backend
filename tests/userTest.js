@@ -16,9 +16,9 @@ const userToken = jwt.sign({ username: 'samuel', email: 'sa@andela.com' }, proce
 describe('User Tests', () => {
   before('should be able to register a new user', (done) => {
     const user = {
-      username: 'samuel',
-      email: 'sa@andela.com',
-      password: 'Password123'
+      username: 'Jack',
+      email: 'jack@andela.com',
+      password: 'Domdom58'
     };
     Chai.request(index)
       .post('/api/users')
@@ -27,15 +27,16 @@ describe('User Tests', () => {
         res.body.should.be.an('object');
         res.body.user.should.have.property('username');
         res.body.user.should.have.property('email');
-        res.status.should.eql(201);
+        res.status.should.equal(201);
         done();
       });
   });
+
   it('should not register a user with an existing email ', (done) => {
     const user = {
-      username: 'Emilen',
-      email: 'sa@andela.com',
-      password: 'passme'
+      username: 'Jack',
+      email: 'jack@andela.com',
+      password: 'Domdom58'
     };
     Chai.request(index)
       .post('/api/users')
@@ -47,37 +48,74 @@ describe('User Tests', () => {
       });
     done();
   });
-  it('should be able to register a new user', (done) => {
+
+
+  it('should not register a new user with empty body', (done) => {
     const user = {
-      username: 'Sam',
-      email: 'sam@andela.com',
-      password: 'passme'
+      username: '',
+      email: '',
+      password: ''
     };
     Chai.request(index)
       .post('/api/users')
       .send(user)
       .end((err, res) => {
+        res.status.should.equal(400);
         res.body.should.be.an('object');
-        res.body.user.username.should.equal('Sam');
-        res.body.user.email.should.equal('sam@andela.com');
+      });
+    done();
+  });
+
+  it('should not register a user with invalid email', (done) => {
+    const user = {
+      username: 'Jack',
+      email: 'jacksonandela.com',
+      password: 'Domdom58'
+    };
+    Chai.request(index)
+      .post('/api/users')
+      .send(user)
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.body.should.be.an('object');
+      });
+    done();
+  });
+
+
+  it('should be able to register a new user', (done) => {
+    const user = {
+      username: 'samuel',
+      email: 'sa@andela.com',
+      password: 'Password123'
+    };
+
+    Chai.request(index)
+      .post('/api/users')
+      .send(user)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.body.user.username.should.equal('samuel');
+        res.body.user.email.should.equal('sa@andela.com');
         res.body.user.token.should.be.a('string');
         res.status.should.equal(201);
       });
     done();
   });
+
   it('should allow a user to login', (done) => {
     const user = {
-      username: 'Sam',
-      email: 'sam@andela.com',
-      password: 'passme'
+      username: 'samuel',
+      email: 'sa@andela.com',
+      password: 'Password123'
     };
     Chai.request(index)
       .post('/api/users/login')
       .send(user)
       .end((err, res) => {
         res.body.should.be.an('object');
-        res.body.user.username.should.equal('Sam');
-        res.body.user.email.should.equal('sam@andela.com');
+        res.body.user.username.should.equal('samuel');
+        res.body.user.email.should.equal('sa@andela.com');
         res.body.user.token.should.be.a('string');
         res.status.should.equal(200);
       });
@@ -86,8 +124,9 @@ describe('User Tests', () => {
 
   it('should not allow a user to login with a wrong password', (done) => {
     const user = {
-      email: 'sa@andela.com',
-      password: 'Password'
+      username: 'Jack',
+      email: 'jack@andela.com',
+      password: 'Password12'
     };
     Chai.request(index)
       .post('/api/users/login')
@@ -127,7 +166,7 @@ describe('User Tests', () => {
       .post('/api/user/forgot-password')
       .send(user)
       .end((err, res) => {
-        res.status.should.be.eql(400);
+        res.status.should.be.equal(400);
         res.body.error.should.be.an('string');
       });
     done();
@@ -141,7 +180,7 @@ describe('User Tests', () => {
       .post('/api/user/forgot-password')
       .send(user)
       .end((err, res) => {
-        res.status.should.be.eql(200);
+        res.status.should.be.equal(200);
         res.body.message.should.be.a('string');
       });
     done();
@@ -156,7 +195,7 @@ describe('User Tests', () => {
       .post(`/api/user/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
-        res.status.should.be.eql(400);
+        res.status.should.be.equal(400);
         res.body.errors.should.be.a('string');
       });
     done();
@@ -169,7 +208,7 @@ describe('User Tests', () => {
       .post(`/api/user/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
-        res.status.should.be.eql(400);
+        res.status.should.be.equal(400);
         res.body.errors.should.be.an('array');
       });
     done();
@@ -184,7 +223,7 @@ describe('User Tests', () => {
       .post(`/api/user/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
-        res.status.should.be.eql(400);
+        res.status.should.be.equal(400);
         res.body.errors.should.be.a('string');
       });
     done();
@@ -199,7 +238,7 @@ describe('User Tests', () => {
       .post(`/api/user/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
-        res.status.should.be.eql(200);
+        res.status.should.be.equal(200);
         res.body.message.should.be.a('string');
       });
     done();
