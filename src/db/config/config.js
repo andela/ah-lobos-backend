@@ -14,7 +14,7 @@ const config = {
     password: envConfig.db_password_test,
     database: 'ah_db_test',
     host: 'localhost',
-    dialect: 'postgres'
+    dialect: 'postgres',
   },
   production: {
     username: envConfig.db_username_pro,

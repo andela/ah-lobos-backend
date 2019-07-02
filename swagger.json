@@ -1,123 +1,234 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Authors Haven Documentation API",
-        "version": "1.0.0",
-        "description": "Authors Haven Documentation with Swagger"
-      },
-      "host": "ah-lobos-backend-swagger.herokuapp.com",
-      "basePath": "/",
-    "tags": [
-      {
-        "name": "users",
-        "description": "Create new User"
-      }
-    ],
-    "schemes": ["http", "https"],
-    "consumes": ["application/json"],
-    "produces": ["application/json"],
-    "definitions": {
-        "signup": {
-            "required": [
-              "username",
-              "email",
-              "password"
-            ],
-            "properties": {
-              "username": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string"
-              },
-              "password": {
-                "type": "string"
-              }
-            }
-        },
-        "login": {
-            "required": [
-              "username",
-              "email",
-              "password"
-            ],
-            "properties": {
-              "username": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string"
-              },
-              "password": {
-                "type": "string"
-              }
-            }
-        }
-    },
-    "paths": {
-        "/api/users": {
-            "post": {
-              "tags": ["users"],
-              "description": "Create new User",
-              "parameters": [
-                {
-                  "name": "body",
-                  "in": "body",
-                  "description": "User create a new account",
-                  "require": true,
-                  "schema": {
-                    "$ref": "#/definitions/signup"
-                  }
-                }
-              ],
-              "produces": ["application/json"],
-              "responses": {
-                "201": {
-                  "description": "User Account created successfully",
-                  "schema": {
-                    "$ref": "#/definitions/signup"
-                  }
-                },
-                "409": {
-                    "description": "User Account was not created"
-                }
-              }
-            }
-        },
-        "/api/users/login": {
-            "post": {
-              "tags": ["users"],
-              "description": "Login a user",
-              "parameters": [
-                {
-                  "name": "body",
-                  "in": "body",
-                  "description": "User login",
-                  "require": true,
-                  "schema": {
-                    "$ref": "#/definitions/login"
-                  }
-                }
-              ],
-              "produces": ["application/json"],
-              "responses": {
-                "200": {
-                  "description": "login succesfull",
-                  "schema": {
-                    "$ref": "#/definitions/login"
-                  }
-                },
-                "404": {
-                    "description": "user with email does not exist"
-                },
-                "401": {
-                    "description": "incorrect password"
-                },
-                "500": {
-                    "description": "internal server error! please try again later"
-                }
-              }
-            }
-        }
+  "swagger": "2.0",
+  "info": {
+    "title": "Authors Haven Documentation API",
+    "version": "1.0.0",
+    "description": "Authors Haven Documentation with Swagger"
+  },
+  "host": "ah-lobos-backend-swagger.herokuapp.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "users",
+      "description": "Create new User"
     }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "definitions": {
+    "signup": {
+      "required": [
+        "username",
+        "email",
+        "password"
+      ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "login": {
+      "required": [
+        "username",
+        "email",
+        "password"
+      ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "forgot-password": {
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "reset-password": {
+      "required": [
+        "password",
+        "confirmPassword"
+      ],
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
+          "type": "string"
+        }
+      }
+    }
+  },
+    "paths": {
+    "/api/users": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "description": "Create new User",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User create a new account",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "User Account created successfully",
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          },
+          "409": {
+            "description": "User Account was not created"
+          }
+        }
+      }
+    },
+    "/api/user/forgot-password": {
+      "post": {
+        "tags": [
+          "forgot password"
+        ],
+        "description": "Forgot password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User forgot his/her password",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/forgot-password"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Please check your email for reset password link",
+            "schema": {
+              "$ref": "#/definitions/forgot-password"
+            }
+          },
+          "400": {
+            "description": "Please use the email you used when signing up"
+          }
+        }
+      }
+    },
+    "/api/user/reset-password/{userToken}": {
+      "post": {
+        "tags": [
+          "reset password"
+        ],
+        "description": "Reset password via email link",
+        "parameters": [
+          {
+            "name": "userToken",
+            "in": "path",
+            "description": "A token found on the link after \"reset-password/\"",
+            "require": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User can reset their password through the use of a reset link sent to their email",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/reset-password"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Password succesfully changed",
+            "schema": {
+              "$ref": "#/definitions/reset-password"
+            }
+          },
+          "400": {
+            "description": "Password reset failed please try again"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "description": "Login a user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User login",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "login succesfull",
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          },
+          "404": {
+            "description": "user with email does not exist"
+          },
+          "401": {
+            "description": "incorrect password"
+          },
+          "500": {
+            "description": "internal server error! please try again later"
+          }
+        }
+      }
+    }
+  }
 }

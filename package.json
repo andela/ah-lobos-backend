@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint",
-    "test": "NODE_ENV=test npm run create_tables && NODE_ENV=test nyc --reporter=text mocha --require babel-register --require babel-polyfill ./tests/ --exit && NODE_ENV=test npm run drop_tables",
+    "test": "NODE_ENV=test npm run drop_tables && NODE_ENV=test npm run create_tables && NODE_ENV=test nyc --reporter=text mocha --require babel-register --require babel-polyfill ./tests/ --exit",
     "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
     "drop_tables": "sequelize db:migrate:undo:all",
     "create_tables": "sequelize db:migrate",
@@ -19,6 +19,8 @@
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
+    "@hapi/joi": "^15.1.0",
+    "@sendgrid/mail": "^6.4.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "dotenv": "^6.2.0",

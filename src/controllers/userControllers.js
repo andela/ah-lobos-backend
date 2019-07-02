@@ -1,6 +1,8 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import model from '../db/models/index';
+import mail from '../helpers/mail';
+import validations from '../helpers/validations';
+import processToken from '../helpers/processToken';
 
 const { Users } = model;
 
@@ -10,8 +12,8 @@ const { Users } = model;
 class UserManager {
   /**
    *
-   * @param {object} req
-   * @param {object} res
+   * @param {Object} req
+   * @param {Object} res
    * @returns {Object} user object
    */
   static async registerUser(req, res) {
@@ -24,7 +26,7 @@ class UserManager {
       };
 
       const payload = { username, email };
-      const token = await jwt.sign(payload, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
+      const token = await processToken.signToken(payload);
 
       await Users.create(user);
       return res.status(201).json({
@@ -65,7 +67,7 @@ class UserManager {
             username: userData.username,
             email: userData.email
           };
-          const token = jwt.sign(payload, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
+          const token = await processToken.signToken(payload);
           return res.status(200).json({
             message: 'login succesfull',
             user: {
@@ -85,6 +87,81 @@ class UserManager {
     } catch (error) {
       return res.status(500).json({
         message: 'internal server error! please try again later'
+      });
+    }
+  }
+
+  /**
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {String} acknowledgement message
+   */
+  static async forgotPassword(req, res) {
+    const checkUserInput = validations.checkForgotPasswordData(req.body);
+    if (!checkUserInput.email) {
+      return res.status(400).json({
+        error: checkUserInput,
+      });
+    }
+    const findUser = await Users.findOne({ where: { email: req.body.email } });
+    if (findUser !== null) {
+      const { username, email } = findUser.dataValues;
+      const user = {
+        username,
+        email
+      };
+      const resetEmail = await mail.sendEmail(user);
+      if (resetEmail[0].statusCode === 202) {
+        return res.status(200).json({
+          message: 'please check your email for password reset',
+        });
+      }
+      return res.status(400).json({
+        error: resetEmail,
+      });
+    }
+    return res.status(404).json({
+      error: `email: ${req.body.email} not found, please check your email and try again`,
+    });
+  }
+
+  /**
+   *
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} success user password reset message
+   */
+  static async resetPassword(req, res) {
+    try {
+      const checkUserData = validations.checkResetPasswordData(req.body);
+      if (checkUserData.password) {
+        const verifyToken = await processToken.verifyToken(req.params.userToken);
+        const { password } = checkUserData;
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        const findUser = await Users.findOne({ where: { email: verifyToken.email } });
+        const comparePassword = bcrypt.compareSync(password, findUser.dataValues.hash);
+        if (comparePassword !== true) {
+          const updatePassword = await Users.update(
+            { hash: hashedPassword },
+            { where: { email: verifyToken.email } }
+          );
+
+          if (updatePassword[0] === 1) {
+            return res.status(200).json({
+              message: 'password changed successful',
+            });
+          }
+        }
+        return res.status(406).json({
+          error: 'the provided password is the same as the one you had, please change it or continue using the one you have',
+        });
+      }
+      return res.status(400).json({
+        errors: checkUserData,
+      });
+    } catch (error) {
+      return res.status(404).json({
+        error: 'password reset failed, please try again'
       });
     }
   }

@@ -4,7 +4,7 @@ dotenv.config();
 
 let envConfig = {};
 envConfig.db_username = process.env.DATABASE_USERNAME_DEV;
-envConfig.db_password = process.env.DATABASE_PASSWORD;
+envConfig.db_password = process.env.DATABASE_PASSWORD_DEV;
 envConfig.port = process.env.PORT || 7000;
 
 envConfig.db_username_test = process.env.DATABASE_USERNAME_TEST;
