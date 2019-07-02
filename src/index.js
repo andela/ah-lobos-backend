@@ -1,3 +1,4 @@
+import 'regenerator-runtime';
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
@@ -8,16 +9,17 @@ import config from './db/config/envirnoment';
 
 const app = express(); // setup express application
 
-// Access swagger ui documentation on this route
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc));
-
 app.use(logger('dev')); // log requests to the console
 
 // Parse incoming requests data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(routes);
-app.get('*', (req, res) => res.status(200).send({
+
+// Access swagger ui documentation on this route
+app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc));
+
+app.use('/*', (req, res) => res.status(200).send({
   message: 'Welcome to the default Authors Haven API route',
 }));
 

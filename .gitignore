@@ -49,3 +49,6 @@ package-lock.json
 
 #editorconfig
 .editorconfig
+
+#dist
+dist

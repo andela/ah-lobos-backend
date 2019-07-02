@@ -11,11 +11,10 @@ const config = {
   },
   test: {
     username: envConfig.db_username_test,
-    password: envConfig.db_password,
+    password: envConfig.db_password_test,
     database: 'ah_db_test',
-    host: '127.0.0.1',
-    dialect: 'postgres',
-    operatorsAliases: false
+    host: 'localhost',
+    dialect: 'postgres'
   },
   production: {
     username: envConfig.db_username_pro,

@@ -19,9 +19,9 @@ However, for the purpose of testing and configurations, one endpoint has been cr
 
 > create database to postgresql
 ```
-> createdb authorsHavenDb
+> createdb authorshavendb
 ```
-remember to change the password in config.json file for development
+remember to change the password in config.js file for development
 
 > create your config file
 ```

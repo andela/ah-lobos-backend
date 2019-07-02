@@ -34,6 +34,24 @@
                 "type": "string"
               }
             }
+        },
+        "login": {
+            "required": [
+              "username",
+              "email",
+              "password"
+            ],
+            "properties": {
+              "username": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
         }
     },
     "paths": {
@@ -62,6 +80,41 @@
                 },
                 "409": {
                     "description": "User Account was not created"
+                }
+              }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+              "tags": ["users"],
+              "description": "Login a user",
+              "parameters": [
+                {
+                  "name": "body",
+                  "in": "body",
+                  "description": "User login",
+                  "require": true,
+                  "schema": {
+                    "$ref": "#/definitions/login"
+                  }
+                }
+              ],
+              "produces": ["application/json"],
+              "responses": {
+                "200": {
+                  "description": "login succesfull",
+                  "schema": {
+                    "$ref": "#/definitions/login"
+                  }
+                },
+                "404": {
+                    "description": "user with email does not exist"
+                },
+                "401": {
+                    "description": "incorrect password"
+                },
+                "500": {
+                    "description": "internal server error! please try again later"
                 }
               }
             }
