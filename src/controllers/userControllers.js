@@ -1,8 +1,13 @@
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
 import model from '../db/models/index';
 import mail from '../helpers/mail';
 import validations from '../helpers/validations';
 import processToken from '../helpers/processToken';
+
+import sendVerificationEmail from '../helpers/sendVerificationEmail';
+
+dotenv.config();
 
 const { Users } = model;
 
@@ -19,25 +24,18 @@ class UserManager {
   static async registerUser(req, res) {
     try {
       const {
-        username, email, password, bio, image
+        username, email, password, bio
       } = req.body;
       const user = {
-        username, email, hash: password, bio, image: null
+        username, email, hash: password, isVerified: false, bio, image: null
       };
 
       const payload = { username, email };
       const token = await processToken.signToken(payload);
-
       await Users.create(user);
+      sendVerificationEmail.send(token, email);
       return res.status(201).json({
-        message: 'user registered succesfully',
-        user: {
-          email,
-          token,
-          username,
-          bio,
-          image
-        }
+        message: 'Thank you for registration, You should check your email for verification',
       });
     } catch (error) {
       return res.status(409).json({
@@ -48,6 +46,42 @@ class UserManager {
 
   /**
    *
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} verification message
+   */
+  static async verification(req, res) {
+    try {
+      const findUser = await Users.findOne({
+        where: { email: req.query.email }
+      });
+
+      if (findUser) {
+        if (findUser.isVerified) {
+          return res.status(202).json({
+            message: 'Email already Verified.'
+          });
+        }
+        await Users.update({ isVerified: true }, { where: { id: findUser.id } });
+        return res.status(403).json({
+          message: `User with ${findUser.email} has been verified, use this link to login: https://ah-lobos-backend-swagger.herokuapp.com`,
+          user: {
+            email: findUser.email,
+            token: req.query.token,
+            username: findUser.username,
+            bio: findUser.bio,
+            image: null
+          }
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        message: 'internal server error! please try again later'
+      });
+    }
+  }
+
+  /**
    * @param {object} req
    * @param {object} res
    * @returns {Object} user object
@@ -59,8 +93,17 @@ class UserManager {
       });
 
       if (findUser) {
-        const { username, email, hash } = findUser.dataValues;
-        const userData = { username, email, hash };
+        const {
+          username, email, hash, isVerified
+        } = findUser.dataValues;
+        const userData = {
+          username, email, hash, isVerified
+        };
+        if (!findUser.dataValues.isVerified) {
+          return res.status(401).json({
+            message: 'Please check your email and click the button for email verification'
+          });
+        }
 
         if (bcrypt.compareSync(req.body.password, userData.hash)) {
           const payload = {
@@ -69,7 +112,7 @@ class UserManager {
           };
           const token = await processToken.signToken(payload);
           return res.status(200).json({
-            message: 'login succesfull',
+            message: 'User has been successfully logged in',
             user: {
               token,
               email: payload.email,
