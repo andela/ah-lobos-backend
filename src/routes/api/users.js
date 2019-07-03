@@ -4,6 +4,7 @@ import SignupValidation from '../../middlewares/signup';
 
 const router = express.Router();
 
+router.post('/verification', userController.verification);
 router.post('/users/login', userController.login);
 router.post('/user/forgot-password', userController.forgotPassword);
 router.post('/user/reset-password/:userToken', userController.resetPassword);

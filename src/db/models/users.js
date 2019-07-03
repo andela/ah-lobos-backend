@@ -31,6 +31,9 @@ export default (sequelize, DataTypes) => {
         args: true
       }
     }],
+    isVerified: {
+        type: DataTypes.BOOLEAN
+    },
     hash: DataTypes.STRING
   }, {
     hooks: {

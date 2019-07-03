@@ -27,6 +27,9 @@ module.exports = {
     following: {
       type: Sequelize.STRING
     },
+    isVerified: {
+        type: Sequelize.BOOLEAN
+    },
     hash: {
       type: Sequelize.STRING
     },

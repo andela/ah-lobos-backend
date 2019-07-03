@@ -19,7 +19,7 @@ app.use(routes);
 // Access swagger ui documentation on this route
 app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc));
 
-app.use('/*', (req, res) => res.status(200).send({
+app.get('*', (req, res) => res.status(200).send({
   message: 'Welcome to the default Authors Haven API route',
 }));
 
