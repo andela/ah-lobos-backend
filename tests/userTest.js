@@ -4,11 +4,21 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import index from '../src/index';
 import config from '../src/db/config/envirnoment';
+import deleteBlacklist from '../src/helpers/deleteBlacklistTokens';
+import logout from '../src/middlewares/logout';
+
+
+const tokenTest = jwt.sign({
+  username: 'Manzi',
+  email: 'manzif60@andela.com',
+}, process.env.SECRET_JWT_KEY);
+
 
 Chai.use(chaiHttp);
 Chai.should();
 Chai.expect();
 dotenv.config();
+const { expect } = Chai.expect;
 
 const userToken = jwt.sign({ username: 'samuel', email: 'sa@andela.com' }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 describe('User Routes', () => {
@@ -76,7 +86,10 @@ describe('User Routes', () => {
         });
       done();
     });
-
+    it('it should delete an expired token from blacklisttoken table', (done) => {
+      deleteBlacklist();
+      done();
+    });
     it('should not register a user with an existing email ', (done) => {
       const user = {
         username: 'Jack',
@@ -239,7 +252,18 @@ describe('User Routes', () => {
         });
       done();
     });
-
+    it('should send a reset password link to a user\'s email', (done) => {
+      const user = {
+        email: 'sa@andela.com',
+      };
+      Chai.request(index)
+        .post('/api/user/forgot-password')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.be.eql(200);
+        });
+      done();
+    });
     it('should not reset the password with a weak password', (done) => {
       const user = {
         password: 'pass',
@@ -375,6 +399,30 @@ describe('User Routes', () => {
           res.body.should.be.an('object');
           res.body.message.should.be.equal('Email already Verified.');
           res.status.should.equal(202);
+        });
+      done();
+    });
+
+    it('it should log out with a token ', (done) => {
+      Chai.request(index)
+        .post('/api/users/logout')
+        .set('token', tokenTest)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.message.should.be.a('string');
+          expect(logout.logoutToken).toHaveBeenCalledTimes(1);
+        });
+      done();
+    });
+
+    it('it should log out with a token ', (done) => {
+      Chai.request(index)
+        .post('/api/users/logout')
+        .set('token', tokenTest)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.message.should.be.a('string');
+          expect(logout.logoutToken).toHaveBeenCalledTimes(1);
         });
       done();
     });

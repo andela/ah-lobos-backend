@@ -9,7 +9,7 @@ import sendVerificationEmail from '../helpers/sendVerificationEmail';
 
 dotenv.config();
 
-const { Users } = model;
+const { Users, BlacklistTokens } = model;
 
 /**
  * user controller
@@ -38,6 +38,7 @@ class UserManager {
         message: 'Thank you for registration, You should check your email for verification',
       });
     } catch (error) {
+      console.log(error);
       return res.status(409).json({
         message: 'user with the same email already exist'
       });
@@ -207,6 +208,22 @@ class UserManager {
         error: 'password reset failed, please try again'
       });
     }
+  }
+
+  /**
+ *
+ * @param {obkect} req
+ * @param {object} res
+ * @returns {message} User logged out
+ */
+  static async logout(req, res) {
+    const { token } = req.headers;
+    const tokenPayload = await processToken.verifyToken(token);
+    const { exp } = tokenPayload;
+    await BlacklistTokens.create({ token, expires: exp * 1000 });
+    return res.status(200).json({
+      message: 'User logged out'
+    });
   }
 }
 export default UserManager;

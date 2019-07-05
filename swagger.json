@@ -83,6 +83,16 @@
           "type": "string"
         }
       }
+    },
+    "logout": {
+      "required": [
+        "token"
+      ],
+      "properties": {
+        "token": {
+          "type": "text"
+        }
+      }
     }
   },
     "paths": {
@@ -226,6 +236,33 @@
           },
           "500": {
             "description": "internal server error! please try again later"
+          }
+        }
+      }
+    },
+    "/api/users/logout":{
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "description": "Log out a user",
+        "parameters": [
+          {
+            "name":"token",
+            "in": "header",
+            "description" :"Token",
+            "required":true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged out",
+            "schema": {
+              "$ref": "#/definitions/logout"
+            }
           }
         }
       }

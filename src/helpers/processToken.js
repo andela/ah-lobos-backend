@@ -12,7 +12,7 @@ class processToken {
    * @returns {object} token
    */
   static async signToken(payload) {
-    const token = await jwt.sign(payload, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
+    const token = await jwt.sign(payload, process.env.SECRET_JWT_KEY, { expiresIn: 60 });
     return token;
   }
 
@@ -22,7 +22,7 @@ class processToken {
    * @returns {object} verified token
    */
   static async verifyToken(token) {
-    const verifyToken = await jwt.verify(token, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
+    const verifyToken = await jwt.verify(token, process.env.SECRET_JWT_KEY, { expiresIn: 60 });
     return verifyToken;
   }
 }

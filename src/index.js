@@ -3,9 +3,11 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import swaggerUI from 'swagger-ui-express';
+import cron from 'node-cron';
 import swaggerJSDoc from '../swagger.json';
 import routes from './routes/api/index';
 import config from './db/config/envirnoment';
+import deleteBlacklist from './helpers/deleteBlacklistTokens';
 
 const app = express(); // setup express application
 
@@ -15,7 +17,10 @@ app.use(logger('dev')); // log requests to the console
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(routes);
-
+// cron fro deleting blacklist tokens
+cron.schedule('* * * * *', () => {
+  deleteBlacklist();
+});
 // Access swagger ui documentation on this route
 app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc));
 

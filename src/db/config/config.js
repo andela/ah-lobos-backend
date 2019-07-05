@@ -4,7 +4,7 @@ const config = {
   development: {
     username: envConfig.db_username,
     password: envConfig.db_password,
-    database: 'authorshavendb',
+    database: 'authorsHavenDb',
     host: '127.0.0.1',
     dialect: 'postgres',
     operatorsAliases: false,
