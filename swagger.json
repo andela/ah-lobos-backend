@@ -1,617 +1,680 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "Authors Haven Documentation API",
-    "version": "1.0.0",
-    "description": "Authors Haven Documentation with Swagger"
-  },
-  "host": "ah-lobos-backend-swagger.herokuapp.com",
-  "basePath": "/",
-  "tags": [
-    {
-      "name": "users",
-      "description": "Create new User"
-    }
-  ],
-  "schemes": [
-    "https",
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "definitions": {
-    "signup": {
-      "required": [
-        "username",
-        "email",
-        "password"
-      ],
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
+    "swagger": "2.0",
+    "info": {
+        "title": "Authors Haven Documentation API",
+        "version": "1.0.0",
+        "description": "Authors Haven Documentation with Swagger"
     },
-    "login": {
-      "required": [
-        "username",
-        "email",
-        "password"
-      ],
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
+    "host": "ah-lobos-backend-swagger.herokuapp.com",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "users",
+            "description": "Create new User"
         }
-      }
+    ],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "definitions": {
+        "signup": {
+            "required": [
+                "username",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "login": {
+            "required": [
+                "username",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "forgot-password": {
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "reset-password": {
+            "required": [
+                "password",
+                "confirmPassword"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "confirmPassword": {
+                    "type": "string"
+                }
+            }
+        },
+        "logout": {
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "text"
+                }
+            }
+        },
+        "view-profile": {
+            "required": [
+                "username",
+                "token"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "update-profile": {
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                }
+            }
+        },
+        "create-article": {
+            "required": [
+                "title",
+                "description",
+                "body"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                }
+            }
+        },
+        "display-specific-article": {
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "delete-specific-article": {
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "update-article": {
+            "required": [
+                "title",
+                "description",
+                "body"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                }
+            }
+        }
     },
-    "forgot-password": {
-      "required": [
-        "email"
-      ],
-      "properties": {
-        "email": {
-          "type": "string"
-        }
-      }
-    },
-    "reset-password": {
-      "required": [
-        "password",
-        "confirmPassword"
-      ],
-      "properties": {
-        "password": {
-          "type": "string"
-        },
-        "confirmPassword": {
-          "type": "string"
-        }
-      }
-    },
-    "logout": {
-      "required": [
-        "token"
-      ],
-      "properties": {
-        "token": {
-          "type": "text"
-        }
-      }
-    },
-    "view-profile": {
-      "required": [
-        "username",
-        "token"
-      ],
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "token": {
-          "type": "string"
-        }
-      }
-    },
-    "update-profile": {
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "image": {
-          "type": "string"
-        },
-        "bio": {
-          "type": "string"
-        }
-      }
-    },
-    "create-article": {
-      "required": [
-        "title",
-        "description",
-        "body"
-      ],
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "body": {
-          "type": "string"
-        }
-      }
-    },
-    "display-specific-article": {
-      "required": [
-        "token"
-      ],
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      }
-    },
-    "delete-specific-article": {
-      "required": [
-        "token"
-      ],
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      }
-    },
-    "update-article": {
-      "required": [
-        "title",
-        "description",
-        "body"
-      ],
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "body": {
-          "type": "string"
-        }
-      }
-    }
-  },
     "paths": {
-    "/api/users": {
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "description": "Create new User",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "User create a new account",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/signup"
+        "/api/users": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Create new User",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User create a new account",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/signup"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User Account created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/signup"
+                        }
+                    },
+                    "409": {
+                        "description": "User Account was not created"
+                    }
+                }
             }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "201": {
-            "description": "User Account created successfully",
-            "schema": {
-              "$ref": "#/definitions/signup"
+        },
+        "/api/user/forgot-password": {
+            "post": {
+                "tags": [
+                    "forgot password"
+                ],
+                "description": "Forgot password",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User forgot his/her password",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/forgot-password"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Please check your email for reset password link",
+                        "schema": {
+                            "$ref": "#/definitions/forgot-password"
+                        }
+                    },
+                    "400": {
+                        "description": "Please use the email you used when signing up"
+                    }
+                }
             }
-          },
-          "409": {
-            "description": "User Account was not created"
-          }
+        },
+        "/api/user/reset-password/{userToken}": {
+            "post": {
+                "tags": [
+                    "reset password"
+                ],
+                "description": "Reset password via email link",
+                "parameters": [
+                    {
+                        "name": "userToken",
+                        "in": "path",
+                        "description": "A token found on the link after \"reset-password/\"",
+                        "require": true
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User can reset their password through the use of a reset link sent to their email",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/reset-password"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password succesfully changed",
+                        "schema": {
+                            "$ref": "#/definitions/reset-password"
+                        }
+                    },
+                    "400": {
+                        "description": "Password reset failed please try again"
+                    }
+                }
+            }
+        },
+        "/api/profile/{username}": {
+            "get": {
+                "tags": [
+                    "view profile"
+                ],
+                "description": "A user can view his or her profile and that of other users",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "A user can view his or her profile and that of other users by specifing the username",
+                        "require": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Token to authorized user",
+                        "require": true
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user profile fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/view-profile"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/profiles/{username}": {
+            "put": {
+                "tags": [
+                    "update profile"
+                ],
+                "description": "A user can update his or her profile and that of other users",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "A user can update his or her profile and that of other users by specifing the username",
+                        "require": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Token to authorized user",
+                        "require": true
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "A user can update his or her profile and that of other users",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/update-profile"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user profile updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/update-profile"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Login a user",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User login",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/login"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login succesfull",
+                        "schema": {
+                            "$ref": "#/definitions/login"
+                        }
+                    },
+                    "404": {
+                        "description": "user with email does not exist"
+                    },
+                    "401": {
+                        "description": "incorrect password"
+                    },
+                    "500": {
+                        "description": "internal server error! please try again later"
+                    }
+                }
+            }
+        },
+        "/api/users/logout": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Log out a user",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Token",
+                        "required": true
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged out",
+                        "schema": {
+                            "$ref": "#/definitions/logout"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/articles/": {
+            "post": {
+                "tags": [
+                    "create article"
+                ],
+                "description": "create a new article",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "user token",
+                        "require": true
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "registered user can create an article",
+                        "schema": {
+                            "$ref": "#/definitions/create-article"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "article posted"
+                    },
+                    "401": {
+                        "description": "please login or signup"
+                    }
+                }
+            }
+        },
+        "/api/articles": {
+            "get": {
+                "tags": [
+                    "display all articles"
+                ],
+                "description": "list all articles",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "articles"
+                    },
+                    "404": {
+                        "description": "no articles found"
+                    }
+                }
+            }
+        },
+        "/api/articles/{slug}": {
+            "get": {
+                "tags": [
+                    "get a specific article"
+                ],
+                "description": "display a specific article",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "type": "string",
+                        "description": "a slug that uniquelly identifies an article",
+                        "require": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "a token for authentication and authorization",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/display-specific-article"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/display a specific article"
+                        }
+                    },
+                    "401": {
+                        "description": "you are not allowed to perfom this action"
+                    },
+                    "404": {
+                        "description": "article not found"
+                    }
+                }
+            }
+        },
+        "/api/articles/{slug}/": {
+            "put": {
+                "tags": [
+                    "update a specific article"
+                ],
+                "description": "update a specific article",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "a slug that uniquelly identifies an article",
+                        "require": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "a token for authentication and authorization",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/update-article"
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "owner of an article can update an article",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/update-article"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/update-article"
+                        }
+                    },
+                    "401": {
+                        "description": "you are not allowed to perfom this action"
+                    },
+                    "404": {
+                        "description": "article not found"
+                    }
+                }
+            }
+        },
+        "/api/article/{slug}": {
+            "delete": {
+                "tags": [
+                    "delete an article"
+                ],
+                "description": "delete a specific article",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "a slug that uniquelly identifies an article",
+                        "require": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "a token for authentication and authorization",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/delete-specific-article"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "article deleted successful"
+                    },
+                    "401": {
+                        "description": "you are not allowed to perfom this action"
+                    },
+                    "404": {
+                        "description": "article not found"
+                    }
+                }
+            }
+        },
+        "/google": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Login with google",
+                "parameters": [
+                    {
+                        "name": "google",
+                        "in": "path",
+                        "description": "Login with goolge",
+                        "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Google"
+                    }
+                }
+            }
+        },
+        "/facebook": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Login with Facebook",
+                "parameters": [
+                    {
+                        "name": "google",
+                        "in": "path",
+                        "description": "Login with Facebook",
+                        "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Facebook"
+                    }
+                }
+            }
+        },
+        "/twitter": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Login with Twitter",
+                "parameters": [
+                    {
+                        "name": "google",
+                        "in": "path",
+                        "description": "Login with Twitter",
+                        "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Twitter"
+                    }
+                }
+            }
         }
-      }
-    },
-    "/api/user/forgot-password": {
-      "post": {
-        "tags": [
-          "forgot password"
-        ],
-        "description": "Forgot password",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "User forgot his/her password",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/forgot-password"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Please check your email for reset password link",
-            "schema": {
-              "$ref": "#/definitions/forgot-password"
-            }
-          },
-          "400": {
-            "description": "Please use the email you used when signing up"
-          }
-        }
-      }
-    },
-    "/api/user/reset-password/{userToken}": {
-      "post": {
-        "tags": [
-          "reset password"
-        ],
-        "description": "Reset password via email link",
-        "parameters": [
-          {
-            "name": "userToken",
-            "in": "path",
-            "description": "A token found on the link after \"reset-password/\"",
-            "require": true
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "User can reset their password through the use of a reset link sent to their email",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/reset-password"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "Password succesfully changed",
-            "schema": {
-              "$ref": "#/definitions/reset-password"
-            }
-          },
-          "400": {
-            "description": "Password reset failed please try again"
-          }
-        }
-      }
-    },
-    "/api/profile/{username}": {
-      "get": {
-        "tags": [
-          "view profile"
-        ],
-        "description": "A user can view his or her profile and that of other users",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "A user can view his or her profile and that of other users by specifing the username",
-            "require": true
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "Token to authorized user",
-            "require": true
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "user profile fetched successfully",
-            "schema": {
-              "$ref": "#/definitions/view-profile"
-            }
-          }
-        }
-      }
-    },
-    "/api/profiles/{username}": {
-      "put": {
-        "tags": [
-          "update profile"
-        ],
-        "description": "A user can update his or her profile and that of other users",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "A user can update his or her profile and that of other users by specifing the username",
-            "require": true
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "Token to authorized user",
-            "require": true
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "A user can update his or her profile and that of other users",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/update-profile"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "user profile updated successfully",
-            "schema": {
-              "$ref": "#/definitions/update-profile"
-            }
-          }
-        }
-      }
-    },
-    "/api/users/login": {
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "description": "Login a user",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "User login",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/login"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "login succesfull",
-            "schema": {
-              "$ref": "#/definitions/login"
-            }
-          },
-          "404": {
-            "description": "user with email does not exist"
-          },
-          "401": {
-            "description": "incorrect password"
-          },
-          "500": {
-            "description": "internal server error! please try again later"
-          }
-        }
-      }
-    },
-    "/api/users/logout":{
-      "post": {
-        "tags": [
-          "users"
-        ],
-        "description": "Log out a user",
-        "parameters": [
-          {
-            "name":"token",
-            "in": "header",
-            "description" :"Token",
-            "required":true
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "User logged out",
-            "schema": {
-              "$ref": "#/definitions/logout"
-            }
-          }
-        }
-      }
-    },
-    "/api/articles/": {
-      "post": {
-        "tags": [
-          "create article"
-        ],
-        "description": "create a new article",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "user token",
-            "require": true
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "registered user can create an article",
-            "schema": {
-              "$ref": "#/definitions/create-article"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "201": {
-            "description": "article posted"
-          },
-          "401": {
-            "description": "please login or signup"
-          }
-        }
-      }
-    },
-    "/api/articles":{
-      "get": {
-        "tags": [
-          "display all articles"
-        ],
-        "description": "list all articles",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "articles"
-          },
-          "404": {
-            "description": "no articles found"
-          }
-        }
-      }
-    },
-    "/api/articles/{slug}": {
-      "get": {
-        "tags": [
-          "get a specific article"
-        ],
-        "description": "display a specific article",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "type": "string",
-            "description": "a slug that uniquelly identifies an article",
-            "require": true
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "a token for authentication and authorization",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/display-specific-article"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "$ref": "#/definitions/display a specific article"
-            }
-          },
-          "401": {
-            "description": "you are not allowed to perfom this action"
-          },
-          "404": {
-            "description": "article not found"
-          }
-        }
-      }
-    },
-    "/api/articles/{slug}/": {
-      "put": {
-        "tags": [
-          "update a specific article"
-        ],
-        "description": "update a specific article",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "description": "a slug that uniquelly identifies an article",
-            "require": true
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "a token for authentication and authorization",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/update-article"
-            }
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "owner of an article can update an article",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/update-article"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "$ref": "#/definitions/update-article"
-            }
-          },
-          "401": {
-            "description": "you are not allowed to perfom this action"
-          },
-          "404": {
-            "description": "article not found"
-          }
-        }
-      }
-    },
-    "/api/article/{slug}": {
-      "delete": {
-        "tags": [
-          "delete an article"
-        ],
-        "description": "delete a specific article",
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "description": "a slug that uniquelly identifies an article",
-            "require": true
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "a token for authentication and authorization",
-            "require": true,
-            "schema": {
-              "$ref": "#/definitions/delete-specific-article"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "article deleted successful"
-          },
-          "401": {
-            "description": "you are not allowed to perfom this action"
-          },
-          "404": {
-            "description": "article not found"
-          }
-        }
-      }
     }
-  }
 }

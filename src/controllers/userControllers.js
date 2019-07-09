@@ -38,6 +38,13 @@ class UserManager {
       if (sendVerification) {
         return res.status(201).json({
           message: 'Thank you for registration, You should check your email for verification',
+          user: {
+            email: addedUser.email,
+            token,
+            username: addedUser.username,
+            bio: addedUser.bio,
+            image: null
+          }
         });
       }
     } catch (error) {
@@ -68,13 +75,6 @@ class UserManager {
         await Users.update({ isVerified: true }, { where: { id: findUser.id } });
         return res.status(403).json({
           message: `User with ${findUser.email} has been verified, use this link to login: https://ah-lobos-backend-swagger.herokuapp.com`,
-          user: {
-            email: findUser.email,
-            token: req.query.token,
-            username: findUser.username,
-            bio: findUser.bio,
-            image: null
-          }
         });
       }
     } catch (error) {

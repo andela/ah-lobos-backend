@@ -31,7 +31,16 @@ module.exports = {
     isVerified: {
         type: Sequelize.BOOLEAN
     },
+    socialId: {
+        allowNull: true,
+        type: Sequelize.STRING
+    },
+    provider: {
+        allowNull: true,
+        type: Sequelize.STRING
+    },
     hash: {
+      allowNull: true,
       type: Sequelize.STRING
     },
     createdAt: {

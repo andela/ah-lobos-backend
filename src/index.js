@@ -4,6 +4,8 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import swaggerUI from 'swagger-ui-express';
 import cron from 'node-cron';
+import passport from 'passport';
+import session from 'express-session';
 import swaggerJSDoc from '../swagger.json';
 import routes from './routes/api/index';
 import config from './db/config/envirnoment';
@@ -16,8 +18,21 @@ app.use(logger('dev')); // log requests to the console
 // Parse incoming requests data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+  secret: config.secret,
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(session({
+  secret: config.secret,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(routes);
-// cron fro deleting blacklist tokens
+// cron from deleting blacklist tokens
 cron.schedule('* * * * *', () => {
   deleteBlacklist();
 });

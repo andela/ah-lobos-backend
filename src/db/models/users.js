@@ -34,7 +34,24 @@ export default (sequelize, DataTypes) => {
     isVerified: {
         type: DataTypes.BOOLEAN
     },
-    hash: DataTypes.STRING
+    socialId: {
+        allowNull: {
+            args: true
+        },
+        type: DataTypes.STRING
+    },
+    provider: {
+        allowNull: {
+            args: true
+        },
+        type: DataTypes.STRING
+    },
+    hash: {
+        allowNull: {
+            args: true
+        },
+        type: DataTypes.STRING
+    }
   }, {
       hooks: {
         beforeCreate: async (user) => {
