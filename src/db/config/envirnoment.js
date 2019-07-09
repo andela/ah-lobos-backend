@@ -15,10 +15,4 @@ envConfig.db_password_pro = process.env.HEROKU_SECRET_KEY;
 envConfig.db_host_pro = process.env.HEROKU_HOST;
 envConfig.db_database_pro = process.env.HEROKU_DATABASE;
 
-envConfig.send_grid_key = process.env.SendGridApiKey;
-envConfig.host = process.env.HOST;
-envConfig.token = process.env.SECRET_JWT_KEY;
-envConfig.email = process.env.EMAIL;
-envConfig.password = process.env.PASSWORD;
-
 export default envConfig;

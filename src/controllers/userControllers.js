@@ -38,7 +38,6 @@ class UserManager {
         message: 'Thank you for registration, You should check your email for verification',
       });
     } catch (error) {
-      console.log(error);
       return res.status(409).json({
         message: 'user with the same email already exist'
       });

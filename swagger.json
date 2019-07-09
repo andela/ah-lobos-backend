@@ -93,6 +93,36 @@
           "type": "text"
         }
       }
+    },
+    "view-profile": {
+      "required": [
+        "username",
+        "token"
+      ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "update-profile": {
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        }
+      }
     }
   },
     "paths": {
@@ -197,6 +227,81 @@
           },
           "400": {
             "description": "Password reset failed please try again"
+          }
+        }
+      }
+    },
+    "/api/profile/{username}": {
+      "get": {
+        "tags": [
+          "view profile"
+        ],
+        "description": "A user can view his or her profile and that of other users",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "A user can view his or her profile and that of other users by specifing the username",
+            "require": true
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token to authorized user",
+            "require": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "user profile fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/view-profile"
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/{username}": {
+      "put": {
+        "tags": [
+          "update profile"
+        ],
+        "description": "A user can update his or her profile and that of other users",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "A user can update his or her profile and that of other users by specifing the username",
+            "require": true
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token to authorized user",
+            "require": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "A user can update his or her profile and that of other users",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/update-profile"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "user profile updated successfully",
+            "schema": {
+              "$ref": "#/definitions/update-profile"
+            }
           }
         }
       }

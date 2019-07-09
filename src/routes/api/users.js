@@ -5,6 +5,7 @@ import logout from '../../middlewares/logout';
 
 const { logoutToken } = logout;
 
+
 const router = express.Router();
 
 router.post('/verification', userController.verification);

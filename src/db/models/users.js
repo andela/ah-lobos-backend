@@ -18,7 +18,7 @@ export default (sequelize, DataTypes) => {
       }
     },
     bio: DataTypes.STRING,
-    image: DataTypes.STRING,
+    image: DataTypes.BLOB('long'),
     favorites: [{
       type: DataTypes.STRING,
       allowNull: {

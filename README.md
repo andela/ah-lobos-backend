@@ -19,7 +19,7 @@ However, for the purpose of testing and configurations, one endpoint has been cr
 
 > create database to postgresql
 ```
-> createdb authorshavendb
+> createdb authorsHavenDb
 ```
 remember to change the password in config.js file for development
 
