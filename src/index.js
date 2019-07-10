@@ -32,8 +32,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(routes);
-// cron from deleting blacklist tokens
-cron.schedule('* * * * *', () => {
+// cron to schedule deleting blacklist tokens
+cron.schedule('*/59 * * * *', () => {
   deleteBlacklist();
 });
 // Access swagger ui documentation on this route

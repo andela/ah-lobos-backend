@@ -63,5 +63,36 @@ class ArticleRatingManager {
       });
     }
   }
+
+  /**
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {message} That article is not available
+ */
+  static async ratingAverage(req, res) {
+    const averageRating = await Rating.findAll({
+      where: { articleId: req.params.articleId },
+      attributes: ['rating'],
+      raw: true,
+    });
+    if (!averageRating.length) {
+      return res.status(400).send({
+        message: 'The Article requested has not been rated yet'
+      });
+    }
+    let totalrating = 0;
+    averageRating.map((rating) => {
+      totalrating += rating.rating;
+      return averageRating;
+    });
+    const average = (totalrating / averageRating.length).toFixed(1);
+    return res.status(200).send({
+      rating: {
+        average,
+        raters: averageRating.length
+      }
+    });
+  }
 }
 export default ArticleRatingManager;

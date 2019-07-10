@@ -192,6 +192,16 @@
                     "type": "string"
                 }
             }
+        },
+        "fecthratings": {
+          "required": [
+            "articleid"
+          ],
+          "properties": {
+            "articleid": {
+              "type": "integer"
+            }
+          }
         }
     },
     "paths": {
@@ -738,6 +748,36 @@
                     }
                 }
             }
+        },
+        "/api/ratings/{articleid}": {
+          "get": {
+            "tags": [
+              "rates"
+            ],
+            "description": "Fetch a rating",
+            "parameters": [
+              {
+                "name": "articleid",
+                "in": "path",
+                "description": "Fetch ratings",
+                "require": true,
+                "schema": {
+                  "$ref": "#/definitions/fecthratings"
+                }
+              }
+            ],
+            "produces":[ 
+            "application/json"
+            ],
+           "responses": {
+            "200": {
+            "description": "Ratings",
+            "schema": {
+              "$ref": "#/definitions/fecthratings"
+            }
+          }
         }
+      }
     }
+}
 }

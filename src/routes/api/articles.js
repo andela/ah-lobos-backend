@@ -17,5 +17,6 @@ router.get('/articles/:slug', articleController.readArticle);
 router.put('/articles/:slug', auth.checkAuthentication, checkUser.isArticleOwner, multerUploads, articleController.updateArticle);
 router.get('/articles', articleController.listAllArticles);
 router.post('/articles/:slug/ratings', auth.checkAuthentication, ArticleRatingValidation.rating, articleRatingControllers.rateArticle);
+router.get('/ratings/:articleId', articleRatingControllers.ratingAverage);
 
 export default router;
