@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import fs from 'fs';
 import index from '../src/index';
 
 
@@ -124,6 +125,19 @@ describe('User Profile', () => {
         res.body.should.be.an('object');
         res.status.should.equal(200);
         res.body.user.bio.should.equal('Senior Software Engineer');
+        done();
+      });
+  });
+
+  it('A user should be able to update his or her profile image', (done) => {
+    chai.request(index)
+      .put('/api/profiles/Amoaben')
+      .set('token', `${token}`)
+      .attach('image', fs.readFileSync(`${__dirname}/mock/sam.jpg`), 'sam.jpg')
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.equal(200);
+        res.body.user.image.should.be.a('string');
         done();
       });
   });

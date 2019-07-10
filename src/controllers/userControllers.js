@@ -30,13 +30,16 @@ class UserManager {
         username, email, hash: password, isVerified: false, bio, image: null
       };
 
-      const payload = { username, email };
+      const addedUser = await Users.create(user);
+      const { id } = addedUser.dataValues;
+      const payload = { id, username, email };
       const token = await processToken.signToken(payload);
-      await Users.create(user);
-      sendVerificationEmail.send(token, email);
-      return res.status(201).json({
-        message: 'Thank you for registration, You should check your email for verification',
-      });
+      const sendVerification = await sendVerificationEmail.send(token, email);
+      if (sendVerification) {
+        return res.status(201).json({
+          message: 'Thank you for registration, You should check your email for verification',
+        });
+      }
     } catch (error) {
       return res.status(409).json({
         message: 'user with the same email already exist'
@@ -94,10 +97,10 @@ class UserManager {
 
       if (findUser) {
         const {
-          username, email, hash, isVerified
+          id, username, email, hash, isVerified
         } = findUser.dataValues;
         const userData = {
-          username, email, hash, isVerified
+          id, username, email, hash, isVerified
         };
         if (!findUser.dataValues.isVerified) {
           return res.status(401).json({
@@ -107,6 +110,7 @@ class UserManager {
 
         if (bcrypt.compareSync(req.body.password, userData.hash)) {
           const payload = {
+            id: userData.id,
             username: userData.username,
             email: userData.email
           };

@@ -123,6 +123,62 @@
           "type": "string"
         }
       }
+    },
+    "create-article": {
+      "required": [
+        "title",
+        "description",
+        "body"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "display-specific-article": {
+      "required": [
+        "token"
+      ],
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "delete-specific-article": {
+      "required": [
+        "token"
+      ],
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "update-article": {
+      "required": [
+        "title",
+        "description",
+        "body"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
     }
   },
     "paths": {
@@ -368,6 +424,191 @@
             "schema": {
               "$ref": "#/definitions/logout"
             }
+          }
+        }
+      }
+    },
+    "/api/articles/": {
+      "post": {
+        "tags": [
+          "create article"
+        ],
+        "description": "create a new article",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "user token",
+            "require": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "registered user can create an article",
+            "schema": {
+              "$ref": "#/definitions/create-article"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "article posted"
+          },
+          "401": {
+            "description": "please login or signup"
+          }
+        }
+      }
+    },
+    "/api/articles":{
+      "get": {
+        "tags": [
+          "display all articles"
+        ],
+        "description": "list all articles",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "articles"
+          },
+          "404": {
+            "description": "no articles found"
+          }
+        }
+      }
+    },
+    "/api/articles/{slug}": {
+      "get": {
+        "tags": [
+          "get a specific article"
+        ],
+        "description": "display a specific article",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "type": "string",
+            "description": "a slug that uniquelly identifies an article",
+            "require": true
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "a token for authentication and authorization",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/display-specific-article"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/display a specific article"
+            }
+          },
+          "401": {
+            "description": "you are not allowed to perfom this action"
+          },
+          "404": {
+            "description": "article not found"
+          }
+        }
+      }
+    },
+    "/api/articles/{slug}/": {
+      "put": {
+        "tags": [
+          "update a specific article"
+        ],
+        "description": "update a specific article",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "a slug that uniquelly identifies an article",
+            "require": true
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "a token for authentication and authorization",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/update-article"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "owner of an article can update an article",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/update-article"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/update-article"
+            }
+          },
+          "401": {
+            "description": "you are not allowed to perfom this action"
+          },
+          "404": {
+            "description": "article not found"
+          }
+        }
+      }
+    },
+    "/api/article/{slug}": {
+      "delete": {
+        "tags": [
+          "delete an article"
+        ],
+        "description": "delete a specific article",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "a slug that uniquelly identifies an article",
+            "require": true
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "a token for authentication and authorization",
+            "require": true,
+            "schema": {
+              "$ref": "#/definitions/delete-specific-article"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "article deleted successful"
+          },
+          "401": {
+            "description": "you are not allowed to perfom this action"
+          },
+          "404": {
+            "description": "article not found"
           }
         }
       }

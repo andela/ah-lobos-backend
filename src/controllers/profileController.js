@@ -1,4 +1,7 @@
 import model from '../db/models/index';
+import { dataUri } from '../middlewares/multer';
+import { uploader } from '../db/config/cloudinaryConfig';
+
 
 const { Users } = model;
 
@@ -33,6 +36,11 @@ class ProfileManager {
    */
   static async updateProfile(req, res) {
     try {
+      if (req.file) {
+        const file = dataUri(req).content;
+        const result = await uploader.upload(file);
+        req.body.image = result.url;
+      }
       const {
         email, username, image, bio, isVerified
       } = req.body;

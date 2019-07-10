@@ -18,7 +18,7 @@ export default (sequelize, DataTypes) => {
       }
     },
     bio: DataTypes.STRING,
-    image: DataTypes.BLOB('long'),
+    image: DataTypes.BLOB,
     favorites: [{
       type: DataTypes.STRING,
       allowNull: {
@@ -36,18 +36,22 @@ export default (sequelize, DataTypes) => {
     },
     hash: DataTypes.STRING
   }, {
-    hooks: {
-      beforeCreate: async (user) => {
-        user.hash = await bcrypt.hashSync(user.hash, 8);
+      hooks: {
+        beforeCreate: async (user) => {
+          user.hash = await bcrypt.hashSync(user.hash, 8);
+        },
       },
-    },
-    instanceMethods: {
-      validatePassword: async function(hash) {
-        return await bcrypt.compareSync(hash, this.password);
+      instanceMethods: {
+        validatePassword: async function (hash) {
+          return await bcrypt.compareSync(hash, this.password);
+        }
       }
-    }
-  });
-  Users.associate = () => {
-  };
+    });
+      Users.associate = function(models) {
+      // associations can be defined here
+      Users.hasMany(models.Articles, {
+        foreignKey: "postedBy"
+      });
+    };
   return Users;
 };
