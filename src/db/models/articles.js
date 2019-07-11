@@ -29,10 +29,12 @@ export default (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
   }, {});
   Articles.associate = function(models) {
-    // associations can be defined here
     Articles.belongsTo(models.Users, {
       foreignKey: 'postedBy',
       onDelete: 'CASCADE'
+    });
+    Articles.hasMany(models.Rating, {
+      foreignKey: 'articleId'
     });
   };
   return Articles;

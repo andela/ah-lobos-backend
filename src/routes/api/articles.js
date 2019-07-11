@@ -5,6 +5,9 @@ import checkUser from '../../middlewares/checkUser';
 import { multerUploads } from '../../middlewares/multer';
 import { cloudinaryConfig } from '../../db/config/cloudinaryConfig';
 
+import articleRatingControllers from '../../controllers/articleRatingControllers';
+import ArticleRatingValidation from '../../middlewares/articleValidation';
+
 const router = express.Router();
 router.use('*', cloudinaryConfig);
 
@@ -13,5 +16,6 @@ router.delete('/article/:slug', auth.checkAuthentication, checkUser.isArticleOwn
 router.get('/articles/:slug', articleController.readArticle);
 router.put('/articles/:slug', auth.checkAuthentication, checkUser.isArticleOwner, multerUploads, articleController.updateArticle);
 router.get('/articles', articleController.listAllArticles);
+router.post('/articles/:slug/ratings', auth.checkAuthentication, ArticleRatingValidation.rating, articleRatingControllers.rateArticle);
 
 export default router;

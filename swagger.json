@@ -179,6 +179,19 @@
                     "type": "string"
                 }
             }
+        },
+        "rating": {
+            "required": [
+                "rating"
+            ],
+            "properties": {
+                "rating": {
+                    "type": "integer"
+                },
+                "comment": {
+                    "type": "string"
+                }
+            }
         }
     },
     "paths": {
@@ -672,6 +685,56 @@
                 "responses": {
                     "200": {
                         "description": "Twitter"
+                    }
+                }
+            }
+        },
+        "/api/articles/{slug}/ratings":{
+            "post": {
+                "tags": [
+                "ratings"
+                ],
+                "description": "User should be able to rate an article",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "User Token"
+                    },
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Article Slug"
+                    },
+                    {
+                        "name": "rating",
+                        "in": "body",
+                        "required": true,
+                        "description": "Rating number",
+                        "schema": {
+                            "$ref": "#/definitions/rating"
+                        }
+                    }
+                ],
+                "produces": [
+                "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Article rated successfuly"
+                    },
+                    "400": {
+                        "description": "Rate  must be one of [1, 2, 3, 4, 5]"
+                    },
+                    "404": {
+                        "description": "Article not found"
+                    },
+                    "500": {
+                        "description": "internal server error"
                     }
                 }
             }
