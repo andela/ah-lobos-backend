@@ -1,4 +1,7 @@
 import Joi from '@hapi/joi';
+import model from '../db/models/index';
+
+const { Articles } = model;
 
 /**
  *  rating article validaton
@@ -30,6 +33,19 @@ class ArticleRatingValidation {
       return res.status(400).json({ Errors });
     }
     req.rate = checkRating.value;
+    next();
+  }
+
+  /**
+    * @param {object} req
+    * @param {object} res
+    * @param {object} next
+    * @returns {Object} descriptive error message
+    */
+  static async checkSlug(req, res, next) {
+    const { slug } = req.params;
+    const findArticle = await Articles.findOne({ where: { slug } });
+    if (!findArticle) { return res.status(404).json({ error: 'article not found' }); }
     next();
   }
 }

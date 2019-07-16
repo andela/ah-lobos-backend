@@ -201,4 +201,16 @@ describe('Article test', () => {
       });
     done();
   });
+  it('should like the article', (done) => {
+    chai.request(index)
+      .post('/api/articles/like/like-africa')
+      .set('token', userToken)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.body.should.have.property('liked');
+        res.body.should.have.property('disliked');
+        res.body.liked.should.equal(true);
+      });
+    done();
+  });
 });

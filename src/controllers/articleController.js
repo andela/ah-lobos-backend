@@ -7,7 +7,7 @@ const { Users, Articles, Tag } = model;
 /**
  * artticle controller
  */
-class articleManager {
+class ArticleManager {
   /**
    *
    * @param {object} req
@@ -71,7 +71,7 @@ class articleManager {
    *
    * @param {object} req
    * @param {object} res
-   * @returns{object} acknowledgement message for delete action result
+   * @returns {object} acknowledgement message for delete action result
    */
   static async removeArticle(req, res) {
     try {
@@ -94,7 +94,7 @@ class articleManager {
    *
    * @param {object} req
    * @param {object} res
-   * @returns{object} a single article
+   * @returns {object} a single article
    */
   static async readArticle(req, res) {
     try {
@@ -123,7 +123,7 @@ class articleManager {
  *
  * @param {object} req
  * @param {object} res
- * @returns{object} updated article
+ * @returns {object} updated article
  */
   static async updateArticle(req, res) {
     try {
@@ -179,4 +179,4 @@ class articleManager {
     }
   }
 }
-export default articleManager;
+export default ArticleManager;
