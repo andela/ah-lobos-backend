@@ -1,4 +1,4 @@
-## Authors Haven [![Build Status](https://travis-ci.org/andela/ah-lobos-backend.svg?branch=develop)](https://travis-ci.org/andela/ah-lobos-backend) [![Coverage Status](https://coveralls.io/repos/github/andela/ah-lobos-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/ah-lobos-backend?branch=develop) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+## Authors Haven [![Build Status](https://travis-ci.org/andela/ah-lobos-backend.svg?branch=develop)](https://travis-ci.org/andela/ah-lobos-backend) [![Coverage Status](https://coveralls.io/repos/github/andela/ah-lobos-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/ah-lobos-backend?branch=develop) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) [![Maintainability](https://api.codeclimate.com/v1/badges/9d7be6316e9d389e23ab/maintainability)](https://codeclimate.com/github/andela/ah-lobos-backend/maintainability)
 
  A Social platform for the creative at heart.
 
@@ -7,7 +7,7 @@ Create a community of like minded authors to foster inspiration and innovation
 by leveraging the modern web.
 
 ## Documentation
-This project is in the early stages of development. 
+This project is in the early stages of development.
 However, for the purpose of testing and configurations, one endpoint has been created to provide users with the resource to `create a user account`.
 
 ## Setup
@@ -25,7 +25,7 @@ remember to change the password in config.js file for development
 
 > create your config file
 ```
-> create a .env file in your root directory and follow the `example.env` 
+> create a .env file in your root directory and follow the `example.env`
 file in setting up yours
 ```
 
@@ -52,12 +52,12 @@ The above command will revert any migration.
 > pg-hstore
 
 ### Getting Started
-> Clone the repository by running 
+> Clone the repository by running
 
 ```
 git clone https://github.com/andela/ah-lobos-backend.git
 ```
-> Install the dependencies by running 
+> Install the dependencies by running
 ```
 npm install
 ```
@@ -66,7 +66,7 @@ npm install
 
 ### Run The Service
 
-> Start the application by running 
+> Start the application by running
 ```
 npm run start
 ```
@@ -77,7 +77,7 @@ N/A
 
 ## Testing
 
-> Test the application by running 
+> Test the application by running
 ```
 npm run test
 ```

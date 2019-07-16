@@ -188,4 +188,15 @@ describe('User Profile', () => {
         done();
       });
   });
+
+  it('should get all profiles when is logged in', (done) => {
+    chai.request(index)
+      .get('/api/users/profile')
+      .set('token', `${token1}`)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.body.should.have.property('users');
+        done();
+      });
+  });
 });

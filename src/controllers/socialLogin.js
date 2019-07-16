@@ -28,11 +28,7 @@ class UserInfo {
       hash: process.env.DEFAULT_PASSWORD
     });
     if (newUser) {
-      const {
-        dataValues: {
-          id, username, email
-        }
-      } = newUser;
+      const { dataValues: { id, username, email } } = newUser;
       const token = await processToken.signToken(newUser.dataValues);
       return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName} `,
@@ -61,11 +57,7 @@ class UserInfo {
       hash: process.env.DEFAULT_PASSWORD
     });
     if (newUser) {
-      const {
-        dataValues: {
-          id, username, email
-        }
-      } = newUser;
+      const { dataValues: { id, username, email } } = newUser;
       const token = await processToken.signToken(newUser.dataValues);
       return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName} `,
@@ -83,10 +75,7 @@ class UserInfo {
    * @return {Object} user logged in
    */
   static async twitterLogin(req, res) {
-    const {
-      displayName
-    } = req.user;
-
+    const { displayName } = req.user;
     // eslint-disable-next-line no-unused-expressions
     const newUser = await Users.create({
       username: req.user.username,
@@ -98,11 +87,7 @@ class UserInfo {
       hash: process.env.DEFAULT_PASSWORD
     });
     if (newUser) {
-      const {
-        dataValues: {
-          id, username
-        }
-      } = newUser;
+      const { dataValues: { id, username } } = newUser;
       const token = await processToken.signToken(newUser.dataValues);
       return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName} `,

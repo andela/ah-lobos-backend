@@ -194,14 +194,14 @@
             }
         },
         "fecthratings": {
-          "required": [
-            "articleid"
-          ],
-          "properties": {
-            "articleid": {
-              "type": "integer"
+            "required": [
+                "articleid"
+            ],
+            "properties": {
+                "articleid": {
+                    "type": "integer"
+                }
             }
-          }
         }
     },
     "paths": {
@@ -241,7 +241,7 @@
         "/api/user/forgot-password": {
             "post": {
                 "tags": [
-                    "forgot password"
+                    "users"
                 ],
                 "description": "Forgot password",
                 "parameters": [
@@ -274,7 +274,7 @@
         "/api/user/reset-password/{userToken}": {
             "post": {
                 "tags": [
-                    "reset password"
+                    "users"
                 ],
                 "description": "Reset password via email link",
                 "parameters": [
@@ -313,7 +313,7 @@
         "/api/profile/{username}": {
             "get": {
                 "tags": [
-                    "view profile"
+                    "profiles"
                 ],
                 "description": "A user can view his or her profile and that of other users",
                 "parameters": [
@@ -346,7 +346,7 @@
         "/api/profiles/{username}": {
             "put": {
                 "tags": [
-                    "update profile"
+                    "profiles"
                 ],
                 "description": "A user can update his or her profile and that of other users",
                 "parameters": [
@@ -454,7 +454,7 @@
         "/api/articles/": {
             "post": {
                 "tags": [
-                    "create article"
+                    "articles"
                 ],
                 "description": "create a new article",
                 "parameters": [
@@ -489,7 +489,7 @@
         "/api/articles": {
             "get": {
                 "tags": [
-                    "display all articles"
+                    "articles"
                 ],
                 "description": "list all articles",
                 "produces": [
@@ -508,7 +508,7 @@
         "/api/articles/{slug}": {
             "get": {
                 "tags": [
-                    "get a specific article"
+                    "articles"
                 ],
                 "description": "display a specific article",
                 "parameters": [
@@ -550,7 +550,7 @@
         "/api/articles/{slug}/": {
             "put": {
                 "tags": [
-                    "update a specific article"
+                    "articles"
                 ],
                 "description": "update a specific article",
                 "parameters": [
@@ -600,7 +600,7 @@
         "/api/article/{slug}": {
             "delete": {
                 "tags": [
-                    "delete an article"
+                    "articles"
                 ],
                 "description": "delete a specific article",
                 "parameters": [
@@ -699,10 +699,10 @@
                 }
             }
         },
-        "/api/articles/{slug}/ratings":{
+        "/api/articles/{slug}/ratings": {
             "post": {
                 "tags": [
-                "ratings"
+                    "articles"
                 ],
                 "description": "User should be able to rate an article",
                 "parameters": [
@@ -731,7 +731,7 @@
                     }
                 ],
                 "produces": [
-                "application/json"
+                    "application/json"
                 ],
                 "responses": {
                     "200": {
@@ -750,34 +750,58 @@
             }
         },
         "/api/ratings/{articleid}": {
-          "get": {
-            "tags": [
-              "rates"
-            ],
-            "description": "Fetch a rating",
-            "parameters": [
-              {
-                "name": "articleid",
-                "in": "path",
-                "description": "Fetch ratings",
-                "require": true,
-                "schema": {
-                  "$ref": "#/definitions/fecthratings"
+            "get": {
+                "tags": [
+                    "articles"
+                ],
+                "description": "Fetch a rating",
+                "parameters": [
+                    {
+                        "name": "articleid",
+                        "in": "path",
+                        "description": "Fetch ratings",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/fecthratings"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ratings",
+                        "schema": {
+                            "$ref": "#/definitions/fecthratings"
+                        }
+                    }
                 }
-              }
-            ],
-            "produces":[ 
-            "application/json"
-            ],
-           "responses": {
-            "200": {
-            "description": "Ratings",
-            "schema": {
-              "$ref": "#/definitions/fecthratings"
             }
-          }
+        },
+        "/api/users/profile": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "description": "Get all authors profiles",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Get the token after login",
+                        "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All authors profiles found"
+                    },
+                    "500": {
+                        "description": "The server error was found"
+                    }
+                }
+            }
         }
-      }
     }
-}
 }

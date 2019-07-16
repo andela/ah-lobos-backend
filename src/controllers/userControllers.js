@@ -23,12 +23,8 @@ class UserManager {
    */
   static async registerUser(req, res) {
     try {
-      const {
-        username, email, password, bio
-      } = req.body;
-      const user = {
-        username, email, hash: password, isVerified: false, bio, image: null
-      };
+      const { username, email, password, bio } = req.body;
+      const user = { username, email, hash: password, isVerified: false, bio, image: null };
 
       const addedUser = await Users.create(user);
       const { id } = addedUser.dataValues;
@@ -91,14 +87,10 @@ class UserManager {
    */
   static async login(req, res) {
     try {
-      const findUser = await Users.findOne({
-        where: { email: req.body.email }
-      });
+      const findUser = await Users.findOne({ where: { email: req.body.email } });
 
       if (findUser) {
-        const {
-          id, username, email, hash, isVerified
-        } = findUser.dataValues;
+        const { id, username, email, hash, isVerified } = findUser.dataValues;
         const userData = {
           id, username, email, hash, isVerified
         };
@@ -110,9 +102,9 @@ class UserManager {
 
         if (bcrypt.compareSync(req.body.password, userData.hash)) {
           const payload = {
-            id: userData.id,
-            username: userData.username,
-            email: userData.email
+            id,
+            username,
+            email
           };
           const token = await processToken.signToken(payload);
           return res.status(200).json({
@@ -167,9 +159,7 @@ class UserManager {
         error: resetEmail,
       });
     }
-    return res.status(404).json({
-      error: `email: ${req.body.email} not found, please check your email and try again`,
-    });
+    return res.status(404).json({ error: `email: ${req.body.email} not found, please check your email and try again`, });
   }
 
   /**

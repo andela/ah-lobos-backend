@@ -11,5 +11,6 @@ const { logoutToken } = logout;
 
 router.get('/profile/:username', isAuth.hasToken, logoutToken, profileController.viewProfile);
 router.put('/profiles/:username', isAuth.hasToken, isAuth.isOwner, logoutToken, multerUploads, profileController.updateProfile);
+router.get('/users/profile', isAuth.hasToken, profileController.getAllUsersProfile);
 
 export default router;

@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import model from '../db/models/index';
 import { dataUri } from '../middlewares/multer';
 import { uploader } from '../db/config/cloudinaryConfig';
@@ -21,9 +22,7 @@ class articleManager {
         const result = await uploader.upload(file);
         req.body.image = result.url;
       }
-      const {
-        title, body, description, image, tagList
-      } = req.body;
+      const { title, body, description, image, tagList } = req.body;
       let generateSlug = `${title} ${id} ${Math.floor(Math.random() * 10000)}`;
       while (generateSlug.match(/ /g)) generateSlug = generateSlug.replace(' ', '-');
       const newArticle = {
@@ -85,10 +84,8 @@ class articleManager {
         where: { slug: req.params.slug }
       });
 
-      const {
-        title, body, description, favoritesCount, slug,
-        createdAt, updatedAt, favorited, tagList, postedBy
-      } = findArticle.dataValues;
+      const { title, body, description, favoritesCount,
+        slug, createdAt, updatedAt, favorited, tagList, postedBy } = findArticle.dataValues;
 
       const findAuthor = await Users.findOne({
         where: { id: postedBy }
@@ -168,9 +165,7 @@ class articleManager {
    */
   static async listAllArticles(req, res) {
     try {
-      const articlesList = await Articles.findAll({
-        include: [Users]
-      });
+      const articlesList = await Articles.findAll({ include: [Users] });
       const cacheArticles = [];
       for (let i = 0; i < articlesList.length; i += 1) {
         const {
@@ -182,15 +177,9 @@ class articleManager {
           username, bio, image, following
         } = User;
 
-        const author = {
-          username,
-          bio,
-          image,
-          following
-        };
+        const author = { username, bio, image, following };
 
-        const art = {
-          slug,
+        const art = { slug,
           title,
           description,
           body,

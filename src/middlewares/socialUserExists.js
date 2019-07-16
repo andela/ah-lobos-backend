@@ -23,9 +23,7 @@ class UserExists {
 
     if (currentUser.length > 0) {
       const token = await processToken.signToken(currentUser[0].dataValues);
-      const {
-        id, username, email
-      } = currentUser[0].dataValues;
+      const { id, username, email } = currentUser[0].dataValues;
       return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName}`,
         data: {
@@ -55,9 +53,7 @@ class UserExists {
     });
     if (currentUser.length > 0) {
       const token = await processToken.signToken(currentUser[0].dataValues);
-      const {
-        id, username
-      } = currentUser[0].dataValues;
+      const { id, username } = currentUser[0].dataValues;
       return res.status(200).json({
         message: `Welcome to Authors Haven ${displayName} `,
         data: {

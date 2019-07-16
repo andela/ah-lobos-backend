@@ -41,9 +41,8 @@ class ProfileManager {
         const result = await uploader.upload(file);
         req.body.image = result.url;
       }
-      const {
-        email, username, image, bio, isVerified
-      } = req.body;
+
+      const { email, username, image, bio, isVerified } = req.body;
       const user = await Users.findOne({ where: { username: req.params.username } });
       const updated = await user.update({
         email: email || user.email,
@@ -57,9 +56,22 @@ class ProfileManager {
         user: updated
       });
     } catch (error) {
-      return res.json({
-        error
-      });
+      return res.json({ error });
+    }
+  }
+
+  /**
+   *
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} all users are returned
+   */
+  static async getAllUsersProfile(req, res) {
+    try {
+      const findUsers = await Users.findAll({ where: { isVerified: true }, attributes: ['username', 'bio', 'image', 'following'] });
+      res.status(200).json({ users: findUsers });
+    } catch (error) {
+      return res.status(500).json({ error });
     }
   }
 }

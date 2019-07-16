@@ -29,7 +29,7 @@
         "comma-dangle": 0,
         "curly": ["error", "multi-line"],
         "import/no-unresolved": [2, { "commonjs": true }],
-        "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
+        "no-shadow": ["error", { "builtinGlobals": false, "hoist": "functions", "allow": ["req", "res", "err"] }],
         "valid-jsdoc": ["error", {
           "requireReturn": true,
           "requireReturnType": true,
@@ -46,6 +46,11 @@
         "jsx-a11y/anchor-is-valid": true,
         "plugins": [
             "jsx-a11y"
-        ]
+        ],
+        "object-curly-newline": ["error", {
+            "ObjectPattern": { "multiline": false },
+            "ImportDeclaration": "never",
+            "ExportDeclaration": { "multiline": false, "minProperties": 0 }
+        }]
     }
 }

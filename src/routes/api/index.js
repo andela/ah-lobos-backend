@@ -1,8 +1,8 @@
 import express from 'express';
 import users from './users';
-import profiles from './profiles';
 import articles from './articles';
 import auth from './auth';
+import profiles from './profiles';
 
 const router = express.Router();
 
