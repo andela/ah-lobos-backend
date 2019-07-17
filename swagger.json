@@ -202,6 +202,40 @@
                     "type": "integer"
                 }
             }
+        },
+        "create-comment": {
+            "required": [
+                "body",
+                "slug",
+                "user"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                }
+            }
+        },
+        "delete-comment": {
+            "required": [
+                "body",
+                "slug",
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "get-comments": {
+            "required": [
+                "slug"
+            ],
+            "properties": {
+                "slug": {
+                    "type": "string"
+                }
+            }
         }
     },
     "paths": {
@@ -799,6 +833,128 @@
                     },
                     "500": {
                         "description": "The server error was found"
+                    }
+                }
+            }
+        },
+        "/api/articles/{slug}/comments/": {
+            "post": {
+                "tags": [
+                    "comments"
+                ],
+                "description": "Create new Comment",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "User Token"
+                    },
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Article Slug"
+                    },
+                    {
+                        "name": "comment",
+                        "in": "body",
+                        "required": true,
+                        "description": "Comment on article",
+                        "schema": {
+                            "$ref": "#/definitions/create-comment"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Thank you for commenting on our article"
+                    },
+                    "404": {
+                        "description": "The Article requested is not found!"
+                    },
+                    "409": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/articles/{slug}/comments/{id}": {
+            "delete": {
+                "tags": [
+                    "comments"
+                ],
+                "description": "delete a Comment",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "User Token"
+                    },
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Article Slug"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "delete a comment",
+                        "schema": {
+                            "$ref": "#/definitions/delete-comment"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The comment was deleted successfully"
+                    },
+                    "404": {
+                        "description": "The comment requested is not found!"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/articles/{slug}/comment/": {
+            "get": {
+                "tags": [
+                    "comments"
+                ],
+                "description": "get all Comment",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Article Slug"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+
+                    },
+                    "404": {
+                        "description": "The Article requested has not been rated yet!"
                     }
                 }
             }

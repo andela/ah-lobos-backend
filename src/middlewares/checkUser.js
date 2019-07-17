@@ -1,11 +1,11 @@
 import models from '../db/models/index';
 
-const { Articles } = models;
+const { Articles, Comments } = models;
 
 /**
  * check user's right middle-ware
  */
-class checkUse {
+class CheckUse {
   /**
    *
    * @param {object} req
@@ -26,10 +26,27 @@ class checkUse {
       req.article = findArticle;
       next();
     } catch (error) {
-      return res.status(404).json({
-        error: 'article not found',
-      });
+      return res.status(404).json({ error: 'article not found', });
+    }
+  }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @param {object} next
+   * @returns {object} checked user to delete
+   */
+  static async isCommentOwner(req, res, next) {
+    try {
+      const findComment = await Comments.findOne({ where: { user: req.user.id } });
+      if (!findComment) {
+        return res.status(403).json({ message: 'you are not allowed to perfom this action' });
+      }
+      next();
+    } catch (error) {
+      return res.status(404).json({ error: 'server error', });
     }
   }
 }
-export default checkUse;
+export default CheckUse;
