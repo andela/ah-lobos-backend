@@ -46,7 +46,11 @@ export default (sequelize, DataTypes) => {
     authorId: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
+    },
+    tagList: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
   }, {});
   Articles.associate = function(models) {
     Articles.belongsTo(models.Users, {

@@ -27,7 +27,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       tagList: {
-        type: Sequelize.ARRAY(Sequelize.TEXT)
+        type: Sequelize.JSON,
+        allowNull: true
       },
       favorited: {
         type: Sequelize.BOOLEAN,

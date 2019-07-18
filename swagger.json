@@ -18,10 +18,12 @@
         "http"
     ],
     "consumes": [
-        "application/json"
+        "application/json",
+        "application/xml"
     ],
     "produces": [
-        "application/json"
+        "application/json",
+        "application/xml"
     ],
     "definitions": {
         "signup": {
@@ -127,8 +129,8 @@
         "create-article": {
             "required": [
                 "title",
-                "description",
-                "body"
+                "body",
+                "description"
             ],
             "properties": {
                 "title": {
@@ -139,6 +141,9 @@
                 },
                 "body": {
                     "type": "string"
+                },
+                "tagList": { 
+                   "type": "string"
                 }
             }
         },
@@ -166,7 +171,8 @@
             "required": [
                 "title",
                 "description",
-                "body"
+                "body",
+                "token"
             ],
             "properties": {
                 "title": {
@@ -544,7 +550,8 @@
                         "name": "token",
                         "in": "header",
                         "description": "user token",
-                        "require": true
+                        "type":"string",
+                        "required":true
                     },
                     {
                         "name": "body",

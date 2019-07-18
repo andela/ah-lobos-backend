@@ -1,10 +1,9 @@
-/* eslint-disable object-curly-newline */
 import model from '../db/models/index';
 import { dataUri } from '../middlewares/multer';
 import { uploader } from '../db/config/cloudinaryConfig';
 import readTime from '../helpers/readTime';
 
-const { Users, Articles } = model;
+const { Users, Articles, Tag } = model;
 /**
  * artticle controller
  */
@@ -23,7 +22,9 @@ class articleManager {
         const result = await uploader.upload(file);
         req.body.image = result.url;
       }
-      const { title, body, description, image, tagList } = req.body;
+      const {
+        title, body, description, image, tagList
+      } = req.body;
       let generateSlug = `${title} ${id} ${Math.floor(Math.random() * 10000)}`;
       while (generateSlug.match(/ /g)) generateSlug = generateSlug.replace(' ', '-');
       const newArticle = {
@@ -32,17 +33,33 @@ class articleManager {
         description,
         image,
         authorId: id,
-        tagList,
+        tagList: (tagList ? tagList.split(',') : []),
         slug: generateSlug.toLowerCase(),
         readtime: readTime.read(body),
       };
-      const postNewArticle = await Articles.create(newArticle);
-      if (!postNewArticle.error) {
+      if (!newArticle.tagList) {
+        const postNewArticle = await Articles.create(newArticle);
         return res.status(201).json({
           message: 'article created successful',
           article: postNewArticle.dataValues
         });
       }
+      newArticle.tagList.forEach(async (tag) => {
+        const findIfTagCreated = await Tag.findOne({ where: { tag } });
+        if (!findIfTagCreated) Tag.create({ tag });
+        if (findIfTagCreated) {
+          Tag.update({ tagCount: findIfTagCreated.tagCount + 1 }, {
+            where: { tag },
+            returning: true
+          });
+        }
+      });
+
+      const postArticleWithtag = await Articles.create(newArticle);
+      return res.status(201).json({
+        message: 'article created successful',
+        article: postArticleWithtag.dataValues
+      });
     } catch (error) {
       return res.status(400).json({
         error: 'please check that you have title, description and body',
@@ -111,17 +128,17 @@ class articleManager {
   static async updateArticle(req, res) {
     try {
       if (req.file) {
-        const file = dataUri(req).content;
-        const result = await uploader.upload(file);
+        const result = await uploader.upload(dataUri(req).content);
         req.body.image = result.url;
       }
-      const { title, description, body, image, } = req.body;
-
-      const oldArticle = req.article;
-      const updateArticle = await oldArticle.update({
+      const {
+        title, description, body, image, tagList
+      } = req.body;
+      const updateArticle = await req.article.update({
         title: title || req.article.title,
         description: description || req.article.description,
         body: body || req.article.body,
+        tagList: tagList || req.article.tagList,
         image: image || req.article.image
       });
       if (updateArticle) {

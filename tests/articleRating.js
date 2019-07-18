@@ -27,7 +27,7 @@ describe('Rating an Article', () => {
       body: 'This is Andela',
       description: 'My Andela',
       slug: generateSlug.toLowerCase(),
-      tagList: ['reactjs', 'angularjs', 'dragons'],
+      tagList: 'reactjs'
     };
     chai.request(index)
       .post('/api/articles')
