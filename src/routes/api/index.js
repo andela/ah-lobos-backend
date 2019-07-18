@@ -4,6 +4,7 @@ import articles from './articles';
 import auth from './auth';
 import profiles from './profiles';
 import comments from './comments';
+import followers from './followers';
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use('/api', profiles);
 router.use('/api', articles);
 router.use('/api', comments);
 router.use(auth);
+router.use('/api', followers);
 
 export default router;

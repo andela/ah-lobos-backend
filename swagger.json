@@ -236,7 +236,55 @@
                     "type": "string"
                 }
             }
-        }
+        },
+        "followUser": {
+          "required": [
+              "token",
+              "username"
+          ],
+          "properties": {
+              "token": {
+                  "type": "string"
+              },
+              "username": {
+                  "type": "string"
+              }
+          }
+      },
+      "unfollowUser": {
+          "required": [
+              "token",
+              "username"
+          ],
+          "properties": {
+              "token": {
+                  "type": "string"
+              },
+              "username": {
+                  "type": "string"
+              }
+          }
+      },
+      "viewFollowers": {
+          "required": [
+              "token"
+          ],
+          "properties": {
+              "token": {
+                  "type": "string"
+              }
+          }
+      },
+      "viewFollowees": {
+          "required": [
+              "token"
+          ],
+          "properties": {
+              "token": {
+                  "type": "string"
+              }
+          }
+      }
     },
     "paths": {
         "/api/users": {
@@ -958,6 +1006,123 @@
                     }
                 }
             }
-        }
+        },
+        "/api/profiles/{username}/follow": {
+          "post": {
+              "tags": [
+                  "followers"
+              ],
+              "description": "A user can follow another user",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "Get the token after login",
+                      "require": true
+                  },
+                  {
+                      "name": "username",
+                      "in": "path",
+                      "description": "The user you want to follow",
+                      "require": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "user followed successfully"
+                  },
+                  "409": {
+                      "description": "you are already following this user"
+                  },
+                  "400": {
+                      "description": "you can not follow yourself"
+                  },
+                  "404": {
+                      "description": "user does not exist"
+                  }
+              }
+          }
+      },
+      "/api/profiles/{username}/unfollow": {
+          "delete": {
+              "tags": [
+                  "followers"
+              ],
+              "description": "A user can unfollow a user they already follow",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "Get the token after login",
+                      "require": true
+                  },
+                  {
+                      "name": "username",
+                      "in": "path",
+                      "description": "The user you want to unfollow",
+                      "require": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "user unfollowed successfully"
+                  },
+                  "400": {
+                      "description": "you can not follow yourself"
+                  },
+                  "404": {
+                      "description": "user does not exist"
+                  }
+              }
+          }
+      },
+      "/api/profiles/followers": {
+          "get": {
+              "tags": [
+                  "followers"
+              ],
+              "description": "A user can view their followers",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "Get the token after login",
+                      "require": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "your followers have been fetched successfully"
+                  },
+                  "404": {
+                      "description": "You have zero(0) followers"
+                  }
+              }
+          }
+      },
+      "/api/profiles/followees": {
+          "get": {
+              "tags": [
+                  "followers"
+              ],
+              "description": "A user can view the users they follow",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "Get the token after login",
+                      "require": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "The users you follow have been fetched successfully"
+                  },
+                  "404": {
+                      "description": "You are not following anyone yet"
+                  }
+              }
+          }
+      }
     }
 }

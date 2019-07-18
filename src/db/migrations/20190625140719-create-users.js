@@ -25,7 +25,7 @@ module.exports = {
       type: Sequelize.STRING
     },
     following: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       defaultValue: 0
     },
     isVerified: {

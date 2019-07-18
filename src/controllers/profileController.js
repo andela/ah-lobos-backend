@@ -42,7 +42,9 @@ class ProfileManager {
         req.body.image = result.url;
       }
 
-      const { email, username, image, bio, isVerified } = req.body;
+      const {
+        email, username, image, bio, isVerified
+      } = req.body;
       const user = await Users.findOne({ where: { username: req.params.username } });
       const updated = await user.update({
         email: email || user.email,

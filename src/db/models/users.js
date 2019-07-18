@@ -26,7 +26,7 @@ export default (sequelize, DataTypes) => {
       }
     }],
     following: [{
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: {
         args: true
       }
@@ -68,6 +68,14 @@ export default (sequelize, DataTypes) => {
       // associations can be defined here
       Users.hasMany(models.Articles, {
         foreignKey: "postedBy"
+      });
+      Users.hasMany(models.Followers, {
+        foreignKey: "follower",
+        onDelete: 'CASCADE'
+      });
+      Users.hasMany(models.Followers, {
+        foreignKey: "followee",
+        onDelete: 'CASCADE'
       });
     };
   return Users;

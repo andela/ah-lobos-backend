@@ -23,8 +23,12 @@ class UserManager {
    */
   static async registerUser(req, res) {
     try {
-      const { username, email, password, bio } = req.body;
-      const user = { username, email, hash: password, isVerified: false, bio, image: null };
+      const {
+        username, email, password, bio
+      } = req.body;
+      const user = {
+        username, email, hash: password, isVerified: false, bio, image: null
+      };
 
       const addedUser = await Users.create(user);
       const { id } = addedUser.dataValues;
@@ -90,7 +94,9 @@ class UserManager {
       const findUser = await Users.findOne({ where: { email: req.body.email } });
 
       if (findUser) {
-        const { id, username, email, hash, isVerified } = findUser.dataValues;
+        const {
+          id, username, email, hash, isVerified
+        } = findUser.dataValues;
         const userData = {
           id, username, email, hash, isVerified
         };
