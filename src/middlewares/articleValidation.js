@@ -15,9 +15,7 @@ class ArticleRatingValidation {
       rating: Joi.number().integer().valid('1', '2', '3', '4', '5').label('Rate')
         .required()
     });
-    const {
-      rating
-    } = req.body;
+    const { rating } = req.body;
     const rate = {
       rating
     };

@@ -600,15 +600,6 @@
                         "type": "string",
                         "description": "a slug that uniquelly identifies an article",
                         "require": true
-                    },
-                    {
-                        "name": "token",
-                        "in": "header",
-                        "description": "a token for authentication and authorization",
-                        "require": true,
-                        "schema": {
-                            "$ref": "#/definitions/display-specific-article"
-                        }
                     }
                 ],
                 "produces": [
@@ -864,7 +855,7 @@
         "/api/users/profile": {
             "get": {
                 "tags": [
-                    "users"
+                    "profiles"
                 ],
                 "description": "Get all authors profiles",
                 "parameters": [

@@ -8,7 +8,7 @@ module.exports = {
       title: 'TIA',
       body: 'This is Andela',
       description: 'From the heart and deep on the soul of young African software engineers',
-      postedBy: 1,
+      authorId: 1,
       slug: 'TIA',
       createdAt: moment.utc().format(),
       updatedAt: moment.utc().format()
@@ -17,7 +17,7 @@ module.exports = {
       title: 'Delete this',
       body: 'This is Andela',
       description: 'From the heart and deep on the soul of young African software engineers',
-      postedBy: 1,
+      authorId: 1,
       slug: 'dropTIA',
       createdAt: moment.utc().format(),
       updatedAt: moment.utc().format()

@@ -25,12 +25,33 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
-    image: DataTypes.BLOB,
-    slug: DataTypes.STRING,
+    image: {
+        type: DataTypes.BLOB,
+        allowNull: {
+            args: true,
+        }
+    },
+    slug: {
+        type: DataTypes.STRING,
+        allowNull: {
+            args: true
+        }
+    },
+    readtime: {
+        type: DataTypes.STRING,
+        allowNull: {
+            args: true
+        }
+    },
+    authorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }
   }, {});
   Articles.associate = function(models) {
     Articles.belongsTo(models.Users, {
-      foreignKey: 'postedBy',
+      as: 'author',
+      foreignKey: 'authorId',
       onDelete: 'CASCADE'
     });
     Articles.hasMany(models.Rating, {

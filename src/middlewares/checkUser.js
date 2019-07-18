@@ -18,7 +18,7 @@ class CheckUse {
       const findArticle = await Articles.findOne({
         where: { slug: req.params.slug }
       });
-      if (findArticle.dataValues.postedBy !== req.user.id) {
+      if (findArticle.dataValues.authorId !== req.user.id) {
         return res.status(403).json({
           message: 'you are not allowed to perfom this action'
         });

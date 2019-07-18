@@ -94,18 +94,6 @@ describe('Article test', () => {
     done();
   });
 
-  it('should display a specific articles', (done) => {
-    chai.request(index)
-      .get('/api/articles/TIA')
-      .set('token', userToken)
-      .end((err, res) => {
-        res.body.should.be.an('object');
-        res.body.should.have.property('article');
-        res.body.article.should.be.an('object');
-      });
-    done();
-  });
-
   it('should update an existing article', (done) => {
     const article = {
       title: 'This is wonderful',

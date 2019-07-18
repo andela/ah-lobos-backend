@@ -37,6 +37,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
+      readtime: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -45,14 +49,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      postedBy: {
+      authorId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
         references: {
           model: 'Users',
-          key: 'id',
-          as: 'postedBy'
+          key: 'id'
         }
       }
     });

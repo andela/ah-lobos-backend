@@ -67,7 +67,8 @@ export default (sequelize, DataTypes) => {
       Users.associate = function(models) {
       // associations can be defined here
       Users.hasMany(models.Articles, {
-        foreignKey: "postedBy"
+        as: 'author',
+        foreignKey: "authorId"
       });
       Users.hasMany(models.Followers, {
         foreignKey: "follower",

@@ -2,6 +2,7 @@
 import model from '../db/models/index';
 import { dataUri } from '../middlewares/multer';
 import { uploader } from '../db/config/cloudinaryConfig';
+import readTime from '../helpers/readTime';
 
 const { Users, Articles } = model;
 /**
@@ -30,10 +31,10 @@ class articleManager {
         body,
         description,
         image,
-        postedBy: id,
+        authorId: id,
         tagList,
-        author: req.user,
-        slug: generateSlug.toLowerCase()
+        slug: generateSlug.toLowerCase(),
+        readtime: readTime.read(body),
       };
       const postNewArticle = await Articles.create(newArticle);
       if (!postNewArticle.error) {
@@ -80,37 +81,20 @@ class articleManager {
    */
   static async readArticle(req, res) {
     try {
+      const { slug } = req.params;
       const findArticle = await Articles.findOne({
-        where: { slug: req.params.slug }
+        where: { slug },
+        include: [{
+          as: 'author',
+          model: Users,
+          attributes: ['username', 'bio', 'image']
+        }],
+        attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'favorited', 'favoritesCount', 'updatedAt', 'createdAt']
       });
 
-      const { title, body, description, favoritesCount,
-        slug, createdAt, updatedAt, favorited, tagList, postedBy } = findArticle.dataValues;
-
-      const findAuthor = await Users.findOne({
-        where: { id: postedBy }
+      return res.status(200).json({
+        article: findArticle
       });
-      if (findArticle) {
-        return res.status(200).json({
-          article: {
-            slug,
-            title,
-            description,
-            body,
-            tagList,
-            createdAt,
-            updatedAt,
-            favorited,
-            favoritesCount,
-            author: {
-              username: findAuthor.username,
-              bio: findAuthor.bio,
-              image: findAuthor.image,
-              following: findAuthor.following
-            }
-          }
-        });
-      }
     } catch (error) {
       return res.status(404).json({
         error: 'article not found',
@@ -131,12 +115,7 @@ class articleManager {
         const result = await uploader.upload(file);
         req.body.image = result.url;
       }
-      const {
-        title,
-        description,
-        body,
-        image,
-      } = req.body;
+      const { title, description, body, image, } = req.body;
 
       const oldArticle = req.article;
       const updateArticle = await oldArticle.update({
@@ -165,35 +144,16 @@ class articleManager {
    */
   static async listAllArticles(req, res) {
     try {
-      const articlesList = await Articles.findAll({ include: [Users] });
-      const cacheArticles = [];
-      for (let i = 0; i < articlesList.length; i += 1) {
-        const {
-          slug, title, description, body, tagList, createdAt, updatedAt, favorited, favoritesCount
-        } = articlesList[i];
-
-        const { User } = articlesList[i];
-        const {
-          username, bio, image, following
-        } = User;
-
-        const author = { username, bio, image, following };
-
-        const art = { slug,
-          title,
-          description,
-          body,
-          tagList,
-          createdAt,
-          updatedAt,
-          favorited,
-          favoritesCount,
-          author
-        };
-        cacheArticles.push(art);
-      }
+      const articlesList = await Articles.findAll({
+        include: [{
+          as: 'author',
+          model: Users,
+          attributes: ['username', 'bio', 'image']
+        }],
+        attributes: ['id', 'slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt']
+      });
       return res.status(200).json({
-        articles: cacheArticles
+        articles: articlesList
       });
     } catch (error) {
       return res.status(404).json({
