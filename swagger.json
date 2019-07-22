@@ -581,6 +581,22 @@
                   "articles"
               ],
               "description": "list all articles",
+              "parameters": [
+                {
+                    "name": "page",
+                    "in": "query",
+                    "type": "string",
+                    "description": "specify page",
+                    "require": true
+                },
+                {
+                    "name": "pageSize",
+                    "in": "query",
+                    "type": "string",
+                    "description": "specify pageSize",
+                    "require": true
+                }
+             ], 
               "produces": [
                   "application/json"
               ],

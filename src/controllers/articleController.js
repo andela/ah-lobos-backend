@@ -2,6 +2,7 @@ import model from '../db/models/index';
 import { dataUri } from '../middlewares/multer';
 import { uploader } from '../db/config/cloudinaryConfig';
 import readTime from '../helpers/readTime';
+import paginate from '../helpers/paginate';
 
 const { Users, Articles, Tag } = model;
 /**
@@ -160,8 +161,11 @@ class ArticleManager {
    * @returns{object} an array of articles
    */
   static async listAllArticles(req, res) {
+    const pageNumber = paginate(req.query.page, req.query.pageSize);
     try {
       const articlesList = await Articles.findAll({
+        offset: pageNumber.offset,
+        limit: pageNumber.limit,
         include: [{
           as: 'author',
           model: Users,
@@ -169,12 +173,17 @@ class ArticleManager {
         }],
         attributes: ['id', 'slug', 'title', 'description', 'readtime', 'body', 'tagList', 'updatedAt', 'createdAt']
       });
+      if (!articlesList.length) {
+        return res.status(404).json({
+          error: 'The articles requested can not be found'
+        });
+      }
       return res.status(200).json({
         articles: articlesList
       });
     } catch (error) {
-      return res.status(404).json({
-        error: 'there is no article'
+      return res.status(500).json({
+        error: 'internal server error'
       });
     }
   }

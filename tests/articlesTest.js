@@ -213,4 +213,13 @@ describe('Article test', () => {
       });
     done();
   });
+  it('should return an error without page and pagesize', (done) => {
+    chai.request(index)
+      .get('/api/articles/?page=page&pageSize=pagination')
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.equal(500);
+      });
+    done();
+  });
 });
