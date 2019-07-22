@@ -28,6 +28,14 @@ module.exports = {
       slug: 'like-africa',
       createdAt: moment.utc().format(),
       updatedAt: moment.utc().format()
+    },{
+        title: 'Bookmark this story',
+        body: 'This is Andela',
+        description: 'From the heart and deep on the soul of young African software engineers',
+        authorId: 1,
+        slug: 'bookmark-it',
+        createdAt: moment.utc().format(),
+        updatedAt: moment.utc().format()
     }], {});
   },
   down: (queryInterface, Sequelize) => {}
