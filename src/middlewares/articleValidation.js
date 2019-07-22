@@ -1,5 +1,6 @@
 import Joi from '@hapi/joi';
 import model from '../db/models/index';
+import config from '../db/config/envirnoment';
 
 const { Articles } = model;
 
@@ -46,6 +47,27 @@ class ArticleRatingValidation {
     const { slug } = req.params;
     const findArticle = await Articles.findOne({ where: { slug } });
     if (!findArticle) { return res.status(404).json({ error: 'article not found' }); }
+    next();
+  }
+
+  /**
+    * @param {object} req
+    * @param {object} res
+    * @param {object} next
+    * @returns {Object} error message
+    */
+  static async validArticle(req, res, next) {
+    const { slug } = req.params;
+    const link = `${config.host}/articles/${slug}`;
+    const findOneArticle = await Articles
+      .findOne({ where: { slug } });
+    if (!findOneArticle) {
+      return res.status(404).send({
+        error: 'Article not found, please create an article first'
+      });
+    }
+    findOneArticle.link = link;
+    req.article = findOneArticle;
     next();
   }
 }

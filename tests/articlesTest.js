@@ -222,4 +222,59 @@ describe('Article test', () => {
       });
     done();
   });
+
+  it('Should not share an invalid article', (done) => {
+    chai.request(index)
+      .get('/api/articles/TIA-588/facebook-share')
+      .set('token', userToken)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.equal(404);
+        done();
+      });
+  });
+
+  it('Should post an article on facebook', (done) => {
+    chai.request(index)
+      .get('/api/articles/TIA/facebook-share')
+      .set('token', userToken)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.equal(200);
+        done();
+      });
+  });
+
+  it('Should share an article on email', (done) => {
+    chai.request(index)
+      .get('/api/articles/TIA/email-share')
+      .set('token', userToken)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.equal(200);
+        done();
+      });
+  });
+
+  it('Should share an article on twitter', (done) => {
+    chai.request(index)
+      .get('/api/articles/TIA/twitter-share')
+      .set('token', userToken)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.equal(200);
+        done();
+      });
+  });
+
+  it('Should post an article on whatsapp', (done) => {
+    chai.request(index)
+      .get('/api/articles/TIA/whatsapp-share')
+      .set('token', userToken)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.equal(200);
+        done();
+      });
+  });
 });

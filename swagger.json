@@ -290,6 +290,20 @@
                 "type": "string"
             }
         }
+    },
+    "shareArticle": {
+        "required": [
+            "token",
+            "slug"
+        ],
+        "properties": {
+            "token": {
+                "type": "string"
+            },
+            "slug": {
+                "type": "string"
+            }
+        }
     }
   },
   "paths": {
@@ -1203,6 +1217,146 @@
             }
         }
       }
+    },
+    "/api/articles/{slug}/email-share": {
+        "get": {
+            "tags": [
+                "share article"
+            ],
+            "description": "Share article on email",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "user token",
+                    "required":true,
+                    "type":"string"
+                },
+                {
+                    "name": "slug",
+                    "in": "path",
+                    "description": "Article slug",
+                    "required":true,
+                    "type":"string"
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "responses": {
+                "200": {
+                    "description": "Sharing on Email",
+                    "schema": {
+                        "$ref": "#/definitions/shareArticle"
+                    }
+                }
+            }
+        }
+    },
+     "/api/articles/{slug}/twitter-share": {
+        "get": {
+            "tags": [
+                "share article"
+            ],
+            "description": "Post article on twitter",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "user token",
+                    "required":true,
+                    "type":"string"
+                },
+                {
+                    "name": "slug",
+                    "in": "path",
+                    "description": "Article slug",
+                    "required":true,
+                    "type":"string"
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "responses": {
+                "200": {
+                    "description": "Sharing on twitter",
+                    "schema": {
+                        "$ref": "#/definitions/shareArticle"
+                    }
+                }
+            }
+        }
+    },
+    "/api/articles/{slug}/facebook-share": {
+        "get": {
+            "tags": [
+                "share article"
+            ],
+            "description": "Post article on facebook",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "user token",
+                    "required":true,
+                    "type":"string"
+                },
+                {
+                    "name": "slug",
+                    "in": "path",
+                    "description": "Article slug",
+                    "required":true,
+                    "type":"string"
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "responses": {
+                "200": {
+                    "description": "Sharing on facebook",
+                    "schema": {
+                        "$ref": "#/definitions/shareArticle"
+                    }
+                }
+            }
+        }
+    },
+    "/api/articles/{slug}/whatsapp-share": {
+        "get": {
+            "tags": [
+                "share article"
+            ],
+            "description": "Share article on whatsapp",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "user token",
+                    "required":true,
+                    "type":"string"
+                },
+                {
+                    "name": "slug",
+                    "in": "path",
+                    "description": "Article slug",
+                    "required":true,
+                    "type":"string"
+                }
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "responses": {
+                "200": {
+                    "description": "Sharing on whatsapp",
+                    "schema": {
+                        "$ref": "#/definitions/shareArticle"
+                    }
+                }
+            }
+        }
     }
   }
 }

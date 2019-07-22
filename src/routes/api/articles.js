@@ -1,5 +1,6 @@
 import express from 'express';
 import articleController from '../../controllers/articleController';
+import shareArticleController from '../../controllers/shareArticleController';
 import auth from '../../middlewares/auth';
 import checkUser from '../../middlewares/checkUser';
 import { multerUploads } from '../../middlewares/multer';
@@ -20,5 +21,10 @@ router.post('/articles/:slug/ratings', auth.checkAuthentication, articleValidati
 router.get('/ratings/:articleId', articleRatingControllers.ratingAverage);
 router.post('/articles/like/:slug', auth.checkAuthentication, articleValidation.checkSlug, likeDislikeController.likeArticle);
 router.post('/articles/dislike/:slug', auth.checkAuthentication, articleValidation.checkSlug, likeDislikeController.dislikeArticle);
+
+router.get('/articles/:slug/email-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnEmail);
+router.get('/articles/:slug/twitter-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnTwitter);
+router.get('/articles/:slug/facebook-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnFacebook);
+router.get('/articles/:slug/whatsapp-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnWhatsapp);
 
 export default router;
