@@ -24,15 +24,16 @@ class UserManager {
   static async registerUser(req, res) {
     try {
       const {
-        username, email, password, bio
+        username, email, password, bio, image
       } = req.body;
       const user = {
-        username, email, hash: password, isVerified: false, bio, image: null
+        username, email, hash: password, isVerified: false, bio, image
       };
-
       const addedUser = await Users.create(user);
-      const { id } = addedUser.dataValues;
-      const payload = { id, username, email };
+      const { id, role } = addedUser.dataValues;
+      const payload = {
+        id, username, email, role
+      };
       const token = await processToken.signToken(payload);
       const sendVerification = await sendVerificationEmail.send(token, email);
       if (sendVerification) {
@@ -43,11 +44,12 @@ class UserManager {
             token,
             username: addedUser.username,
             bio: addedUser.bio,
-            image: null
+            image: addedUser.image
           }
         });
       }
     } catch (error) {
+      console.log(error);
       return res.status(409).json({
         message: 'user with the same email already exist'
       });
@@ -95,10 +97,10 @@ class UserManager {
 
       if (findUser) {
         const {
-          id, username, email, hash, isVerified
+          id, username, email, hash, isVerified, role
         } = findUser.dataValues;
         const userData = {
-          id, username, email, hash, isVerified
+          id, username, email, hash, isVerified, role
         };
         if (!findUser.dataValues.isVerified) {
           return res.status(401).json({
@@ -110,7 +112,8 @@ class UserManager {
           const payload = {
             id,
             username,
-            email
+            email,
+            role
           };
           const token = await processToken.signToken(payload);
           return res.status(200).json({

@@ -6,17 +6,16 @@ import profiles from './profiles';
 import comments from './comments';
 import followers from './followers';
 import bookmark from './bookmark';
-import search from './search';
 
 const router = express.Router();
 
-router.use('/api', users);
-router.use('/api', profiles);
-router.use('/api', bookmark);
-router.use('/api', articles);
-router.use('/api', comments);
+router.use('/api/articles', articles);
+router.use('/api/users', users);
+router.use('/api/profiles', profiles);
+router.use('/api/comments', comments);
+router.use('/api/followers', followers);
+router.use('/api/bookmark', bookmark);
+
 router.use(auth);
-router.use('/api', followers);
-router.use('/api', search);
 
 export default router;

@@ -11,6 +11,7 @@ import logout from '../src/middlewares/logout';
 const tokenTest = jwt.sign({
   username: 'Manzi',
   email: 'manzif60@andela.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY);
 
 
@@ -23,13 +24,14 @@ const { expect } = chai.expect;
 const userToken = jwt.sign({
   id: 1,
   username: 'testUser',
-  email: 'test@gmail.com'
+  email: 'test@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 describe('User Routes', () => {
   it('should not register a user with an existing email ', (done) => {
     const user = {
-      username: 'testUser',
+      username: 'testUser100',
       email: 'test@gmail.com',
       password: 'Domdom58'
     };
@@ -47,13 +49,14 @@ describe('User Routes', () => {
   before('should return user verified when he click the link from email', (done) => {
     const email = 'test@gmail.com';
     chai.request(index)
-      .post(`/api/verification?token=${config.token}&email=${email}`)
+      .post(`/api/users/verification?token=${config.token}&email=${email}`)
       .end((err, res) => {
         res.body.should.be.an('object');
         res.status.should.equal(403);
       });
     done();
   });
+
   it('it should delete an expired token from blacklisttoken table', (done) => {
     deleteBlacklist();
     done();
@@ -94,7 +97,7 @@ describe('User Routes', () => {
   it('should return user verified when he click the link from email', (done) => {
     const email = 'sam@andela.com';
     chai.request(index)
-      .post(`/api/verification?token=${config.token}&email=${email}`)
+      .post(`/api/users/verification?token=${config.token}&email=${email}`)
       .end((err, res) => {
         res.body.should.be.an('object');
         res.status.should.equal(403);
@@ -160,7 +163,7 @@ describe('User Routes', () => {
       email: 'never#andela.com',
     };
     chai.request(index)
-      .post('/api/user/forgot-password')
+      .post('/api/users/forgot-password')
       .send(user)
       .end((err, res) => {
         res.status.should.be.equal(400);
@@ -175,7 +178,7 @@ describe('User Routes', () => {
       confirmPassword: 'pass'
     };
     chai.request(index)
-      .post(`/api/user/reset-password/${userToken}`)
+      .post(`/api/users/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
         res.status.should.be.equal(400);
@@ -189,7 +192,7 @@ describe('User Routes', () => {
       email: 'test@gmail.com',
     };
     chai.request(index)
-      .post('/api/user/forgot-password')
+      .post('/api/users/forgot-password')
       .send(user)
       .end((err, res) => {
         res.status.should.be.equal(200);
@@ -202,7 +205,7 @@ describe('User Routes', () => {
   it('should not be able to reset password without providing [password and confirmPassword field]', (done) => {
     const user = {};
     chai.request(index)
-      .post(`/api/user/reset-password/${userToken}`)
+      .post(`/api/users/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
         res.status.should.be.equal(400);
@@ -217,7 +220,7 @@ describe('User Routes', () => {
       confirmPassword: 'Abcde123'
     };
     chai.request(index)
-      .post(`/api/user/reset-password/${userToken}`)
+      .post(`/api/users/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
         res.status.should.be.equal(400);
@@ -232,7 +235,7 @@ describe('User Routes', () => {
       confirmPassword: 'Abcde12345'
     };
     chai.request(index)
-      .post(`/api/user/reset-password/${userToken}`)
+      .post(`/api/users/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
         res.status.should.be.equal(200);
@@ -245,7 +248,7 @@ describe('User Routes', () => {
       email: 'never#andela.com',
     };
     chai.request(index)
-      .post('/api/user/forgot-password')
+      .post('/api/users/forgot-password')
       .send(user)
       .end((err, res) => {
         res.status.should.be.eql(400);
@@ -259,7 +262,7 @@ describe('User Routes', () => {
       email: 'test@gmail.com',
     };
     chai.request(index)
-      .post('/api/user/forgot-password')
+      .post('/api/users/forgot-password')
       .send(user)
       .end((err, res) => {
         res.status.should.be.eql(200);
@@ -274,7 +277,7 @@ describe('User Routes', () => {
       confirmPassword: 'pass'
     };
     chai.request(index)
-      .post(`/api/user/reset-password/${userToken}`)
+      .post(`/api/users/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
         res.status.should.be.eql(400);
@@ -287,7 +290,7 @@ describe('User Routes', () => {
   it('should not be able to reset password without providing [password and confirmPassword field]', (done) => {
     const user = {};
     chai.request(index)
-      .post(`/api/user/reset-password/${userToken}`)
+      .post(`/api/users/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
         res.status.should.be.eql(400);
@@ -302,7 +305,7 @@ describe('User Routes', () => {
       confirmPassword: 'Abcde123'
     };
     chai.request(index)
-      .post(`/api/user/reset-password/${userToken}`)
+      .post(`/api/users/reset-password/${userToken}`)
       .send(user)
       .end((err, res) => {
         res.status.should.be.eql(400);
@@ -313,7 +316,7 @@ describe('User Routes', () => {
   it('should return an error when user is already verified', (done) => {
     const email = 'sa@andela.com';
     chai.request(index)
-      .post(`/api/verification?token=${config.token}&email=${email}`)
+      .post(`/api/users/verification?token=${config.token}&email=${email}`)
       .end((err, res) => {
         res.body.should.be.an('object');
         res.body.message.should.be.equal('Email already Verified.');

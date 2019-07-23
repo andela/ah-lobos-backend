@@ -12,7 +12,8 @@ dotenv.config();
 const userToken = jwt.sign({
   id: 3,
   username: 'testUser',
-  email: 'user@gmail.com'
+  email: 'user@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 
@@ -20,7 +21,7 @@ describe('Comment test', () => {
   it('should create a new comment', (done) => {
     const comment = { body: 'this Andela' };
     chai.request(index)
-      .post('/api/articles/TIA/comments')
+      .post('/api/comments/articles/TIA')
       .set('token', userToken)
       .send(comment)
       .end((err, res) => {
@@ -33,7 +34,7 @@ describe('Comment test', () => {
 
   it('should not create a new comment whithout params', (done) => {
     chai.request(index)
-      .post('/api/articles/TIA/comments')
+      .post('/api/comments/articles/TIA')
       .set('token', userToken)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -44,7 +45,7 @@ describe('Comment test', () => {
 
   it('should delete a comment', (done) => {
     chai.request(index)
-      .delete('/api/articles/TIA/comments/1')
+      .delete('/api/comments/articles/TIA/1')
       .set('token', userToken)
       .end((err, res) => {
         res.body.should.be.an('object');

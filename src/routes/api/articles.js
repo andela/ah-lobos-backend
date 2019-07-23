@@ -8,23 +8,36 @@ import { cloudinaryConfig } from '../../db/config/cloudinaryConfig';
 import likeDislikeController from '../../controllers/likeDislikeArticleController';
 import articleRatingControllers from '../../controllers/articleRatingControllers';
 import articleValidation from '../../middlewares/articleValidation';
+import isUserAllowed from '../../middlewares/checkUserPermissions';
+import searchController from '../../controllers/searchController';
 
 const router = express.Router();
+
+// routes that don't need authentication
+router.get('/', articleController.listAllArticles);
+router.get('/:slug', articleController.readArticle);
+router.get('/ratings/:articleId', articleRatingControllers.ratingAverage);
+router.post('/search', searchController.search);
+
+// routes for like/dislike
+router.post('/like/:slug', auth.checkAuthentication, isUserAllowed.checkLikeDislikePermissions, articleValidation.checkSlug, likeDislikeController.likeArticle);
+router.post('/dislike/:slug', auth.checkAuthentication, isUserAllowed.checkLikeDislikePermissions, articleValidation.checkSlug, likeDislikeController.dislikeArticle);
+
+// route for ratings
+router.post('/:slug/ratings', auth.checkAuthentication, isUserAllowed.checkRatingsPermissions, articleValidation.rating, articleRatingControllers.rateArticle);
+
+// check user's permission route
+router.use('/', auth.checkAuthentication, isUserAllowed.checkArticlesPermissions);
 router.use('*', cloudinaryConfig);
 
-router.post('/articles', auth.checkAuthentication, multerUploads, articleController.postArticle);
-router.delete('/article/:slug', auth.checkAuthentication, checkUser.isArticleOwner, articleController.removeArticle);
-router.get('/articles/:slug', articleController.readArticle);
-router.put('/articles/:slug', auth.checkAuthentication, checkUser.isArticleOwner, multerUploads, articleController.updateArticle);
-router.get('/articles', articleController.listAllArticles);
-router.post('/articles/:slug/ratings', auth.checkAuthentication, articleValidation.rating, articleRatingControllers.rateArticle);
-router.get('/ratings/:articleId', articleRatingControllers.ratingAverage);
-router.post('/articles/like/:slug', auth.checkAuthentication, articleValidation.checkSlug, likeDislikeController.likeArticle);
-router.post('/articles/dislike/:slug', auth.checkAuthentication, articleValidation.checkSlug, likeDislikeController.dislikeArticle);
+router.post('/', multerUploads, articleController.postArticle);
+router.delete('/:slug', checkUser.isArticleOwner, articleController.removeArticle);
+router.put('/:slug', checkUser.isArticleOwner, multerUploads, articleController.updateArticle);
+router.post('/:slug/ratings', articleValidation.rating, articleRatingControllers.rateArticle);
 
-router.get('/articles/:slug/email-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnEmail);
-router.get('/articles/:slug/twitter-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnTwitter);
-router.get('/articles/:slug/facebook-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnFacebook);
-router.get('/articles/:slug/whatsapp-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnWhatsapp);
+router.get('/:slug/email-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnEmail);
+router.get('/:slug/twitter-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnTwitter);
+router.get('/:slug/facebook-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnFacebook);
+router.get('/:slug/whatsapp-share', auth.checkAuthentication, articleValidation.validArticle, shareArticleController.shareOnWhatsapp);
 
 export default router;

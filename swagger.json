@@ -305,16 +305,44 @@
                 }
             }
         },
-        "searchArticle": {
-            "required": [
-                "query"
-            ],
-            "properties": {
-                "query": {
-                    "type": "string"
-                }
+        "role": {
+          "required": [
+              "role",
+              "action",
+              "resources"
+          ],
+          "properties": {
+              "role": {
+                  "type": "string"
+              },
+              "resources": {
+                  "type": "string"
+              },
+              "action": {
+                  "type": "string"
+              }
+          }
+      },
+      "change-role": {
+        "required": [
+            "actions"
+        ],
+        "properties": {
+            "resources": {
+                "type": "string"
             }
         }
+    },
+      "searchArticle": {
+        "required": [
+            "query"
+        ],
+        "properties": {
+            "query": {
+                "type": "string"
+            }
+        }
+      }
     },
     "paths": {
         "/api/users": {
@@ -350,7 +378,7 @@
                 }
             }
         },
-        "/api/user/forgot-password": {
+        "/api/users/forgot-password": {
             "post": {
                 "tags": [
                     "users"
@@ -383,7 +411,7 @@
                 }
             }
         },
-        "/api/user/reset-password/{userToken}": {
+        "/api/users/reset-password/{userToken}": {
             "post": {
                 "tags": [
                     "users"
@@ -422,7 +450,7 @@
                 }
             }
         },
-        "/api/profile/{username}": {
+        "/api/users/profile/{username}": {
             "get": {
                 "tags": [
                     "profiles"
@@ -455,7 +483,7 @@
                 }
             }
         },
-        "/api/profiles/{username}": {
+        "/api/users/profiles/{username}": {
             "put": {
                 "tags": [
                     "profiles"
@@ -717,7 +745,7 @@
                 }
             }
         },
-        "/api/article/{slug}": {
+        "/api/articles/{slug}": {
             "delete": {
                 "tags": [
                     "articles"
@@ -869,7 +897,7 @@
                 }
             }
         },
-        "/api/ratings/{articleid}": {
+        "/api/articles/ratings/{articleid}": {
             "get": {
                 "tags": [
                     "articles"
@@ -913,7 +941,7 @@
                 }
             }
         },
-        "/api/users/profile": {
+        "/api/users/profiles": {
             "get": {
                 "tags": [
                     "profiles"
@@ -937,7 +965,7 @@
                 }
             }
         },
-        "/api/articles/{slug}/comments/": {
+        "/api/comments/articles/{slug}": {
             "post": {
                 "tags": [
                     "comments"
@@ -984,7 +1012,7 @@
                 }
             }
         },
-        "/api/articles/{slug}/comments/{id}": {
+        "/api/comments/articles/{slug}/{id}": {
             "delete": {
                 "tags": [
                     "comments"
@@ -1031,7 +1059,7 @@
                 }
             }
         },
-        "/api/articles/{slug}/comment/": {
+        "/api/comments/articles/{slug}/": {
             "get": {
                 "tags": [
                     "comments"
@@ -1057,7 +1085,7 @@
                 }
             }
         },
-        "/api/profiles/{username}/follow": {
+        "/api/followers/{username}/follow": {
             "post": {
                 "tags": [
                     "followers"
@@ -1093,7 +1121,7 @@
                 }
             }
         },
-        "/api/profiles/{username}/unfollow": {
+        "/api/followers/{username}/unfollow": {
             "delete": {
                 "tags": [
                     "followers"
@@ -1126,7 +1154,7 @@
                 }
             }
         },
-        "/api/profiles/followers": {
+        "/api/followers": {
             "get": {
                 "tags": [
                     "followers"
@@ -1150,7 +1178,7 @@
                 }
             }
         },
-        "/api/profiles/followees": {
+        "/api/followers/followees": {
             "get": {
                 "tags": [
                     "followers"
@@ -1413,7 +1441,7 @@
                 }
             }
         },
-        "/api/articles/bookmark": {
+        "/api/bookmark/articles": {
             "get": {
                 "tags": [
                     "bookmarks"
@@ -1467,53 +1495,237 @@
                 }
             }
         },
-        "/api/articles/search/": {
-            "post": {
-                "tags": [
-                    "search"
-                ],
-                "description": "A user can search for an article by author name, keywords, title or description",
-                "parameters": [
-                    {
-                        "name": "title",
-                        "in": "query",
-                        "description": "Get user title queries",
-                        "require": false
-                    },
-                    {
-                        "name": "body",
-                        "in": "query",
-                        "description": "Get user body queries",
-                        "require": false
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "Get user description queries",
-                        "require": false
-                    },
-                    {
-                        "name": "tag",
-                        "in": "query",
-                        "description": "Get user description queries",
-                        "require": false
-                    },
-                    {
-                        "name": "author",
-                        "in": "query",
-                        "description": "Get user username queries",
-                        "require": false
+        "/api/users/permissions": {
+          "post": {
+              "tags": [
+                  "admin"
+              ],
+              "description": "create role and assign permissions",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "token for authentincation and authorization",
+                      "require": true
+                  },
+                  {
+                      "name": "body",
+                      "in": "body",
+                      "description": "create a role and assign permission",
+                      "schema": {
+                        "$ref": "#/definitions/role"
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Here are the articles that your query"
-                    },
-                    "404": {
-                        "description": "There are no search results for your query"
-                    }
+                  }
+              ],
+              "responses": {
+                  "201": {
+                      "description": "role created"
+                  },
+                  "409": {
+                      "description": "permission already exist"
+                  }
+              }
+          }
+      },
+      "/api/users/permissions/{permissionNo}": {
+        "put": {
+            "tags": [
+                "admin"
+            ],
+            "description": "create role and assign permissions",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "token for authentincation and authorization",
+                    "require": true
+                },
+                {
+                  "name": "permissionNo",
+                  "in": "path",
+                  "description": "role and permission No.",
+                  "require": true
+                },
+                {
+                    "name": "role",
+                    "in": "body",
+                    "description": "change an existing role",
+                    "schema": {
+                      "$ref": "#/definitions/change-role"
+                  }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "role changed"
+                },
+                "404": {
+                    "description": "permission not found"
                 }
             }
         }
+    },
+      "/api/users/permissions/{permissionNo}/": {
+        "delete": {
+            "tags": [
+                "admin"
+            ],
+            "description": "delete role and permissions",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "token for authentincation and authorization",
+                    "require": true
+                },
+                {
+                  "name": "permissionNo",
+                  "in": "path",
+                  "description": "role and permission No.",
+                  "require": true
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "role and permissions successfully deleted"
+                },
+                "404": {
+                    "description": "oops! role and permissions not found"
+                }
+            }
+        }
+      },
+      "/api/users/permissions/": {
+        "get": {
+            "tags": [
+                "admin"
+            ],
+            "description": "get all role and permissions",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "token for authentincation and authorization",
+                    "require": true
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "roles and permissions successfully fetched"
+                },
+                "404": {
+                    "description": "oops! no permission found"
+                }
+            }
+        }
+      },
+      "/api/users/permissions/{role}": {
+        "get": {
+            "tags": [
+                "admin"
+            ],
+            "description": "get all permissions for a specific role",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "token for authentincation and authorization",
+                    "require": true
+                },
+                {
+                  "name": "role",
+                  "in": "path",
+                  "description": "role",
+                  "require": true
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "permissions successfully fetched"
+                },
+                "404": {
+                    "description": "oops! no permissions found for that role"
+                }
+            }
+        }
+      },
+      "/api/users/permissions/actions/{action}": {
+        "get": {
+            "tags": [
+                "admin"
+            ],
+            "description": "get all permissions for a specific action",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "token for authentincation and authorization",
+                    "require": true
+                },
+                {
+                  "name": "action",
+                  "in": "path",
+                  "description": "HTTP method [POST, GET, PUT, DELETE]",
+                  "require": true
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "permissions successfully fetched"
+                },
+                "404": {
+                    "description": "oops! no permissions found for that action"
+                }
+            }
+        }
+      },
+      "/api/articles/search/": {
+        "post": {
+            "tags": [
+                "search"
+            ],
+            "description": "A user can search for an article by author name, keywords, title or description",
+            "parameters": [
+                {
+                    "name": "title",
+                    "in": "query",
+                    "description": "Get user title queries",
+                    "require": false
+                },
+                {
+                    "name": "body",
+                    "in": "query",
+                    "description": "Get user body queries",
+                    "require": false
+                },
+                {
+                    "name": "description",
+                    "in": "query",
+                    "description": "Get user description queries",
+                    "require": false
+                },
+                {
+                    "name": "tag",
+                    "in": "query",
+                    "description": "Get user description queries",
+                    "require": false
+                },
+                {
+                    "name": "author",
+                    "in": "query",
+                    "description": "Get user username queries",
+                    "require": false
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Here are the articles that your query"
+                },
+                "404": {
+                    "description": "There are no search results for your query"
+                }
+            }
+        }
+      }
     }
 }

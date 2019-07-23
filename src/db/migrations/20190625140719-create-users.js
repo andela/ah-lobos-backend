@@ -9,6 +9,7 @@ module.exports = {
     username: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true
     },
     email: {
       type: Sequelize.STRING,
@@ -19,7 +20,8 @@ module.exports = {
       type: Sequelize.STRING
     },
     image: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      defaultValue: 'no image available'
     },
     favorites: {
       type: Sequelize.STRING
@@ -42,6 +44,10 @@ module.exports = {
     hash: {
       allowNull: true,
       type: Sequelize.STRING
+    },
+    role: {
+        type: Sequelize.STRING,
+        defaultValue: 'normal'
     },
     createdAt: {
       allowNull: false,

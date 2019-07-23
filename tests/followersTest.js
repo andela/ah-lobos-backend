@@ -12,25 +12,28 @@ dotenv.config();
 const userToken1 = jwt.sign({
   id: 4,
   username: 'rafiki',
-  email: 'rafiki@gmail.com'
+  email: 'rafiki@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 const userToken2 = jwt.sign({
   id: 5,
   username: 'mufasa',
   email: 'mufasa@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 const userToken3 = jwt.sign({
   id: 9,
   username: 'akpalo',
   email: 'akpalo@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 describe('Follow/Unfollow test', () => {
   it('A user should be able to follow another user', (done) => {
     chai.request(index)
-      .post('/api/profiles/slick/follow')
+      .post('/api/followers/slick/follow')
       .set('token', userToken2)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -42,7 +45,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should not be able to follow another user twice', (done) => {
     chai.request(index)
-      .post('/api/profiles/rafiki/follow')
+      .post('/api/followers/rafiki/follow')
       .set('token', userToken2)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -53,7 +56,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should not be able to follow themselves', (done) => {
     chai.request(index)
-      .post('/api/profiles/mufasa/follow')
+      .post('/api/followers/mufasa/follow')
       .set('token', userToken2)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -63,7 +66,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should not be able to unfollow a user that does not exist', (done) => {
     chai.request(index)
-      .delete('/api/profiles/snowwhite/unfollow')
+      .delete('/api/followers/snowwhite/unfollow')
       .set('token', userToken1)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -73,7 +76,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should be able to unfollow another user', (done) => {
     chai.request(index)
-      .delete('/api/profiles/mufasa/unfollow')
+      .delete('/api/followers/mufasa/unfollow')
       .set('token', userToken1)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -84,7 +87,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should not be able to unfollow a user they do not follow', (done) => {
     chai.request(index)
-      .delete('/api/profiles/nzube/unfollow')
+      .delete('/api/followers/nzube/unfollow')
       .set('token', userToken1)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -95,7 +98,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should be able to view the users he/she follows', (done) => {
     chai.request(index)
-      .get('/api/profiles/followees')
+      .get('/api/followers/followees')
       .set('token', userToken1)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -106,7 +109,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should get a message - You are not following anyone yet - if they are not following anyone', (done) => {
     chai.request(index)
-      .get('/api/profiles/followees')
+      .get('/api/followers/followees')
       .set('token', userToken3)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -116,7 +119,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should be able to view their followers', (done) => {
     chai.request(index)
-      .get('/api/profiles/followers')
+      .get('/api/followers')
       .set('token', userToken1)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -127,7 +130,7 @@ describe('Follow/Unfollow test', () => {
   });
   it('A user should get a message - You are not following anyone yet - if they do not have any followers', (done) => {
     chai.request(index)
-      .get('/api/profiles/followers')
+      .get('/api/followers')
       .set('token', userToken3)
       .end((err, res) => {
         res.body.should.be.an('object');

@@ -13,7 +13,7 @@ module.exports = {
     },
     {
       username: "Emilen",
-      email: "emilereas7e@gmail.com",
+      email: "emilereas7@gmail.com",
       hash: bcrypt.hashSync('Password12345', 8),
       createdAt: moment.utc().format(),
       updatedAt: moment.utc().format()

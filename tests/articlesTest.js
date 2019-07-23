@@ -16,13 +16,15 @@ dotenv.config();
 const userToken = jwt.sign({
   id: 1,
   username: 'testUser',
-  email: 'user@gmail.com'
+  email: 'user@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 const userToken2 = jwt.sign({
   id: 2,
   username: 'test',
   email: 'user@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 const tag = {
@@ -71,7 +73,7 @@ describe('Article test', () => {
 
   it('should not delete an article without authentication', (done) => {
     chai.request(index)
-      .delete('/api/article/articles')
+      .delete('/api/articles/articles')
       .set('token', 'invalid token')
       .set('Content-Type', 'application/json')
       .end((err, res) => {
@@ -105,7 +107,7 @@ describe('Article test', () => {
 
   it('should not delete an article which is not yours', (done) => {
     chai.request(index)
-      .delete('/api/article/TIA')
+      .delete('/api/articles/TIA')
       .set('token', userToken2)
       .set('Content-Type', 'application/json')
       .end((err, res) => {
@@ -118,7 +120,7 @@ describe('Article test', () => {
   it('should display all articles', (done) => {
     chai.request(index)
       .get('/api/articles')
-      .set('Content-Type', 'application/json')
+      .set('token', userToken)
       .end((err, res) => {
         res.body.should.be.an('object');
         res.body.articles.should.be.an('array');
@@ -192,7 +194,7 @@ describe('Article test', () => {
 
   it('should delete an article', (done) => {
     chai.request(index)
-      .delete('/api/article/dropTIA')
+      .delete('/api/articles/dropTIA')
       .set('token', userToken)
       .set('Content-Type', 'application/json')
       .end((err, res) => {

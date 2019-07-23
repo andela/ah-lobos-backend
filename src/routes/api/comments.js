@@ -1,17 +1,23 @@
 import express from 'express';
 import commentController from '../../controllers/commentController';
-import isAuth from '../../middlewares/auth';
+import auth from '../../middlewares/auth';
 import validationComments from '../../helpers/commentValidation';
 import logout from '../../middlewares/logout';
 import checkUser from '../../middlewares/checkUser';
+import isUserAllowed from '../../middlewares/checkUserPermissions';
 
 
 const router = express.Router();
 
 const { logoutToken } = logout;
 
-router.post('/articles/:slug/comments', isAuth.checkAuthentication, logoutToken, validationComments.commentValidation, commentController.createrComment);
-router.delete('/articles/:slug/comments/:id', isAuth.checkAuthentication, logoutToken, checkUser.isCommentOwner, commentController.deleteComment);
-router.get('/articles/:slug/comment', commentController.getComments);
+// routes that don't need authentication
+router.get('/articles/:slug', commentController.getComments);
+
+// check user's permissions route
+router.use('/', auth.checkAuthentication, isUserAllowed.checkCommentsPermissions);
+
+router.post('/articles/:slug', logoutToken, validationComments.commentValidation, commentController.createrComment);
+router.delete('/articles/:slug/:id', logoutToken, checkUser.isCommentOwner, commentController.deleteComment);
 
 export default router;

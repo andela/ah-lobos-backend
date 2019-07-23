@@ -98,26 +98,18 @@ class ArticleManager {
    * @returns {object} a single article
    */
   static async readArticle(req, res) {
-    try {
-      const { slug } = req.params;
-      const findArticle = await Articles.findOne({
-        where: { slug },
-        include: [{
-          as: 'author',
-          model: Users,
-          attributes: ['username', 'bio', 'image']
-        }],
-        attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'favorited', 'favoritesCount', 'updatedAt', 'createdAt']
-      });
-
-      return res.status(200).json({
-        article: findArticle
-      });
-    } catch (error) {
-      return res.status(404).json({
-        error: 'article not found',
-      });
-    }
+    const { slug } = req.params;
+    const findArticle = await Articles.findOne({
+      where: { slug },
+      include: [{
+        as: 'author',
+        model: Users,
+        attributes: ['username', 'bio', 'image']
+      }],
+      attributes: ['slug', 'title', 'description', 'readtime', 'body', 'tagList', 'favorited', 'favoritesCount', 'updatedAt', 'createdAt']
+    });
+    if (findArticle) return res.status(200).json({ article: findArticle });
+    return res.status(404).json({ error: 'article not found' });
   }
 
   /**

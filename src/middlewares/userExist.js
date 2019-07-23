@@ -19,6 +19,7 @@ class exist {
     if (!resource) {
       return res.status(404).json({ message: 'user does not exist' });
     }
+    req.userInfo = resource.dataValues;
     next();
   }
 }

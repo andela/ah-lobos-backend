@@ -4,6 +4,7 @@ export default (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
     username: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: {
         args: false,
         message: 'Please enter your username'
@@ -18,7 +19,7 @@ export default (sequelize, DataTypes) => {
       }
     },
     bio: DataTypes.STRING,
-    image: DataTypes.BLOB,
+    image: DataTypes.STRING,
     favorites: [{
       type: DataTypes.STRING,
       allowNull: {
@@ -51,6 +52,12 @@ export default (sequelize, DataTypes) => {
             args: true
         },
         type: DataTypes.STRING
+    },
+    role: {
+      allowNull: {
+        args: true
+    },
+    type: DataTypes.STRING
     }
   }, {
       hooks: {

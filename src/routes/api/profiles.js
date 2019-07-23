@@ -1,16 +1,15 @@
 import express from 'express';
 import profileController from '../../controllers/profileController';
-import isAuth from '../../middlewares/isAuth';
-import { multerUploads } from '../../middlewares/multer';
-import { cloudinaryConfig } from '../../db/config/cloudinaryConfig';
+import auth from '../../middlewares/auth';
 import logout from '../../middlewares/logout';
+import isUserAllowed from '../../middlewares/checkUserPermissions';
 
 const router = express.Router();
-router.use('*', cloudinaryConfig);
 const { logoutToken } = logout;
 
-router.get('/profile/:username', isAuth.hasToken, logoutToken, profileController.viewProfile);
-router.put('/profiles/:username', isAuth.hasToken, isAuth.isOwner, logoutToken, multerUploads, profileController.updateProfile);
-router.get('/users/profile', isAuth.hasToken, profileController.getAllUsersProfile);
+// check user's permissions route
+router.use('/', auth.checkAuthentication, isUserAllowed.checkFollowersPermissions);
+
+router.get('/:username', logoutToken, profileController.viewProfile);
 
 export default router;

@@ -14,20 +14,19 @@ class CheckUse {
    * @returns {object} checked user
    */
   static async isArticleOwner(req, res, next) {
-    try {
-      const findArticle = await Articles.findOne({
-        where: { slug: req.params.slug }
-      });
-      if (findArticle.dataValues.authorId !== req.user.id) {
-        return res.status(403).json({
-          message: 'you are not allowed to perfom this action'
-        });
-      }
+    const { id } = req.user;
+    const findArticle = await Articles.findOne({
+      where: { slug: req.params.slug }
+    });
+    if (!findArticle) return res.status(404).json({ error: 'article not found', });
+    if (findArticle.dataValues.authorId === id) {
       req.article = findArticle;
       next();
-    } catch (error) {
-      return res.status(404).json({ error: 'article not found', });
+      return 1;
     }
+    return res.status(403).json({
+      message: 'you are not allowed to perfom this action'
+    });
   }
 
   /**

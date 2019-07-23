@@ -9,13 +9,16 @@ chai.should();
 const userToken = jwt.sign({
   id: 1,
   username: 'testUser',
-  email: 'user@gmail.com'
+  email: 'user@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 const userToken1 = jwt.sign({
   id: 2,
   username: 'testUser',
-  email: 'user1@gmail.com'
+  email: 'user1@gmail.com',
+  role: 'admin'
+
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 describe('Test bookmarks', () => {
@@ -42,7 +45,7 @@ describe('Test bookmarks', () => {
   });
   it('should not allow unauthorised user to get bookmarks', (done) => {
     chai.request(index)
-      .get('/api/articles/bookmark')
+      .get('/api/bookmark/articles')
       .end((err, res) => {
         res.body.should.be.an('object');
         res.body.should.have.property('message');
@@ -61,7 +64,7 @@ describe('Test bookmarks', () => {
   });
   it('user should get all stories he/she bookmarked', (done) => {
     chai.request(index)
-      .get('/api/articles/bookmark')
+      .get('/api/bookmark/articles')
       .set('token', userToken)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -82,7 +85,7 @@ describe('Test bookmarks', () => {
 
   it('should get a message when a user tries to fetch empty bookmarked articles', (done) => {
     chai.request(index)
-      .get('/api/articles/bookmark')
+      .get('/api/bookmark/articles')
       .set('token', userToken1)
       .end((err, res) => {
         res.body.should.be.an('object');

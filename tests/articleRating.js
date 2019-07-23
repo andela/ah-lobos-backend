@@ -12,7 +12,8 @@ dotenv.config();
 const payload = jwt.sign({
   id: 2,
   username: 'domdom58',
-  email: 'domdom58@gmail.com'
+  email: 'domdom58@gmail.com',
+  role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 const title = 'ANDELA';

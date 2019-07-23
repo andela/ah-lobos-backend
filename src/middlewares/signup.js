@@ -1,4 +1,7 @@
 import Joi from '@hapi/joi';
+import model from '../db/models/index';
+
+const { Users } = model;
 
 /**
  *  Signup validaton
@@ -36,6 +39,8 @@ class SignupValidation {
       }
       return res.status(400).json({ Errors });
     }
+    const usernameUsed = await Users.findOne({ where: { username } });
+    if (usernameUsed) return res.status(409).json({ error: 'username already taken, please try again' });
     req.user = checkUser.value;
     next();
   }
