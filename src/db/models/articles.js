@@ -48,7 +48,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false
     },
     tagList: {
-      type: DataTypes.JSON,
+      type: DataTypes.ARRAY(DataTypes.TEXT),
       allowNull: true
     },
   }, {});

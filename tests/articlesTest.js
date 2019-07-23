@@ -144,7 +144,7 @@ describe('Article test', () => {
       title: 'This is wonderful',
       body: 'This is Africa',
       description: 'Sample text',
-      tagList: 'reactjs, angularjs, ragonsss'
+      tagList: ['reactjs', 'angularjs', 'ragonsss']
     };
     chai.request(index)
       .put('/api/articles/dropTIA')

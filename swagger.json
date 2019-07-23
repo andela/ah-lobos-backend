@@ -304,6 +304,16 @@
                     "type": "string"
                 }
             }
+        },
+        "searchArticle": {
+            "required": [
+                "query"
+            ],
+            "properties": {
+                "query": {
+                    "type": "string"
+                }
+            }
         }
     },
     "paths": {
@@ -1453,6 +1463,54 @@
                     },
                     "500": {
                         "description": "Server error while getting bookmarks"
+                    }
+                }
+            }
+        },
+        "/api/articles/search/": {
+            "post": {
+                "tags": [
+                    "search"
+                ],
+                "description": "A user can search for an article by author name, keywords, title or description",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Get user title queries",
+                        "require": false
+                    },
+                    {
+                        "name": "body",
+                        "in": "query",
+                        "description": "Get user body queries",
+                        "require": false
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Get user description queries",
+                        "require": false
+                    },
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "Get user description queries",
+                        "require": false
+                    },
+                    {
+                        "name": "author",
+                        "in": "query",
+                        "description": "Get user username queries",
+                        "require": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Here are the articles that your query"
+                    },
+                    "404": {
+                        "description": "There are no search results for your query"
                     }
                 }
             }

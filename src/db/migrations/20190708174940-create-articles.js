@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       tagList: {
-        type: Sequelize.JSON,
+        type: Sequelize.ARRAY(Sequelize.TEXT),
         allowNull: true
       },
       favorited: {
