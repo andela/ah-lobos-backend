@@ -6,6 +6,7 @@ import profiles from './profiles';
 import comments from './comments';
 import followers from './followers';
 import bookmark from './bookmark';
+import reports from './reports';
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.use('/api/profiles', profiles);
 router.use('/api/comments', comments);
 router.use('/api/followers', followers);
 router.use('/api/bookmark', bookmark);
-
 router.use(auth);
+router.use('/api/report', reports);
 
 export default router;

@@ -99,6 +99,24 @@ class UserPermissions {
     if (allow) next();
     else return res.status(403).json({ error: 'access denied' });
   }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @param {object} next
+   * @returns {0} -
+   */
+  static async checkReportingsPermissions(req, res, next) {
+  /**
+   * This method first of all check if a user role  is admin or not
+   */
+    const { method: doAction } = req;
+    const checkIfAllowed = await checkPermissions.isAllowed(req.user.role, 'Reportings', doAction);
+    if (checkIfAllowed) {
+      next();
+    } else return res.status(403).json({ error: 'access denied' });
+  }
 }
 
 export default UserPermissions;

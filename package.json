@@ -12,7 +12,7 @@
     "create_tables": "sequelize db:migrate",
     "start": "node dist/index.js",
     "prod_seeds": "sequelize db:seed --seed 20190722102843-create-admin && sequelize db:seed --seed 20190723161730-create-permission",
-    "build": "sequelize db:migrate && npm run prod_seeds && babel src --out-dir dist",
+    "build": "sequelize db:migrate:undo:all && sequelize db:migrate && npm run prod_seeds && babel src --out-dir dist",
     "dev": "nodemon --exec babel-node ./src/index.js"
   },
   "engines": {

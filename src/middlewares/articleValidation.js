@@ -70,5 +70,33 @@ class ArticleRatingValidation {
     req.article = findOneArticle;
     next();
   }
+
+  /**
+    * @param {object} req
+    * @param {object} res
+    * @param {object} next
+    * @returns {Object} error message or descriptive response
+    */
+  static async validReportMessage(req, res, next) {
+    const report = Joi.object().keys({
+      message: Joi.string().min(2).max(512).required()
+    });
+    const { message } = req.body;
+    const reporting = {
+      message
+    };
+    const checkReporting = Joi.validate(reporting, report, {
+      abortEarly: false
+    });
+    if (checkReporting.error) {
+      const errors = [];
+      for (let i = 0; i < checkReporting.error.details.length; i += 1) {
+        errors.push(checkReporting.error.details[i].message.replace('"', ' ').replace('"', ' '));
+      }
+      return res.status(400).json({ errors });
+    }
+    req.reporting = checkReporting.value;
+    next();
+  }
 }
 export default ArticleRatingValidation;

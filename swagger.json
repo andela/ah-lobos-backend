@@ -322,49 +322,61 @@
                   "type": "string"
               }
           }
-      },
-      "change-role": {
-        "required": [
-            "actions"
-        ],
-        "properties": {
-            "resources": {
-                "type": "string"
+        },
+        "change-role": {
+            "required": [
+                "actions"
+            ],
+            "properties": {
+                "resources": {
+                    "type": "string"
+                }
+            }
+        },
+        "searchArticle": {
+            "required": [
+                "query"
+            ],
+            "properties": {
+                "query": {
+                    "type": "string"
+                }
+            }
+        },
+        "edit-comment": {
+            "required": [
+                "body",
+                "id",
+                "user"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                }
+            }
+        },
+        "get-edit-comment": {
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "reportArticle": {
+            "required": [
+                "token",
+                "slug",
+                "message"
+            ],
+            "properties": {
+                "message":{
+                    "type":"string"
+                }
             }
         }
-    },
-      "searchArticle": {
-        "required": [
-            "query"
-        ],
-        "properties": {
-            "query": {
-                "type": "string"
-            }
-        }
-      },
-      "edit-comment": {
-        "required": [
-            "body",
-            "id",
-            "user"
-        ],
-        "properties": {
-            "body": {
-                "type": "string"
-            }
-        }
-    },
-    "get-edit-comment": {
-        "required": [
-            "id"
-        ],
-        "properties": {
-            "id": {
-                "type": "integer"
-            }
-        }
-    }
     },
     "paths": {
         "/api/users": {
@@ -1548,272 +1560,340 @@
                   }
               }
           }
-      },
-      "/api/users/permissions/{permissionNo}": {
-        "put": {
-            "tags": [
-                "admin"
-            ],
-            "description": "create role and assign permissions",
-            "parameters": [
-                {
-                    "name": "token",
-                    "in": "header",
-                    "description": "token for authentincation and authorization",
+        },
+        "/api/users/permissions/{permissionNo}": {
+            "put": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "create role and assign permissions",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentincation and authorization",
+                        "require": true
+                    },
+                    {
+                    "name": "permissionNo",
+                    "in": "path",
+                    "description": "role and permission No.",
                     "require": true
-                },
-                {
-                  "name": "permissionNo",
-                  "in": "path",
-                  "description": "role and permission No.",
-                  "require": true
-                },
-                {
+                    },
+                    {
+                        "name": "role",
+                        "in": "body",
+                        "description": "change an existing role",
+                        "schema": {
+                        "$ref": "#/definitions/change-role"
+                    }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "role changed"
+                    },
+                    "404": {
+                        "description": "permission not found"
+                    }
+                }
+            }
+        },
+        "/api/users/permissions/{permissionNo}/": {
+            "delete": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "delete role and permissions",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentincation and authorization",
+                        "require": true
+                    },
+                    {
+                    "name": "permissionNo",
+                    "in": "path",
+                    "description": "role and permission No.",
+                    "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "role and permissions successfully deleted"
+                    },
+                    "404": {
+                        "description": "oops! role and permissions not found"
+                    }
+                }
+            }
+        },
+        "/api/users/permissions/": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "get all role and permissions",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentincation and authorization",
+                        "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "roles and permissions successfully fetched"
+                    },
+                    "404": {
+                        "description": "oops! no permission found"
+                    }
+                }
+            }
+        },
+        "/api/users/permissions/{role}": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "get all permissions for a specific role",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentincation and authorization",
+                        "require": true
+                    },
+                    {
                     "name": "role",
-                    "in": "body",
-                    "description": "change an existing role",
-                    "schema": {
-                      "$ref": "#/definitions/change-role"
-                  }
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "role changed"
-                },
-                "404": {
-                    "description": "permission not found"
-                }
-            }
-        }
-    },
-      "/api/users/permissions/{permissionNo}/": {
-        "delete": {
-            "tags": [
-                "admin"
-            ],
-            "description": "delete role and permissions",
-            "parameters": [
-                {
-                    "name": "token",
-                    "in": "header",
-                    "description": "token for authentincation and authorization",
-                    "require": true
-                },
-                {
-                  "name": "permissionNo",
-                  "in": "path",
-                  "description": "role and permission No.",
-                  "require": true
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "role and permissions successfully deleted"
-                },
-                "404": {
-                    "description": "oops! role and permissions not found"
-                }
-            }
-        }
-      },
-      "/api/users/permissions/": {
-        "get": {
-            "tags": [
-                "admin"
-            ],
-            "description": "get all role and permissions",
-            "parameters": [
-                {
-                    "name": "token",
-                    "in": "header",
-                    "description": "token for authentincation and authorization",
-                    "require": true
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "roles and permissions successfully fetched"
-                },
-                "404": {
-                    "description": "oops! no permission found"
-                }
-            }
-        }
-      },
-      "/api/users/permissions/{role}": {
-        "get": {
-            "tags": [
-                "admin"
-            ],
-            "description": "get all permissions for a specific role",
-            "parameters": [
-                {
-                    "name": "token",
-                    "in": "header",
-                    "description": "token for authentincation and authorization",
-                    "require": true
-                },
-                {
-                  "name": "role",
-                  "in": "path",
-                  "description": "role",
-                  "require": true
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "permissions successfully fetched"
-                },
-                "404": {
-                    "description": "oops! no permissions found for that role"
-                }
-            }
-        }
-      },
-      "/api/users/permissions/actions/{action}": {
-        "get": {
-            "tags": [
-                "admin"
-            ],
-            "description": "get all permissions for a specific action",
-            "parameters": [
-                {
-                    "name": "token",
-                    "in": "header",
-                    "description": "token for authentincation and authorization",
-                    "require": true
-                },
-                {
-                  "name": "action",
-                  "in": "path",
-                  "description": "HTTP method [POST, GET, PUT, DELETE]",
-                  "require": true
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "permissions successfully fetched"
-                },
-                "404": {
-                    "description": "oops! no permissions found for that action"
-                }
-            }
-        }
-      },
-      "/api/articles/search/": {
-        "post": {
-            "tags": [
-                "search"
-            ],
-            "description": "A user can search for an article by author name, keywords, title or description",
-            "parameters": [
-                {
-                    "name": "title",
-                    "in": "query",
-                    "description": "Get user title queries",
-                    "require": false
-                },
-                {
-                    "name": "body",
-                    "in": "query",
-                    "description": "Get user body queries",
-                    "require": false
-                },
-                {
-                    "name": "description",
-                    "in": "query",
-                    "description": "Get user description queries",
-                    "require": false
-                },
-                {
-                    "name": "tag",
-                    "in": "query",
-                    "description": "Get user description queries",
-                    "require": false
-                },
-                {
-                    "name": "author",
-                    "in": "query",
-                    "description": "Get user username queries",
-                    "require": false
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "Here are the articles that your query"
-                },
-                "404": {
-                    "description": "There are no search results for your query"
-                }
-            }
-        }
-      },
-      "/api/comments/articles/{id}/": {
-        "put": {
-            "tags": [
-                "comments"
-            ],
-            "description": "edit-comment",
-            "parameters": [
-                {
-                    "name": "token",
-                    "in": "header",
-                    "description": "token for authentication and authorization",
-                    "require": true
-                },
-                {
-                    "name": "id",
                     "in": "path",
-                    "description": "An idof original comment you want to edit",
-                    "require": false
-                },
-                {
-                    "name": "body",
-                    "in": "body",
-                    "description": "A new comment",
-                    "require": false
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "Your comment has been updated"
-                },
-                "404": {
-                    "description": "The comment requested is not found"
-                },
-                "500": {
-                    "description": "Internal Server error"
+                    "description": "role",
+                    "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "permissions successfully fetched"
+                    },
+                    "404": {
+                        "description": "oops! no permissions found for that role"
+                    }
                 }
             }
-        }
-      },
-      "/api/comments/articles/edit/{id}/": {
-        "get": {
-            "tags": [
-                "comments"
-            ],
-            "description": "get-edit-comment",
-            "parameters": [
-                {
-                    "name": "id",
+        },
+        "/api/users/permissions/actions/{action}": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "get all permissions for a specific action",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentincation and authorization",
+                        "require": true
+                    },
+                    {
+                    "name": "action",
                     "in": "path",
-                    "description": "An idof original comment you want to edit",
-                    "require": false
+                    "description": "HTTP method [POST, GET, PUT, DELETE]",
+                    "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "permissions successfully fetched"
+                    },
+                    "404": {
+                        "description": "oops! no permissions found for that action"
+                    }
                 }
-            ],
-            "responses": {
-                "200": {
-                    "description": "The hostory requested is available"
-                },
-                "404": {
-                    "description": "The comment requested has no been edited"
-                },
-                "500": {
-                    "description": "Internal Server error"
+            }
+        },
+        "/api/report/articles": {
+            "get": {
+                "tags": [
+                    "report an article"
+                ],
+                "description": "Retrieve all reported articles",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Admin token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reported articles show"
+                    }
+                }
+            }
+        },
+        "/api/comments/articles/{id}/": {
+            "put": {
+                "tags": [
+                    "comments"
+                ],
+                "description": "edit-comment",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentication and authorization",
+                        "require": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An idof original comment you want to edit",
+                        "require": false
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "A new comment",
+                        "require": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Your comment has been updated"
+                    },
+                    "404": {
+                        "description": "The comment requested is not found"
+                    },
+                    "500": {
+                        "description": "Internal Server error"
+                    }
+                }
+            }
+        },
+        "/api/comments/articles/edit/{id}/": {
+            "get": {
+                "tags": [
+                    "comments"
+                ],
+                "description": "get-edit-comment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An idof original comment you want to edit",
+                        "require": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The hostory requested is available"
+                    },
+                    "404": {
+                        "description": "The comment requested has no been edited"
+                    },
+                    "500": {
+                        "description": "Internal Server error"
+                    }
+                }
+            }
+        },
+        "/api/articles/search/": {
+            "post": {
+                "tags": [
+                    "search"
+                ],
+                "description": "A user can search for an article by author name, keywords, title or description",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Get user title queries",
+                        "require": false
+                    },
+                    {
+                        "name": "body",
+                        "in": "query",
+                        "description": "Get user body queries",
+                        "require": false
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Get user description queries",
+                        "require": false
+                    },
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "Get user description queries",
+                        "require": false
+                    },
+                    {
+                        "name": "author",
+                        "in": "query",
+                        "description": "Get user username queries",
+                        "require": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Here are the articles that your query"
+                    },
+                    "404": {
+                        "description": "There are no search results for your query"
+                    }
+                }
+            }
+        },
+        "/api/report/articles/{slug}": {
+            "post": {
+                "tags": [
+                    "report an article"
+                ],
+                "description": "Report an article",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "user token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Article slug",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "message",
+                        "in": "body",
+                        "description": "The message for reporting",
+                        "schema": {
+                            "$ref": "#/definitions/reportArticle"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Reporting article created successfully"
+                    },
+                    "404": {
+                        "description": "Article to report not found"
+                    }
                 }
             }
         }
-      }
     }
 }
