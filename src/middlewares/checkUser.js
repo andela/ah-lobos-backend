@@ -14,12 +14,12 @@ class CheckUse {
    * @returns {object} checked user
    */
   static async isArticleOwner(req, res, next) {
-    const { id } = req.user;
+    const { id, role } = req.user;
     const findArticle = await Articles.findOne({
       where: { slug: req.params.slug }
     });
     if (!findArticle) return res.status(404).json({ error: 'article not found', });
-    if (findArticle.dataValues.authorId === id) {
+    if (findArticle.dataValues.authorId === id || role === 'admin') {
       req.article = findArticle;
       next();
       return 1;
@@ -46,6 +46,40 @@ class CheckUse {
     } catch (error) {
       return res.status(404).json({ error: 'server error', });
     }
+  }
+
+  /**
+   *
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next,
+   * @returns {Object} return next if is admin
+   */
+  static async isAdmin(req, res, next) {
+    const { role } = req.user;
+    if (role !== 'admin') {
+      return res.status(403).json({
+        error: 'You are not allowed to access this route.'
+      });
+    }
+    next();
+  }
+
+  /**
+   *
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   * @returns {Object} return next
+   */
+  static async hasRole(req, res, next) {
+    const { role } = req.body;
+    if (role) {
+      return res.status(409).json({
+        message: 'As user you should not specify a role field'
+      });
+    }
+    next();
   }
 }
 export default CheckUse;

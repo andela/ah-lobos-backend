@@ -28,11 +28,19 @@
     "definitions": {
         "signup": {
             "required": [
+                "firstName",
+                "lastName",
                 "username",
                 "email",
                 "password"
             ],
             "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
                 "username": {
                     "type": "string"
                 },
@@ -40,6 +48,36 @@
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "signup-admin": {
+            "required": [
+                "firstName",
+                "lastName",
+                "username",
+                "email",
+                "password",
+                "role"
+            ],
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string"
                 }
             }
@@ -158,6 +196,16 @@
             }
         },
         "delete-specific-article": {
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "delete-specific-user": {
             "required": [
                 "token"
             ],
@@ -696,7 +744,7 @@
                 }
             }
         },
-        "/api/articles/{slug}": {
+        "/api/articles/{articleSlug}/": {
             "get": {
                 "tags": [
                     "articles"
@@ -704,7 +752,7 @@
                 "description": "display a specific article",
                 "parameters": [
                     {
-                        "name": "slug",
+                        "name": "articleSlug",
                         "in": "path",
                         "type": "string",
                         "description": "a slug that uniquelly identifies an article",
@@ -729,7 +777,7 @@
                 }
             }
         },
-        "/api/articles/{slug}/": {
+        "/api/articles/{slug}": {
             "put": {
                 "tags": [
                     "articles"
@@ -779,7 +827,7 @@
                 }
             }
         },
-        "/api/articles/{slug}": {
+        "/api/articles/{slug}/": {
             "delete": {
                 "tags": [
                     "articles"
@@ -1891,6 +1939,150 @@
                     },
                     "404": {
                         "description": "Article to report not found"
+                    }
+                }
+            }
+        },
+        "/api/admin/users": {
+            "get": {
+                "tags": [
+                    "super-admin"
+                ],
+                "description": "get all users",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentincation and authorization",
+                        "require": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users successfully fetched"
+                    },
+                    "404": {
+                        "description": "oops! no users found for that action"
+                    }
+                }
+            }
+        },
+        "/api/admin/users/": {
+            "post": {
+                "tags": [
+                    "super-admin"
+                ],
+                "description": "Create new User",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "token for authentincation and authorization",
+                        "require": true
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User create a new account",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/signup-admin"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User Account created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/signup-admin"
+                        }
+                    },
+                    "409": {
+                        "description": "User Account was not created"
+                    }
+                }
+            }
+        },
+        "/api/admin/users/{id}": {
+            "delete": {
+                "tags": [
+                    "super-admin"
+                ],
+                "description": "delete a specific user",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "an id that uniquelly identifies a user",
+                        "require": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "a token for authentication and authorization for admin",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/delete-specific-user"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user deleted successfully"
+                    },
+                    "401": {
+                        "description": "you are not allowed to perfom this action"
+                    },
+                    "404": {
+                        "description": "user was not found"
+                    }
+                }
+            }
+        },
+        "/api/admin/profiles/{username}": {
+            "put": {
+                "tags": [
+                    "super-admin"
+                ],
+                "description": "admin can update user's profile",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "admin can update user's profile by specifing the username",
+                        "require": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Token to authorized admin",
+                        "require": true
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Admin can update user's profile",
+                        "require": true,
+                        "schema": {
+                            "$ref": "#/definitions/update-profile"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user profile updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/update-profile"
+                        }
                     }
                 }
             }

@@ -15,7 +15,7 @@ const router = express.Router();
 
 // routes that don't need authentication
 router.get('/', articleController.listAllArticles);
-router.get('/:slug', articleController.readArticle);
+router.get('/:articleSlug', articleController.readArticle);
 router.get('/ratings/:articleId', articleRatingControllers.ratingAverage);
 router.post('/search', searchController.search);
 

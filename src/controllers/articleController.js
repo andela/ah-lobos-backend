@@ -23,20 +23,17 @@ class ArticleManager {
         const result = await uploader.upload(file);
         req.body.image = result.url;
       }
-      const {
-        title, body, description, image, tagList
-      } = req.body;
-      let generateSlug = `${title} ${id} ${Math.floor(Math.random() * 10000)}`;
+      let generateSlug = `${req.body.title} ${id} ${Math.floor(Math.random() * 10000)}`;
       while (generateSlug.match(/ /g)) generateSlug = generateSlug.replace(' ', '-');
       const newArticle = {
-        title,
-        body,
-        description,
-        image,
+        title: req.body.title,
+        body: req.body.body,
+        description: req.body.description,
+        image: req.body.image,
         authorId: id,
-        tagList: (tagList ? tagList.split(',') : []),
+        tagList: (req.body.tagList ? req.body.tagList.split(',') : []),
         slug: generateSlug.toLowerCase(),
-        readtime: readTime.read(body),
+        readtime: readTime.read(req.body.body),
       };
       if (!newArticle.tagList) {
         const postNewArticle = await Articles.create(newArticle);
@@ -98,9 +95,9 @@ class ArticleManager {
    * @returns {object} a single article
    */
   static async readArticle(req, res) {
-    const { slug } = req.params;
+    const { articleSlug } = req.params;
     const findArticle = await Articles.findOne({
-      where: { slug },
+      where: { slug: articleSlug },
       include: [{
         as: 'author',
         model: Users,
@@ -124,15 +121,13 @@ class ArticleManager {
         const result = await uploader.upload(dataUri(req).content);
         req.body.image = result.url;
       }
-      const {
-        title, description, body, image, tagList
-      } = req.body;
+
       const updateArticle = await req.article.update({
-        title: title || req.article.title,
-        description: description || req.article.description,
-        body: body || req.article.body,
-        tagList: tagList || req.article.tagList,
-        image: image || req.article.image
+        title: req.body.title || req.article.title,
+        description: req.body.description || req.article.description,
+        body: req.body.body || req.article.body,
+        tagList: req.body.tagList || req.article.tagList,
+        image: req.body.image || req.article.image
       });
       if (updateArticle) {
         return res.status(200).json({

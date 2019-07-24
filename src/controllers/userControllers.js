@@ -4,6 +4,7 @@ import model from '../db/models/index';
 import mail from '../helpers/mail';
 import validations from '../helpers/validations';
 import processToken from '../helpers/processToken';
+import UserHelper from '../helpers/userHelper';
 
 import sendVerificationEmail from '../helpers/sendVerificationEmail';
 
@@ -23,35 +24,28 @@ class UserManager {
    */
   static async registerUser(req, res) {
     try {
+      const createUser = await UserHelper.createUser(req.body);
       const {
-        username, email, password, bio, image
-      } = req.body;
-      const user = {
-        username, email, hash: password, isVerified: false, bio, image
-      };
-      const addedUser = await Users.create(user);
-      const { id, role } = addedUser.dataValues;
-      const payload = {
+        id, username, email, bio, role
+      } = createUser.dataValues;
+      const token = await processToken.signToken({
         id, username, email, role
-      };
-      const token = await processToken.signToken(payload);
+      });
       const sendVerification = await sendVerificationEmail.send(token, email);
       if (sendVerification) {
         return res.status(201).json({
           message: 'Thank you for registration, You should check your email for verification',
           user: {
-            email: addedUser.email,
             token,
-            username: addedUser.username,
-            bio: addedUser.bio,
-            image: addedUser.image
+            email,
+            username,
+            bio,
+            image: null
           }
         });
       }
     } catch (error) {
-      return res.status(409).json({
-        message: 'user with the same email already exist'
-      });
+      return res.status(409).json({ message: 'user with the same email already exist' });
     }
   }
 
@@ -95,11 +89,13 @@ class UserManager {
       const findUser = await Users.findOne({ where: { email: req.body.email } });
 
       if (findUser) {
-        const {
-          id, username, email, hash, isVerified, role
-        } = findUser.dataValues;
         const userData = {
-          id, username, email, hash, isVerified, role
+          id: findUser.dataValues.id,
+          username: findUser.dataValues.username,
+          email: findUser.dataValues.email,
+          hash: findUser.dataValues.hash,
+          isVerified: findUser.dataValues.isVerified,
+          role: findUser.dataValues.role
         };
         if (!findUser.dataValues.isVerified) {
           return res.status(401).json({
@@ -109,10 +105,10 @@ class UserManager {
 
         if (bcrypt.compareSync(req.body.password, userData.hash)) {
           const payload = {
-            id,
-            username,
-            email,
-            role
+            id: userData.id,
+            username: userData.username,
+            email: userData.email,
+            role: userData.role
           };
           const token = await processToken.signToken(payload);
           return res.status(200).json({

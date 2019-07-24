@@ -29,6 +29,60 @@ const token = jwt.sign(payload, process.env.SECRET_JWT_KEY, { expiresIn: '24h' }
 const token1 = jwt.sign(payload1, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 describe('User Profile', () => {
+  before('Before testing user view/update profile, sign-up and verify two users', (done) => {
+    const user = {
+      firstName: 'Annor',
+      lastName: 'Annor',
+      username: 'Amoaben',
+      email: 'amoaben@andela.com',
+      password: 'Amoaben58'
+    };
+    const user1 = {
+      firstName: 'Annor',
+      lastName: 'Annor',
+      username: 'Annor',
+      email: 'annor@andela.com',
+      password: 'Annor1957'
+    };
+    const userUp = {
+      isVerified: true
+    };
+    const userUp1 = {
+      isVerified: true
+    };
+    chai.request(index)
+      .post('/api/users')
+      .send(user)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.equal(201);
+      });
+    chai.request(index)
+      .post('/api/users')
+      .send(user1)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.equal(201);
+      });
+    chai.request(index)
+      .put('/api/profiles/Amoaben')
+      .set('token', `${token}`)
+      .send(userUp)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.equal(200);
+      });
+    chai.request(index)
+      .put('/api/profiles/Annor')
+      .set('token', `${token1}`)
+      .send(userUp1)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.equal(200);
+        done();
+      });
+  });
+
   it('A user should be able to view his or her profile', (done) => {
     chai.request(index)
       .get('/api/profiles/testUser')

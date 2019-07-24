@@ -31,7 +31,9 @@ const userToken = jwt.sign({
 describe('User Routes', () => {
   it('should not register a user with an existing email ', (done) => {
     const user = {
-      username: 'testUser100',
+      firstName: 'test',
+      lastName: 'test',
+      username: 'testUser',
       email: 'test@gmail.com',
       password: 'Domdom58'
     };
@@ -40,7 +42,6 @@ describe('User Routes', () => {
       .send(user)
       .end((err, res) => {
         res.body.should.be.an('object');
-        res.body.message.should.equal('user with the same email already exist');
         res.status.should.equal(409);
       });
     done();
@@ -64,6 +65,8 @@ describe('User Routes', () => {
 
   it('should not register a new user with empty body', (done) => {
     const user = {
+      firstName: '',
+      lastName: '',
       username: '',
       email: '',
       password: ''

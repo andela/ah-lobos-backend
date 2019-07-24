@@ -9,6 +9,7 @@ import profileController from '../../controllers/profileController';
 import isAuth from '../../middlewares/isAuth';
 import { multerUploads } from '../../middlewares/multer';
 import { cloudinaryConfig } from '../../db/config/cloudinaryConfig';
+import checkUser from '../../middlewares/checkUser';
 
 
 const { logoutToken } = logout;
@@ -23,7 +24,7 @@ router.post('/login', userController.login);
 router.post('/forgot-password', userController.forgotPassword);
 router.post('/verification', userController.verification);
 router.post('/reset-password/:userToken', userController.resetPassword);
-router.post('/', SignupValidation.signupvalidator, userController.registerUser);
+router.post('/', SignupValidation.signupvalidator, checkUser.hasRole, userController.registerUser);
 router.post('/logout', logoutToken, userController.logout);
 
 // check user's permissions on permissions table

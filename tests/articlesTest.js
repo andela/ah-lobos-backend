@@ -24,7 +24,7 @@ const userToken2 = jwt.sign({
   id: 2,
   username: 'test',
   email: 'user@gmail.com',
-  role: 'admin'
+  role: 'normal'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
 const tag = {

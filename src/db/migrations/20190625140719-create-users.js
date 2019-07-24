@@ -6,6 +6,14 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
+    firstName: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    lastName: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     username: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -47,7 +55,7 @@ module.exports = {
     },
     role: {
         type: Sequelize.STRING,
-        defaultValue: 'normal'
+        defaultValue: "normal"
     },
     createdAt: {
       allowNull: false,

@@ -8,6 +8,8 @@ dotenv.config();
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Users', [{
+      firstName: 'Karangwa',
+      lastName: 'Julien',
       username: "Admin",
       email: process.env.ADMIN_EMAIL,
       isVerified: true,

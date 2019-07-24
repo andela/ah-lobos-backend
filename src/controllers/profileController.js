@@ -42,16 +42,16 @@ class ProfileManager {
         req.body.image = result.url;
       }
 
-      const {
-        email, username, image, bio, isVerified
-      } = req.body;
       const user = await Users.findOne({ where: { username: req.params.username } });
       const updated = await user.update({
-        email: email || user.email,
-        username: username || user.username,
-        image: image || user.image,
-        bio: bio || user.bio,
-        isVerified: isVerified || user.isVerified
+        firstName: req.body.firstName || user.firstName,
+        lastName: req.body.lastName || user.lastName,
+        email: req.body.email || user.email,
+        username: req.body.username || user.username,
+        image: req.body.image || user.image,
+        bio: req.body.bio || user.bio,
+        isVerified: req.body.isVerified || user.isVerified,
+        role: req.body.role || user.role
       });
       updated.hash = undefined;
       return res.status(200).json({

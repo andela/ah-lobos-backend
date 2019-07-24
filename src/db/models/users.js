@@ -2,6 +2,20 @@ import bcrypt from 'bcrypt';
 
 export default (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
+    firstName: {
+        type: DataTypes.STRING,
+        allowNull: {
+            args: false,
+            message: 'Please enter you firstname'
+        }
+    },
+    lastName: {
+        type: DataTypes.STRING,
+        allowNull: {
+            args: false,
+            message: 'Please enter you lastname'
+        }
+    },
     username: {
       type: DataTypes.STRING,
       unique: true,
@@ -46,6 +60,12 @@ export default (sequelize, DataTypes) => {
             args: true
         },
         type: DataTypes.STRING
+    },
+    role: {
+        type: DataTypes.STRING,
+        allowNull: {
+            args: true
+        }
     },
     hash: {
         allowNull: {
