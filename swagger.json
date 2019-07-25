@@ -342,7 +342,29 @@
                 "type": "string"
             }
         }
-      }
+      },
+      "edit-comment": {
+        "required": [
+            "body",
+            "id",
+            "user"
+        ],
+        "properties": {
+            "body": {
+                "type": "string"
+            }
+        }
+    },
+    "get-edit-comment": {
+        "required": [
+            "id"
+        ],
+        "properties": {
+            "id": {
+                "type": "integer"
+            }
+        }
+    }
     },
     "paths": {
         "/api/users": {
@@ -1723,6 +1745,72 @@
                 },
                 "404": {
                     "description": "There are no search results for your query"
+                }
+            }
+        }
+      },
+      "/api/comments/articles/{id}/": {
+        "put": {
+            "tags": [
+                "comments"
+            ],
+            "description": "edit-comment",
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "header",
+                    "description": "token for authentication and authorization",
+                    "require": true
+                },
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "An idof original comment you want to edit",
+                    "require": false
+                },
+                {
+                    "name": "body",
+                    "in": "body",
+                    "description": "A new comment",
+                    "require": false
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Your comment has been updated"
+                },
+                "404": {
+                    "description": "The comment requested is not found"
+                },
+                "500": {
+                    "description": "Internal Server error"
+                }
+            }
+        }
+      },
+      "/api/comments/articles/edit/{id}/": {
+        "get": {
+            "tags": [
+                "comments"
+            ],
+            "description": "get-edit-comment",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "An idof original comment you want to edit",
+                    "require": false
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "The hostory requested is available"
+                },
+                "404": {
+                    "description": "The comment requested has no been edited"
+                },
+                "500": {
+                    "description": "Internal Server error"
                 }
             }
         }

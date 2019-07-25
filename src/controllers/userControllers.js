@@ -49,7 +49,6 @@ class UserManager {
         });
       }
     } catch (error) {
-      console.log(error);
       return res.status(409).json({
         message: 'user with the same email already exist'
       });

@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import index from '../src/index';
 
+
 chai.use(chaiHttp);
 chai.should();
 chai.expect();
@@ -16,8 +17,21 @@ const userToken = jwt.sign({
   role: 'admin'
 }, process.env.SECRET_JWT_KEY, { expiresIn: '24h' });
 
-
+const newComment = {
+  body: 'update'
+};
 describe('Comment test', () => {
+  before('should edit a comment', (done) => {
+    chai.request(index)
+      .put('/api/comments/articles/1')
+      .set('token', userToken)
+      .send(newComment)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.eql(200);
+      });
+    done();
+  });
   it('should create a new comment', (done) => {
     const comment = { body: 'this Andela' };
     chai.request(index)
@@ -51,6 +65,46 @@ describe('Comment test', () => {
         res.body.should.be.an('object');
         res.status.should.be.eql(200);
         res.body.message.should.be.a('string');
+      });
+    done();
+  });
+  it('should edit a comment', (done) => {
+    chai.request(index)
+      .put('/api/comments/articles/1')
+      .set('token', userToken)
+      .send(newComment)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.eql(200);
+      });
+    done();
+  });
+  it('should not edit a comment when there is no comment', (done) => {
+    chai.request(index)
+      .put('/api/comments/articles/0')
+      .set('token', userToken)
+      .send(newComment)
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.eql(404);
+      });
+    done();
+  });
+  it('should get a history of comment', (done) => {
+    chai.request(index)
+      .get('/api/comments/articles/edit/1')
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.eql(200);
+        done();
+      });
+  });
+  it('should not get a history of comment', (done) => {
+    chai.request(index)
+      .get('/api/comments/articles/edit/0')
+      .end((err, res) => {
+        res.body.should.be.an('object');
+        res.status.should.be.eql(404);
       });
     done();
   });

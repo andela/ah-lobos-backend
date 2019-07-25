@@ -1,10 +1,11 @@
 import dotenv from 'dotenv';
+import moment from 'moment';
 import model from '../db/models/index';
 
 
 dotenv.config();
 
-const { Comments, Articles } = model;
+const { Comments, Articles, CommentEditHistory } = model;
 
 /**
  * comment controller
@@ -65,14 +66,73 @@ class CommentManager {
   static async getComments(req, res) {
     const findComments = await Comments.findAll({
       where: { slug: req.params.slug },
-      attributes: ['body', 'user'],
+      attributes: ['body', 'user', 'slug'],
       raw: true,
     });
-    if (!findComments) {
-      return res.status(400).send({ message: 'The Article requested has not been rated yet' });
+    if (!findComments.length) {
+      return res.status(400).send({ message: 'There is no comments on this article' });
     }
     const comments = findComments;
     return res.status(200).send({ comments });
+  }
+
+
+  /**
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} updated article
+ */
+  static async editComment(req, res) {
+    try {
+      const newComment = {
+        body: req.body.body
+      };
+      const findComment = await Comments.findOne({ where: { id: req.params.id } });
+      if (!findComment) {
+        return res.status(404).send({ error: 'The comment requested is not found!' });
+      }
+      const { body, id } = findComment.dataValues;
+      await CommentEditHistory.create({ body, bodyId: id, newBody: req.body.body });
+      await findComment.update({ body: req.body.body });
+      return res.status(200).json({
+        newComment
+      });
+    } catch (err) {
+      return res.status(500).json({
+        err: 'internal server error'
+      });
+    }
+  }
+
+  /**
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} updated article
+ */
+  static async getEditComment(req, res) {
+    try {
+      let findComment = await CommentEditHistory.findAll({
+        where: { bodyId: req.params.id },
+        attributes: ['createdAt', 'newBody'],
+        raw: true,
+      });
+      if (!findComment.length) {
+        return res.status(404).send({ error: 'The comment requested has no been edited' });
+      }
+      const findParent = await CommentEditHistory.findAll({ where: { bodyId: req.params.id } });
+      findComment = findComment.map((comment) => {
+        comment.createdAt = moment(comment.createdAt).format('DD-MM-YYYY HH:mm');
+        return comment;
+      });
+      const parent = findParent[0].body;
+      const update = findComment[findComment.length - 1].newBody;
+      const reverse = findComment.reverse();
+      return res.status(200).json({ updatedComment: update, history: reverse, Orginal: parent });
+    } catch (err) {
+      return res.status(500).json({ err: 'internal server error' });
+    }
   }
 }
 export default CommentManager;

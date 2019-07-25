@@ -40,16 +40,6 @@ describe('Fetch Rating Routes', () => {
       });
     done();
   });
-  // it('it should not fetch a rating when there is no rate', (done) => {
-  //   chai.request(index)
-  //     .get('/api/ratings/1/?page=4&pageSize=0')
-  //     .end((err, res) => {
-  //       console.log(res.body);
-  //       res.status.should.equal(404);
-  //       res.body.should.be.a('object');
-  //     });
-  //   done();
-  // });
   it('it should not fetch a rating when there is no article', (done) => {
     chai.request(index)
       .get('/api/articles/ratings/0/?page=4&pageSize=9')

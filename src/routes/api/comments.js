@@ -14,10 +14,14 @@ const { logoutToken } = logout;
 // routes that don't need authentication
 router.get('/articles/:slug', commentController.getComments);
 
+router.put('/articles/:id', auth.checkAuthentication, logoutToken, validationComments.commentValidation, checkUser.isCommentOwner, commentController.editComment);
+router.get('/articles/edit/:id', commentController.getEditComment);
+
 // check user's permissions route
 router.use('/', auth.checkAuthentication, isUserAllowed.checkCommentsPermissions);
 
 router.post('/articles/:slug', logoutToken, validationComments.commentValidation, commentController.createrComment);
 router.delete('/articles/:slug/:id', logoutToken, checkUser.isCommentOwner, commentController.deleteComment);
+
 
 export default router;
