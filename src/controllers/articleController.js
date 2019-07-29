@@ -3,8 +3,11 @@ import { dataUri } from '../middlewares/multer';
 import { uploader } from '../db/config/cloudinaryConfig';
 import readTime from '../helpers/readTime';
 import paginate from '../helpers/paginate';
+import makeObject from '../helpers/makeObject';
 
-const { Users, Articles, Tag } = model;
+const {
+  Users, Articles, Tag, ArticleHighlight
+} = model;
 /**
  * artticle controller
  */
@@ -173,6 +176,139 @@ class ArticleManager {
         error: 'internal server error'
       });
     }
+  }
+
+  /**
+   *
+   * @param {object} hasHighlighted
+   * @param {integer} startFrom
+   * @param {integer} stopTo
+   * @returns{boolean} true/false
+   */
+  static checkIfHighlightedIndex(hasHighlighted, startFrom, stopTo) {
+    if ((hasHighlighted.dataValues.selectFrom.includes(startFrom)
+    && hasHighlighted.dataValues.selectTo.includes(stopTo))
+    || (hasHighlighted.dataValues.selectFrom.includes(stopTo)
+    && hasHighlighted.dataValues.selectTo.includes(startFrom))) {
+      return true;
+    } return false;
+  }
+
+  /**
+   *
+   * @param {object} hasHighlighted
+   * @param {object} body
+   * @param {integer} id
+   * @param {string} highlightedText
+   * @returns {boolean} is updated or not
+   */
+  static async isHighlighted(hasHighlighted, body, id, highlightedText) {
+    const startFrom = body.selectFrom;
+    const stopTo = body.selectTo;
+    const prevSelectFrom = hasHighlighted.dataValues.selectFrom;
+    const prevSelectTo = hasHighlighted.dataValues.selectTo;
+    const prevHighlightedText = hasHighlighted.dataValues.highlightedText;
+    const prevComment = hasHighlighted.dataValues.comment;
+    const isHighlightIndecesExist = ArticleManager
+      .checkIfHighlightedIndex(hasHighlighted, startFrom, stopTo);
+    if (isHighlightIndecesExist) {
+      prevSelectFrom.splice(prevSelectFrom.indexOf(startFrom), 1);
+      prevSelectTo.splice(prevSelectTo.indexOf(stopTo), 1);
+      prevHighlightedText.splice(prevHighlightedText.indexOf(highlightedText), 1);
+      prevComment.splice(prevComment.indexOf(body.comment), 1);
+      const createHighlightObject = makeObject
+        .makeObject(prevSelectFrom, prevSelectTo, prevHighlightedText, prevComment, id);
+      const updateHighlightedText = await hasHighlighted.update(createHighlightObject);
+      return (updateHighlightedText.dataValues);
+    } prevSelectFrom.push(body.selectFrom);
+    prevSelectTo.push(body.selectTo);
+    prevHighlightedText.push(highlightedText);
+    prevComment.push(body.comment);
+    const createHighlightObject2 = makeObject
+      .makeObject(prevSelectFrom, prevSelectTo, prevHighlightedText, prevComment, id);
+    const updateHighlightedText2 = await hasHighlighted.update(createHighlightObject2);
+    return (updateHighlightedText2.dataValues);
+  }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns { object } highligthed text info
+   */
+  static async highlightAndComment(req, res) {
+    const { selectFrom, selectTo, comment } = req.body;
+    const { slug } = req.params;
+    let startFrom = selectFrom;
+    let stopTo = selectTo;
+    if (parseInt(selectTo, 10) < parseInt(selectFrom, 10)) {
+      startFrom = selectTo;
+      stopTo = selectFrom;
+    } const selectedArticle = req.article.dataValues.body;
+    const highlightedText = selectedArticle.slice(startFrom, stopTo);
+    const hasHighlighted = await ArticleHighlight
+      .findOne({ where: { articleSlug: slug, highlightedBy: req.user.id } });
+    if (hasHighlighted !== null) {
+      const reSelect = await ArticleManager
+        .isHighlighted(hasHighlighted, req.body, req.user.id, highlightedText);
+      return res.status(200).json(reSelect);
+    } const highlightedArticleInfo = {
+      articleId: req.article.dataValues.id,
+      articleSlug: req.params.slug,
+      selectFrom: [selectFrom],
+      selectTo: [selectTo],
+      highlightedBy: req.user.id,
+      highlightedText: [highlightedText],
+      comment: [comment],
+    }; const highlights = await ArticleHighlight.create(highlightedArticleInfo);
+    return res.status(200).json({ highlights });
+  }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns { object } highligthed text info
+   */
+  static async getHighlightedText(req, res) {
+    const { id } = req.user;
+    const userHighlightedText = await ArticleHighlight.findAll({
+      where: {
+        highlightedBy: id,
+      }
+    });
+    if (userHighlightedText.length) {
+      return res.status(200).json({
+        userHighlightedText
+      });
+    }
+    return res.status(404).json({
+      error: 'no highlighted text found'
+    });
+  }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @returns { object } highligthed text info
+   */
+  static async getOneHighlightedText(req, res) {
+    const { id } = req.user;
+    const { slug } = req.params;
+    const singleArticleHighlights = await ArticleHighlight.findOne({
+      where: {
+        highlightedBy: id, articleSlug: slug
+      }
+    });
+    if (singleArticleHighlights) {
+      return res.status(200).json({
+        singleArticleHighlights
+      });
+    }
+    return res.status(404).json({
+      error: 'no highlighted text found'
+    });
   }
 }
 export default ArticleManager;

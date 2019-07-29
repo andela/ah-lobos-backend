@@ -65,7 +65,7 @@ describe('User Profile', () => {
         res.status.should.equal(201);
       });
     chai.request(index)
-      .put('/api/profiles/Amoaben')
+      .put('/api/profile/Amoaben')
       .set('token', `${token}`)
       .send(userUp)
       .end((err, res) => {
@@ -85,7 +85,7 @@ describe('User Profile', () => {
 
   it('A user should be able to view his or her profile', (done) => {
     chai.request(index)
-      .get('/api/profiles/testUser')
+      .get('/api/users/profile/testUser')
       .set('token', `${token}`)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -97,7 +97,7 @@ describe('User Profile', () => {
 
   it('A user should be able to view another users profile', (done) => {
     chai.request(index)
-      .get('/api/profiles/testUser')
+      .get('/api/users/profile/testUser')
       .set('token', `${token}`)
       .end((err, res) => {
         res.body.should.be.an('object');
@@ -109,14 +109,14 @@ describe('User Profile', () => {
 
   it('A user should be not be able to view users that do not exist', (done) => {
     chai.request(index)
-      .get('/api/profiles/NotExist')
+      .get('/api/users/profile/NotExist')
       .set('token', `${token}`)
       .end((err, res) => {
         res.body.should.be.an('object');
         res.status.should.equal(404);
         res.body.message.should.equal('user with that email does not exist');
+        done();
       });
-    done();
   });
 
   it('A user should be able to update his or her profile', (done) => {

@@ -47,6 +47,7 @@ class ArticleRatingValidation {
     const { slug } = req.params;
     const findArticle = await Articles.findOne({ where: { slug } });
     if (!findArticle) { return res.status(404).json({ error: 'article not found' }); }
+    req.article = findArticle;
     next();
   }
 

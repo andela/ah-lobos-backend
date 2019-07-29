@@ -18,6 +18,9 @@ router.get('/', articleController.listAllArticles);
 router.get('/:articleSlug', articleController.readArticle);
 router.get('/ratings/:articleId', articleRatingControllers.ratingAverage);
 router.post('/search', searchController.search);
+router.post('/highlight/:slug', auth.checkAuthentication, articleValidation.checkSlug, articleController.highlightAndComment);
+router.get('/user/highlight', auth.checkAuthentication, articleController.getHighlightedText);
+router.get('/user/highlight/:slug', auth.checkAuthentication, articleController.getOneHighlightedText);
 
 // routes for like/dislike
 router.post('/like/:slug', auth.checkAuthentication, isUserAllowed.checkLikeDislikePermissions, articleValidation.checkSlug, likeDislikeController.likeArticle);

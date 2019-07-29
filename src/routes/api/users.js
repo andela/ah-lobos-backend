@@ -26,6 +26,7 @@ router.post('/verification', userController.verification);
 router.post('/reset-password/:userToken', userController.resetPassword);
 router.post('/', SignupValidation.signupvalidator, checkUser.hasRole, userController.registerUser);
 router.post('/logout', logoutToken, userController.logout);
+router.get('/profile/:username', logoutToken, profileController.viewProfile);
 
 // check user's permissions on permissions table
 router.post('/permissions', auth.checkAuthentication, isUserAllowed.checkPermissions, permission.createPermission);

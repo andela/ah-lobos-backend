@@ -48,7 +48,7 @@ class SendVerificationEmail {
       generateTextFromHTML: true,
       html: `<p>Hello There, <br />
              Thank you for registering to Authors Haven Lobos,<br />
-             we are happy to continue to serve you. click the following button to verify your email.<form action='${config.host}/api/verification?token=${token}&email=${email}' method='post'><input type='submit' value='Verify email' style='margin-left: 80px; padding-top: 8px; padding-bottom: 8px; padding-left: 20px; padding-right: 20px; background-color: green; color: white; border-radius: 5px; cursor: pointer;'/></form></p>
+             we are happy to continue to serve you. click the following button to verify your email.<form action='${config.host}/api/users/verification?token=${token}&email=${email}' method='post'><input type='submit' value='Verify email' style='margin-left: 80px; padding-top: 8px; padding-bottom: 8px; padding-left: 20px; padding-right: 20px; background-color: green; color: white; border-radius: 5px; cursor: pointer;'/></form></p>
              <br />
              <p>Thanks, regards Lobos</p>
       `

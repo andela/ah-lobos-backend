@@ -452,6 +452,24 @@
                     "type":"boolean"
                 }
             }
+        },
+        "highlight": {
+          "required": [
+              "selectFrom",
+              "selectTo",
+              "comment"
+          ],
+          "properties": {
+              "selectFrom": {
+                  "type": "string"
+              },
+              "selectTo": {
+                  "type": "string"
+              },
+              "comment": {
+                  "type": "string"
+              }
+          }
         }
     },
     "paths": {
@@ -2186,6 +2204,99 @@
                     }
                 }
             }
+        },
+        "/api/articles/highlight/{slug}": {
+          "post": {
+              "tags": [
+                  "articles"
+              ],
+              "description": "highlight text in an article",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "token for authentincation and authorization",
+                      "require": true
+                  },
+                  {
+                    "name": "slug",
+                    "in": "path",
+                    "description": "article slug",
+                    "require": true
+                  },
+                  {
+                    "name": "highlight",
+                    "in": "body",
+                    "description": "highlight text in an article",
+                    "schema": {
+                      "$ref": "#/definitions/highlight"
+                  }
+                }
+
+              ],
+              "responses": {
+                  "200": {
+                      "description": "article selected successfully"
+                  },
+                  "404": {
+                      "description": "oops! the article you want to unhighlight from doesn't exist"
+                  }
+              }
+          }
+        },
+        "/api/articles/user/highlight/": {
+          "get": {
+              "tags": [
+                  "articles"
+              ],
+              "description": "highlighted text",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "token for authentincation and authorization",
+                      "require": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "highlighted text"
+                  },
+                  "404": {
+                      "description": "oops! no highlighted text for this user"
+                  }
+              }
+          }
+        },
+        "/api/articles/user/highlight/{slug}": {
+          "get": {
+              "tags": [
+                  "articles"
+              ],
+              "description": "highlighted text",
+              "parameters": [
+                  {
+                      "name": "token",
+                      "in": "header",
+                      "description": "token for authentincation and authorization",
+                      "require": true
+                  },
+                  {
+                    "name": "slug",
+                    "in": "path",
+                    "description": "article slug",
+                    "require": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "highlighted text"
+                  },
+                  "404": {
+                      "description": "oops! no highlighted text for this user"
+                  }
+              }
+          }
         }
     }
 }

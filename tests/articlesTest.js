@@ -173,8 +173,8 @@ describe('Article test', () => {
         res.body.article.should.have.property('image');
         res.body.article.image.should.be.a('string');
         res.status.should.be.eql(200);
-        done();
       });
+    done();
   });
 
   it('should update an existing article', (done) => {
