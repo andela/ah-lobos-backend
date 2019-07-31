@@ -49,14 +49,8 @@ class ReportManager {
     const getAllReports = await Reporting.findAll({
       attributes: { exclude: ['id', 'articleId', 'reporter'] },
       include: [
-        {
-          model: Users,
-          attributes: ['username', 'email', 'bio']
-        },
-        {
-          model: Articles,
-          attributes: ['title', 'slug', 'description', 'image']
-        }
+        { model: Users, attributes: ['username', 'email', 'bio'] },
+        { model: Articles, attributes: ['title', 'slug', 'description', 'image'] }
       ]
     });
     return res.status(200).send({

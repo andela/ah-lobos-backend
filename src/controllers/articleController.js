@@ -130,7 +130,8 @@ class ArticleManager {
         description: req.body.description || req.article.description,
         body: req.body.body || req.article.body,
         tagList: req.body.tagList || req.article.tagList,
-        image: req.body.image || req.article.image
+        image: req.body.image || req.article.image,
+        readtime: readTime.read(req.body.body || req.article.body)
       });
       if (updateArticle) {
         return res.status(200).json({

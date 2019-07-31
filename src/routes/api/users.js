@@ -42,6 +42,7 @@ router.use('/', auth.checkAuthentication, isUserAllowed.checkUsersPermissions);
 
 router.get('/profiles', profileController.getAllUsersProfile);
 router.put('/profile/:username', isAuth.isOwner, logoutToken, multerUploads, profileController.updateProfile);
+router.get('/profile/:username', logoutToken, profileController.viewProfile);
 
 // Authentication user should be able to read his stats
 router.get('/reading-stats', isUserAllowed.checkStatisticsPermissions, statisticController.retrieveUserReadingStats);

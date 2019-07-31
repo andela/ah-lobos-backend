@@ -617,7 +617,7 @@
                 }
             }
         },
-        "/api/users/profiles/{username}": {
+        "/api/users/profile/{username}/": {
             "put": {
                 "tags": [
                     "profiles"
@@ -817,7 +817,7 @@
                 "responses": {
                     "200": {
                         "schema": {
-                            "$ref": "#/definitions/display a specific article"
+                            "$ref": "#/definitions/display-specific-article"
                         }
                     },
                     "401": {

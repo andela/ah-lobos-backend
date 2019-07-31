@@ -189,7 +189,7 @@ class UserManager {
 
           if (updatePassword[0] === 1) {
             return res.status(200).json({
-              message: 'password changed successful',
+              message: 'password changed successfully',
             });
           }
         }

@@ -19,6 +19,8 @@ class UserInfo {
   static async googleLogin(req, res) {
     const { displayName } = req.user;
     const newUser = await Users.create({
+      firstName: displayName,
+      lastName: displayName,
       username: displayName,
       email: req.user.emails[0].value,
       image: req.user.photos[0].value,
@@ -48,6 +50,8 @@ class UserInfo {
   static async facebookLogin(req, res) {
     const { displayName } = req.user;
     const newUser = await Users.create({
+      firstName: displayName,
+      lastName: displayName,
       username: displayName,
       email: req.user.emails[0].value,
       image: req.user.photos[0].value,
@@ -78,6 +82,8 @@ class UserInfo {
     const { displayName } = req.user;
     // eslint-disable-next-line no-unused-expressions
     const newUser = await Users.create({
+      firstName: displayName,
+      lastName: displayName,
       username: req.user.username,
       email: `${req.user.username}@gmail.com`,
       image: req.user.photos[0].value,

@@ -13,7 +13,7 @@ class AdminManager {
    */
   static async getAll(req, res) {
     try {
-      const allUsers = await Users.findAll();
+      const allUsers = await Users.findAll({ attributes: ['firstName', 'lastName', 'username', 'email', 'role', 'isVerified', 'image', 'favorites', 'following'] });
       if (allUsers) {
         return res.status(200).json({
           users: allUsers
