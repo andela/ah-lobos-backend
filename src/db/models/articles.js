@@ -1,3 +1,5 @@
+import eventEmitter from '../../helpers/eventEmitter';
+
 export default (sequelize, DataTypes) => {
   const Articles = sequelize.define('Articles', {
     title: {
@@ -51,7 +53,14 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.TEXT),
       allowNull: true
     },
-  }, {});
+  }, {
+      hooks: {
+      afterCreate: async (article) => {
+          const { authorId, slug } = article.dataValues;
+          eventEmitter.emit('newArticle', authorId, slug);
+      }
+    }
+  });
   Articles.associate = function(models) {
     Articles.belongsTo(models.Users, {
       as: 'author',

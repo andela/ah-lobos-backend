@@ -8,6 +8,7 @@ import followers from './followers';
 import bookmark from './bookmark';
 import reports from './reports';
 import admin from './admin';
+import notifications from './notifications';
 
 const router = express.Router();
 
@@ -17,8 +18,11 @@ router.use('/api/profiles', profiles);
 router.use('/api/comments', comments);
 router.use('/api/followers', followers);
 router.use('/api/bookmark', bookmark);
-router.use(auth);
+router.use('/api/notifications', notifications);
 router.use('/api/report', reports);
 router.use('/api', admin);
+
+router.use(auth);
+
 
 export default router;

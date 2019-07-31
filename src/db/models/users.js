@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import eventEmitter from '../../helpers/eventEmitter';
 
 export default (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
@@ -83,7 +84,30 @@ export default (sequelize, DataTypes) => {
       hooks: {
         beforeCreate: async (user) => {
           user.hash = await bcrypt.hashSync(user.hash, 8);
-        },
+      },
+      afterCreate: async (user) => {
+        const userData = user.dataValues;
+        const userConfig = {
+          inApp: {
+            articles: {
+              show: true,
+              on: ['publish', 'comment', 'like']
+            }
+          },
+          email: {
+            articles: {
+              show: true,
+              on: ['publish']
+            }
+          }
+        }
+        const settings = {
+          userId: userData.id,
+          config: JSON.stringify(userConfig)
+        }
+        eventEmitter.emit('create default notification configuration', settings);
+
+        }
       },
       instanceMethods: {
         validatePassword: async function (hash) {
@@ -103,6 +127,14 @@ export default (sequelize, DataTypes) => {
       });
       Users.hasMany(models.Followers, {
         foreignKey: "followee",
+        onDelete: 'CASCADE'
+      });
+      Users.hasMany(models.Notifications, {
+        foreignKey: "userId",
+        onDelete: 'CASCADE'
+      });
+      Users.hasMany(models.NotificationConfigs, {
+        foreignKey: "userId",
         onDelete: 'CASCADE'
       });
     };

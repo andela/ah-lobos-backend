@@ -424,6 +424,34 @@
                     "type":"string"
                 }
             }
+        },
+        "getNotification": {
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token":{
+                    "type":"string"
+                }
+            }
+        },
+        "updateConfig": {
+            "required": [
+                "token",
+                "inApp",
+                "email"
+            ],
+            "properties": {
+                "token":{
+                    "type":"string"
+                },
+                "inApp":{
+                    "type":"boolean"
+                },
+                "email":{
+                    "type":"boolean"
+                }
+            }
         }
     },
     "paths": {
@@ -2080,6 +2108,78 @@
                 "responses": {
                     "200": {
                         "description": "user profile updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/update-profile"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications": {
+            "get": {
+                "tags": [
+                    "notifications"
+                ],
+                "description": "a user's notifications",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "a user should get notifications relevant to him or her",
+                        "require": true
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user notifications fetched successfully",
+                        "schema": {
+                            "$ref": "#/definitions/update-profile"
+                        }
+                    },
+                    "404": {
+                        "description": "you are all caught up, you have zero notifications",
+                        "schema": {
+                            "$ref": "#/definitions/update-profile"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/notifications/config": {
+            "put": {
+                "tags": [
+                    "update notification configurations"
+                ],
+                "description": "a user's notification configurations",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "user can update their notification configurations",
+                        "require": true
+                    },
+                    {
+                        "name": "inApp",
+                        "in": "body",
+                        "description": "user can opt out of inApp notifications",
+                        "require": true
+                    },
+                    {
+                        "name": "email",
+                        "in": "body",
+                        "description": "user can opt out of email notifications",
+                        "require": true
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "user notification configurations has been successfully updated",
                         "schema": {
                             "$ref": "#/definitions/update-profile"
                         }

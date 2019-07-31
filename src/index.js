@@ -10,6 +10,8 @@ import swaggerJSDoc from '../swagger.json';
 import routes from './routes/api/index';
 import config from './db/config/envirnoment';
 import deleteBlacklist from './helpers/deleteBlacklistTokens';
+import './helpers/eventEmitter';
+import './helpers/eventListener';
 
 const app = express(); // setup express application
 
