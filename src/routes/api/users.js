@@ -10,6 +10,7 @@ import isAuth from '../../middlewares/isAuth';
 import { multerUploads } from '../../middlewares/multer';
 import { cloudinaryConfig } from '../../db/config/cloudinaryConfig';
 import checkUser from '../../middlewares/checkUser';
+import statisticController from '../../controllers/statisticController';
 
 
 const { logoutToken } = logout;
@@ -42,4 +43,6 @@ router.use('/', auth.checkAuthentication, isUserAllowed.checkUsersPermissions);
 router.get('/profiles', profileController.getAllUsersProfile);
 router.put('/profile/:username', isAuth.isOwner, logoutToken, multerUploads, profileController.updateProfile);
 
+// Authentication user should be able to read his stats
+router.get('/reading-stats', isUserAllowed.checkStatisticsPermissions, statisticController.retrieveUserReadingStats);
 export default router;

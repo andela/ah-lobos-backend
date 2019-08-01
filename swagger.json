@@ -470,6 +470,12 @@
                   "type": "string"
               }
           }
+        },
+        "reading-stats": {
+            "required": [
+                "token",
+                "slug"
+            ]
         }
     },
     "paths": {
@@ -2297,6 +2303,72 @@
                   }
               }
           }
+        },
+        "/api/articles/stats/{slug}/save-reading": {
+            "post": {
+                "tags": [
+                    "Reading Stats"
+                ],
+                "description": "Reading Statistic",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "user token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Article slug",
+                        "required": true,
+                        "type": "string",
+                        "schema": {
+                            "$ref": "#/definitions/rreading-stats"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "I am reading an article..."
+                    },
+                    "404": {
+                        "description": "Article to read not found"
+                    }
+                }
+            }
+        },
+        "/api/users/reading-stats": {
+            "get": {
+                "tags": [
+                    "Reading Stats"
+                ],
+                "description": "Retrieve article reading stats",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "user token",
+                        "required": true,
+                        "type": "string",
+                        "schema": {
+                            "$ref": "#/definitions/rreading-stats"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get my Stat(s)"
+                    }
+                }
+            }
         }
     }
 }

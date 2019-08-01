@@ -10,8 +10,11 @@ import articleRatingControllers from '../../controllers/articleRatingControllers
 import articleValidation from '../../middlewares/articleValidation';
 import isUserAllowed from '../../middlewares/checkUserPermissions';
 import searchController from '../../controllers/searchController';
+import statisticController from '../../controllers/statisticController';
 
 const router = express.Router();
+// statistics route
+router.post('/stats/:slug/save-reading', auth.checkAuthentication, isUserAllowed.checkStatisticsPermissions, statisticController.createStats);
 
 // routes that don't need authentication
 router.get('/', articleController.listAllArticles);

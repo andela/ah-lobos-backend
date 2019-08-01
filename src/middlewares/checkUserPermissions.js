@@ -117,6 +117,26 @@ class UserPermissions {
       next();
     } else return res.status(403).json({ error: 'access denied' });
   }
+
+  /**
+   *
+   * @param {object} req
+   * @param {object} res
+   * @param {object} next
+   * @returns {0} -
+   */
+  static async checkStatisticsPermissions(req, res, next) {
+    const { method } = req;
+    const checkIfAllowed = await checkPermissions.isAllowed(req.user.role, 'Statistics', method);
+    if (checkIfAllowed) {
+    /**
+     *
+     * go next if user is allowed
+     *
+     */
+      next();
+    } else return res.status(403).json({ error: 'access denied' });
+  }
 }
 
 export default UserPermissions;
