@@ -476,6 +476,28 @@
                 "token",
                 "slug"
             ]
+        },
+        "like-comment": {
+            "required": [
+                "id",
+                "user"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dislike-comment": {
+            "required": [
+                "id",
+                "user"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
         }
     },
     "paths": {
@@ -2366,6 +2388,78 @@
                 "responses": {
                     "200": {
                         "description": "Get my Stat(s)"
+                    }
+                }
+            }
+        },
+        "/api/comments/like/comment/{id}": {
+            "post": {
+                "tags": [
+                    "comments"
+                ],
+                "description": "like-comment",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Token to authenticated user",
+                        "require": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of a comment",
+                        "require": true
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Thank you for liking this on our comment",
+                        "schema": {
+                            "$ref": "#/definitions/like-comment"
+                        }
+                    },
+                    "404": {
+                        "description": "The comment requested is not found!"
+                    }
+                }
+            }
+        },
+        "/api/comments/dislike/comment/{id}": {
+            "post": {
+                "tags": [
+                    "comments"
+                ],
+                "description": "dislike-comment",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "description": "Token to authenticated user",
+                        "require": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of a comment",
+                        "require": true
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Thank you for disliking this on our comment",
+                        "schema": {
+                            "$ref": "#/definitions/dislike-comment"
+                        }
+                    },
+                    "404": {
+                        "description": "The comment requested is not found!"
                     }
                 }
             }
