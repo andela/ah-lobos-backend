@@ -5,7 +5,6 @@ import validationComments from '../../helpers/commentValidation';
 import logout from '../../middlewares/logout';
 import checkUser from '../../middlewares/checkUser';
 import isUserAllowed from '../../middlewares/checkUserPermissions';
-import LikeDislikeComments from '../../controllers/likeDislikeComment';
 
 
 const router = express.Router();
@@ -24,8 +23,5 @@ router.use('/', auth.checkAuthentication, isUserAllowed.checkCommentsPermissions
 router.post('/articles/:slug', logoutToken, validationComments.commentValidation, commentController.createrComment);
 router.delete('/articles/:slug/:id', logoutToken, checkUser.isCommentOwner, commentController.deleteComment);
 
-// routes for liking a comment
-router.post('/like/comment/:id', auth.checkAuthentication, isUserAllowed.checkLikeDislikePermissions, LikeDislikeComments.likeComment);
-router.post('/dislike/comment/:id', auth.checkAuthentication, isUserAllowed.checkLikeDislikePermissions, LikeDislikeComments.dislikeComment);
 
 export default router;
