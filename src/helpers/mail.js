@@ -24,7 +24,7 @@ class mail {
         subject: 'password reset',
         text: `Dear, ${username} please use the provided link to reset your password`,
         html: `<div>Dear ${username},<br>You have requested to reset your password.<br></div>
-        <a href="https://ah-lobos-backend-swagger.herokuapp.com/api/users/reset-password/${token}">Please click here to reset your password</a>
+        <a href="${process.env.FRONT_END_URL}/newpassword/${token}">Please click here to reset your password</a>
         <br><h6>Thank you for using Authors haven.</h6>`,
       };
       const sent = await sendGridMail.send(message);

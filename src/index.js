@@ -6,12 +6,14 @@ import swaggerUI from 'swagger-ui-express';
 import cron from 'node-cron';
 import passport from 'passport';
 import session from 'express-session';
+import CORS from 'cors';
 import swaggerJSDoc from '../swagger.json';
 import routes from './routes/api/index';
 import config from './db/config/envirnoment';
 import deleteBlacklist from './helpers/deleteBlacklistTokens';
 import './helpers/eventEmitter';
 import './helpers/eventListener';
+
 
 const app = express(); // setup express application
 
@@ -31,6 +33,9 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: true }
 }));
+// enable CORS for all servers
+app.use(CORS());
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(routes);

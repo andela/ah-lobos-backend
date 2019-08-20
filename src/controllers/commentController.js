@@ -81,7 +81,7 @@ class CommentManager {
  *
  * @param {object} req
  * @param {object} res
- * @returns {object} updated article
+ * @returns {object} updated comments
  */
   static async editComment(req, res) {
     try {
@@ -109,7 +109,7 @@ class CommentManager {
  *
  * @param {object} req
  * @param {object} res
- * @returns {object} updated article
+ * @returns {object} get edit comments history
  */
   static async getEditComment(req, res) {
     try {

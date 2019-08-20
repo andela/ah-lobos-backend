@@ -3,7 +3,7 @@
  A Social platform for the creative at heart.
 
 ## Description
-Create a community of like minded authors to foster inspiration and innovation
+Create a communityy of like minded authors to foster inspiration and innovation
 by leveraging the modern web.
 
 ## Documentation
