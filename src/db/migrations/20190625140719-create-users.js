@@ -29,7 +29,7 @@ module.exports = {
     },
     image: {
       type: Sequelize.STRING,
-      defaultValue: 'no image available'
+      defaultValue: null
     },
     favorites: {
       type: Sequelize.STRING
