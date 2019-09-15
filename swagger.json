@@ -5,7 +5,7 @@
         "version": "1.0.0",
         "description": "Authors Haven Documentation with Swagger"
     },
-    "host": "ah-lobos-backend-swagger.herokuapp.com",
+    "host": "localhost:7000",
     "basePath": "/",
     "tags": [
         {

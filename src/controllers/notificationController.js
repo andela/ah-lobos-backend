@@ -13,14 +13,26 @@ class NotificationManager {
  * @returns {object} article
  */
   static async getNotifications(req, res) {
-    const notifications = await Notifications.findAll({ where: { userId: req.user.id } });
+    const notifications = await Notifications.findAll({ where: { userId: req.user.id, preference: 'inApp' } });
     if (notifications.length === 0) {
       return res.status(404).json({ message: 'You are all caught up, you have zero notifications' });
     }
-    notifications.map(async (notification) => {
-      await notification.update({
-        status: 'seen'
-      });
+    return res.status(200).json({ number: notifications.length, notifications });
+  }
+
+  /**
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {object} article
+ */
+  static async readNotification(req, res) {
+    const notifications = await Notifications.findOne({ where: { id: req.params.id } });
+    if (notifications.length === 0) {
+      return res.status(404).json({ message: 'You are all caught up, you have zero notifications' });
+    }
+    await notifications.update({
+      status: req.body.status
     });
     return res.status(200).json({ number: notifications.length, notifications });
   }

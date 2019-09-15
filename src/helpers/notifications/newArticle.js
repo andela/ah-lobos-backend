@@ -23,13 +23,13 @@ class articleNotification {
 
     const { APP_URL } = process.env;
     return followers.map(async (follower) => {
-      const url = `${APP_URL}/api/articles/${slug}`;
+      const url = `${APP_URL}/articles/${slug}`;
 
       const user = await Users.findOne({ where: { id: follower } });
       const config = await userConfig.get(user.dataValues.id);
 
-      const inAppMessage = `Hello ${user.dataValues.username}, ${author.dataValues.username} has just published a new article. Click on this link ${url} to read this article`;
-      const emailMessage = `Hello ${user.dataValues.username}, ${author.dataValues.username} has just published a new article. Click on this link ${url} to read this article`;
+      const inAppMessage = `Hello ${user.dataValues.username}, ${author.dataValues.username} has just published a new article.`;
+      const emailMessage = `Hello ${user.dataValues.username}, ${author.dataValues.username} has just published a new article.`;
 
       const action = 'publish';
 

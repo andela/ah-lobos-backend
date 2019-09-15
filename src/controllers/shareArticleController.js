@@ -15,7 +15,6 @@ class ShareArticleManager {
       message: 'Article to share on E-mail',
       link: `mailto:?subject=${slug}&body=${link}`
     });
-    await open(`mailto:?subject=${slug}&body=${link}`);
   }
 
   /**
@@ -31,7 +30,6 @@ class ShareArticleManager {
       // share article on twitter
       link: `https://twitter.com/intent/tweet?text=${link}`
     });
-    await open(`https://twitter.com/intent/tweet?text=${link}`);
   }
 
   /**
@@ -46,7 +44,6 @@ class ShareArticleManager {
       message: 'Post to share on Facebook',
       link: `https:www.facebook.com/sharer/sharer.php?u=${shareLink}`
     });
-    await open(`https:www.facebook.com/sharer/sharer.php?u=${shareLink}`);
   }
 
   /**
@@ -60,7 +57,6 @@ class ShareArticleManager {
       message: 'Article to share on Whatsapp',
       link: `https://wa.me/?text=${req.article.link}`
     });
-    await open(`https://wa.me/?text=${req.article.link}`);
   }
 }
 export default ShareArticleManager;
